@@ -9,7 +9,7 @@ The link:https://c2pa.org/specifications/specifications/2.1/specs/C2PA_Specifica
 
 This specification describes a _<<C2PA assertion>>_ referred to here as the *<<_identity_assertion,identity assertion>>* that can be added to a _<<C2PA Manifest>>_ to enable a _<<_credential_holder,credential holder>>_ to prove control over a digital identity and to use that identity to document the _<<_named_actor,named actor’s>>_ role(s) in the _<<C2PA asset>>’s_ lifecycle.
 
-*Version 1.1 Draft 14 April 2025* · xref:_version_history[]
+*Version 1.1 Draft 24 April 2025* · xref:_version_history[]
 
 IMPORTANT: This specification differs from the link:https://cawg.io/identity/1.0/[1.0 version] primarily in the addition of xref:_identity_claims_aggregation[xrefstyle=full].
 
@@ -1108,6 +1108,29 @@ An _<<_identity_claims_aggregator,identity claims aggregator>>_ SHOULD allow for
 * At least one entry SHOULD have its `statusPurpose` field set to `revocation`.
 * Status list credentials SHOULD be expressed using a link:https://www.w3.org/TR/vc-bitstring-status-list/[W3C bitstring status list], version 1.0 or later. Other mechanisms SHOULD NOT be used because _<<_identity_assertion_consumer,identity assertion consumers>>_ may not be prepared to correctly interpret such status lists.
 
+[#vc-schema]
+===== Schema
+
+The requirements for identity claims aggregation credentials are summarized in a link:https://www.w3.org/TR/vc-json-schema/[verifiable credentials JSON schema] available at `https://cawg.io/identity/1.1/ica/schema/`. The inclusion of the `credentialSchema` property is RECOMMENDED (as shown in the example below) to specify the structure and constraints of the credential’s data.
+
+.Inclusion of credential schema
+[#example-with-schema]
+[example]
+====
+[source,json]
+----
+{
+  ...
+  "credentialSchema": [
+    {
+      "id": "https://cawg.io/identity/1.1/ica/schema/",
+      "type": "JSONSchema"
+    }
+  ]  
+}
+----
+====
+
 ==== Identity claims aggregation verifiable credential example
 
 An example of the *<<_identity_claims_aggregation,identity claims aggregation>>* verifiable credential is given below:
@@ -1198,33 +1221,6 @@ An example of the *<<_identity_claims_aggregation,identity claims aggregation>>*
 }
 ----
 ====
-
-==== Data verification schema
-
-The *<<_identity_assertion,identity assertion>>* verifiable credential must adhere to a set of strict requirements as depicted in xref:_identity_claims_aggregation_description[xrefstyle=full]. All of these requirements are gathered in a https://www.w3.org/TR/vc-json-schema/[verifiable credentials JSON schema], i.e. `https://cawg.io/identity/1.1/ica/schema/`. This JSON schema SHOULD be used to establish if the structure and contents of a verifiable credential conforms to all *<<_identity_assertion,identity assertion>>* verifiable credential requirements.
-
-[#issue-154]
-NOTE: TO DO (link:https://github.com/creator-assertions/identity-assertion/issues/154[issue #154]): Add text explaining the use of `credentialSchema` property as per the example below.
-
-[source,json]
-----
-"credentialSchema": [
-  {
-    "id": "https://cawg.io/identity/1.1/ica/schema/",
-    "type": "JSONSchema"
-  }
-]
-----
-
-NOTE: The usage of this data verification schema is not enforced by this specification, but it is RECOMMENDED to be used when possible.
-
-==== Recommendations for issuers
-
-NOTE: TO DO (link:https://github.com/creator-assertions/identity-assertion/issues/154[issue #154]): Merge with above section? This explains the use of `credentialSchema` to answer my earlier TO DO item.
-
-The inclusion of the `credentialSchema` property in a verifiable credential is OPTIONAL. However, it is highly recommended to include this field to specify the structure and constraints of the credential’s data.
-
-The inclusion of the `identity-claims-aggregation.json` schema in the verifiable credential `credentialSchema` is OPTIONAL. However, it is RECOMMENDED to include it as it enforces this specification’s constraints.
 
 ==== Verifiable credential proof mechanism
 
@@ -1378,7 +1374,9 @@ NOTE: This specification recommends that issuers and validators support the `Bit
 
 ====== Verify the credential’s schema
 
-NOTE: TO DO: Compare credential against JSON-LD schema. From earlier draft: The usage of the data verification schemas from a verifiable credential’s `credentialSchema` is OPTIONAL. However, it is RECOMMENDCED that verifiers use the `credentialSchema` to validate the structure and data integrity of the verifiable credential. By referencing the schemas specified in the `credentialSchema` field, verifiers can ensure that the credential data adheres to the expected format and rules. `identity-claims-aggregation.json` makes use of the `format` JSON Schema keyword. If used, the JSON Schema processor must enable the `format` usage.
+The requirements for identity claims aggregation credentials are summarized in a link:https://www.w3.org/TR/vc-json-schema/[verifiable credentials JSON schema] available at `https://cawg.io/identity/1.1/ica/schema/`. It is RECOMMENDED that verifiers use the `credentialSchema` to validate the structure and data integrity of the verifiable credential.
+
+NOTE: The schema document makes use of the `format` JSON Schema keyword. If used, the JSON Schema processor must enable the `format` usage.
 
 ===== Verify binding to C2PA asset
 
