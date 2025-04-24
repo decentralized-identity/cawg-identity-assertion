@@ -1045,7 +1045,10 @@ The examples provided here are non-normative, but are intended to demonstrate th
 [#vc-credentialsubject-verifiedidentity-verifiedat]
 ====== Identity verification date
 
-The `verifiedIdentities[?].verifiedAt` MUST be present and MUST be a valid date-time as specified by link:https://datatracker.ietf.org/doc/html/rfc3339[RFC 3339]. It represents the date and time when the relationship between the _<<_named_actor,named actor>>_ and the _<<_identity_provider,identity provider>>_ was verified by the _<<_identity_assertion_generator,identity assertion generator>>._
+The `verifiedIdentities[?].verifiedAt` MUST be present and MUST be a valid date-time as specified by link:https://datatracker.ietf.org/doc/html/rfc3339[RFC 3339]. It represents the earlier of the following:
+
+* The date and time when the relationship between the _<<_named_actor,named actor>>_ and the _<<_identity_provider,identity provider>>_ was verified by the _<<_identity_assertion_generator,identity assertion generator>>._
+* In the case where the _<<_named_actor,named actor’s>>_ identity was verified by a third party (for example, for document verification), the date and time at which the _<<_named_actor,named actor’s>>_ identity was verified by the third party.
 
 [#vc-credentialsubject-verifiedidentity-provider]
 ====== Identity provider details
