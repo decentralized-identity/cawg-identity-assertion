@@ -178,9 +178,9 @@ The teal circle demonstrates the limit of the _<<_c2pa_manifest,C2PA Manifest’
 
 === Use cases and examples
 
-The following is a non-exhaustive list of potential and general use cases for the *<<_identity_assertion,identity assertion>>.* Some of these are taken from, or built upon, the use cases developed within the link:https://www.originproject.info/[Project Origin Alliance] and the link:https://contentauthenticity.org/[Content Authenticity Initiative (CAI)] frameworks. Each use case will be described using some generic personas to help make the flow clear.
+The following is a non-exhaustive list of potential and general use cases for the *<<_identity_assertion,identity assertion>>.* Some of these are taken from, or built upon, the use cases developed within the link:https://www.originproject.info/[Project Origin Alliance], the link:https://contentauthenticity.org/[Content Authenticity Initiative (CAI)], and the link:https://jpeg.org/jpegtrust/[JPEG Trust] frameworks. Each use case will be described using some generic personas to help make the flow clear.
 
-IMPORTANT: The identity assertion SHOULD NOT be construed to convey _ownership_ of a _<<C2PA asset>>._ Ownership and rights transfers often take place outside of the digital realm. It is outside the scope of this specification to describe such transfers. It is possible that some other assertion could convey such information; such an assertion could be included in the set of _<<_referenced_assertions,referenced assertions.>>_
+IMPORTANT: The identity assertion SHOULD NOT be construed to convey either _attribution_ or _ownership_ of a _<<C2PA asset>>._ Attribution, ownership, and rights transfers often take place outside of the digital realm. It is outside the scope of this specification to describe such transfers. It is possible that some other assertion could convey such information; such an assertion could be included in the set of _<<_referenced_assertions,referenced assertions.>>_
 
 ==== Enhancing clarity around provenance and edits for journalistic work
 
@@ -202,11 +202,11 @@ An advertising agency representing a popular sneaker brand wants to ensure that 
 
 One morning, Charlie, an up-and-coming digital artist, woke up to find that one of their designs went viral on social media. Charlie felt upset to see their art detached from their name. Charlie had spent months working on their artwork and was disappointed not to receive credit or compensation for their work. Moving forward, Charlie decides to use the identity assertion to link their name, social media, and copyright information to the art they create. Now, when Charlie posts their content to social media platforms that display Content Credentials, viewers can easily link the artwork back to Charlie.
 
-IMPORTANT: Copyright is not directly described by the *<<_identity_assertion,identity assertion>>* but an *<<_identity_assertion,identity assertion>>* can reference other assertions, such as the link:https://cawg.io/metadata/[CAWG metadata assertion], which can contain such information.
+IMPORTANT: Copyright is not directly described by the *<<_identity_assertion,identity assertion>>* but an *<<_identity_assertion,identity assertion>>* can reference other assertions, such as the link:https://cawg.io/metadata/[CAWG metadata assertion], which can contain such information using common vocabularies such as the link:https://www.dublincore.org/resources/glossary/dublin_core/[Dublin Core metadata] vocabulary.
 
 ==== Audio sampling and artistic collaboration
 
-Eve is a musician with a talent for releasing songs featuring clever lyrics and catchy beats. Ever since Eve’s music gained traction on audio streaming apps, artists have reached out asking permission to sample her beats. Eve views these collaborations as an opportunity to help new listeners discover her music, so it is important to her that the samples are traceable back to her. She decides to begin recording her songs using a Content Credentials-enabled device linked to a digital wallet containing her identity credentials and her profile on music streaming applications. Now, when other artists release songs that sample Eve’s tunes, she can demonstrate her contribution to the final work.
+Eve is a musician with a talent for releasing songs featuring clever lyrics and catchy beats. Ever since Eve’s music gained traction on audio streaming apps, artists have reached out asking permission to sample her beats. Eve views these collaborations as an opportunity to help new listeners discover her music, so it is important to her that the samples are traceable back to her. She decides to begin recording her songs using a Content Credentials-enabled device linked to a digital wallet containing her identity credentials and her profile on music streaming applications. Eve also asserts her standard terms and conditions to facilitate the permission process using (forthcoming) link:https://jpeg.org/jpegtrust/[JPEG Trust] assertions. Now, when other artists release songs that sample Eve’s tunes, she can demonstrate her contribution to the final work.
 
 == Normative references
 
