@@ -148,3 +148,7 @@ _This section is non-normative._
 *14 April 2025*
 
 * Transition to DIF draft specification.
+
+*24 April 2025* 
+
+* Consolidate guidance around JSON schema document.
