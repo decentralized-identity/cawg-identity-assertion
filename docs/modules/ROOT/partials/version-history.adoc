@@ -152,3 +152,4 @@ _This section is non-normative._
 *24 April 2025* 
 
 * Consolidate guidance around JSON schema document.
+* Add references to JPEG Trust work for ownership and rights declarations.
