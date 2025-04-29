@@ -5,6 +5,20 @@
   "description": "Creator Identity Assertion Credential Schema for usage in JsonSchema",
   "type": "object",
   "properties": {
+    "@context": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "format": "uri"
+      },
+      "default": [
+        "https://www.w3.org/ns/credentials/v1",
+        "https://schema.org",
+        "https://cawg.io/contexts/creator-identity-assertion/v1"
+      ],
+      "description": "Linked Data context for Verifiable Credentials version 1.1 with CAWG extension"
+    },
     "type" : {
       "type": "array",
       "minItems": 2,
@@ -39,11 +53,11 @@
         }
       ]
     },
-    "validFrom": {
+    "issuanceDate": {
       "type": "string",
       "format": "date-time"
     },
-    "expiresAt": {
+    "expirationDate": {
       "type": "string",
       "format": "date-time"
     },
@@ -255,7 +269,7 @@
       "required": ["verifiedIdentities", "c2paAsset"]
     }
   },
-  "required": ["type", "issuer", "validFrom", "credentialSubject"],
+  "required": ["@context", "type", "issuer", "issuanceDate", "credentialSubject"],
   "$defs": {
     "nonEmptyString": {
       "type": "string",
