@@ -3,15 +3,12 @@
     "cawg": "https://cawg.io/terms#",
     "schema": "https://schema.org/",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
-
     "@vocab": "https://www.w3.org/ns/credentials/examples#",
-
     "verifiedIdentities": {
       "@id": "cawg:verifiedIdentities",
       "@container": "@set"
     },
     "c2paAsset": "cawg:c2paAsset",
-
     "referenced_assertions": {
       "@id": "cawg:referenced_assertions",
       "@container": "@set"
@@ -24,12 +21,11 @@
     "expected_partial_claim": "cawg:expected_partial_claim",
     "expected_claim_generator": "cawg:expected_claim_generator",
     "expected_countersigners": "cawg:expected_countersigners",
-
     "username": "schema:alternateName",
     "uri": "@id",
     "provider": "cawg:provider",
     "verifiedAt": {
-      "@id": "schema:dateVerified",
+      "@id": "schema:dateIssued",
       "@type": "xsd:dateTime"
     },
     "method": "cawg:method",
