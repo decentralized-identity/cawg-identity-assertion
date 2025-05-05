@@ -154,3 +154,7 @@ _This section is non-normative._
 * Consolidate guidance around JSON schema document.
 * Add references to JPEG Trust work for ownership and rights declarations.
 * Clarify the intent of `verifiedAt` timestamp.
+
+*04 May 2025*
+
+* Fix reference to C2PA claim data structure `gathered_assertions` field.
