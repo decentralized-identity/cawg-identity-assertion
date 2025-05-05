@@ -13,11 +13,11 @@
         "format": "uri"
       },
       "default": [
-        "https://www.w3.org/ns/credentials/v2",
+        "https://www.w3.org/ns/credentials/v1",
         "https://schema.org",
-        "https://cawg.io/contexts/creator-identity-assertion/v1.1"
+        "https://cawg.io/identity/1.1/ica/context"
       ],
-      "description": "Linked Data context for Verifiable Credentials version 2.0 with CAWG extension"
+      "description": "Linked Data context for Verifiable Credentials version 1.1 with CAWG extension"
     },
     "type" : {
       "type": "array",
@@ -53,11 +53,11 @@
         }
       ]
     },
-    "validFrom": {
+    "issuanceDate": {
       "type": "string",
       "format": "date-time"
     },
-    "validUntil": {
+    "expirationDate": {
       "type": "string",
       "format": "date-time"
     },
@@ -269,7 +269,7 @@
       "required": ["verifiedIdentities", "c2paAsset"]
     }
   },
-  "required": ["@context", "type", "issuer", "validFrom", "credentialSubject"],
+  "required": ["@context", "type", "issuer", "issuanceDate", "credentialSubject"],
   "$defs": {
     "nonEmptyString": {
       "type": "string",
