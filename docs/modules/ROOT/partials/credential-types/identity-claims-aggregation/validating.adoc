@@ -168,7 +168,7 @@ If the validator has completed the process without generating any failure codes,
 
 ===== Status codes
 
-[width="100%",cols="4,3,10",options="header"]
+[width="100%",cols="4,4,10",options="header"]
 |=======================
 | Value
 | Status
@@ -196,7 +196,7 @@ If the validator has completed the process without generating any failure codes,
 
 |`cawg.ica.invalid_issuer`
 | Failure
-| The `issuer` field in the Verifiable credential is not a DID (<<decentralized identifier>>).
+| The `issuer` field in the Verifiable credential is not a DID (<<W3C decentralized identifier>>).
 
 |`cawg.ica.did_unsupported_method`
 | Failure

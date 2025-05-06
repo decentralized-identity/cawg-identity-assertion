@@ -106,12 +106,25 @@ This specification defines the following values which _<<_identity_assertion_con
 
 [width="100%",cols="4,10",options="header"]
 |=======================
-| Value        |  Meaning
-| `cawg.document_verification` | The _<<_identity_provider,identity provider>>_ has verified one or more government-issued identity documents presented by the _<<_named_actor,named actor>>._
-| `cawg.web_site` | The _<<_named_actor,named actor>>_ has proven control over a specific domain to the _<<_identity_claims_aggregator,identity claims aggregator>>._
-| `cawg.affiliation` | The _<<_identity_provider,identity provider>>_ is attesting to the _<<_named_actor,named actor’s>>_ membership in an organization. This could be a professional organization or an employment relationship.
-| `cawg.social_media` | The _<<_named_actor,named actor>>_ has demonstrated control over an account (typically a social media account) hosted by the _<<_identity_provider,identity provider>>._
-| `cawg.crypto_wallet` | The _<<_named_actor,named actor>>_ has demonstrated control over an account (typically a crypto-wallet) hosted by the _<<_identity_provider,identity provider>>._
+| Value
+| Meaning
+
+| `cawg.document_verification`
+| The _<<_identity_provider,identity provider>>_ has verified one or more government-issued identity documents presented by the _<<_named_actor,named actor>>._
+
+| `cawg.web_site`
+| The _<<_named_actor,named actor>>_ has proven control over a specific domain to the _<<_identity_claims_aggregator,identity claims aggregator>>._
+
+| `cawg.affiliation`
+| The _<<_identity_provider,identity provider>>_ is attesting to the _<<_named_actor,named actor’s>>_ membership in an organization.
+This could be a professional organization or an employment relationship.
+
+| `cawg.social_media`
+| The _<<_named_actor,named actor>>_ has demonstrated control over an account (typically a social media account) hosted by the _<<_identity_provider,identity provider>>._
+
+| `cawg.crypto_wallet`
+| The _<<_named_actor,named actor>>_ has demonstrated control over an account (typically a crypto-wallet) hosted by the _<<_identity_provider,identity provider>>._
+
 |=======================
 
 Other string values MAY be used in `verifiedIdentities[?].type`, subject to restrictions described in xref:_labels[xrefstyle=full].

@@ -57,14 +57,31 @@ It is recommended that the CBOR text strings be chosen from the following values
 
 [width="100%",cols="4,10",options="header"]
 |=======================
-| Value        |  Meaning
-| `cawg.creator` | The _<<_named_actor,named actor>>_ is a primary creator/author of this _<<C2PA asset>>._
-| `cawg.contributor` | The _<<_named_actor,named actor>>_ is a secondary creator/author of this _<<C2PA asset>>._
-| `cawg.editor` | The _<<_named_actor,named actor>>_ is an editor of this _<<C2PA asset>>._
-| `cawg.producer` | The _<<_named_actor,named actor>>_ is a producer of this _<<C2PA asset>>._
-| `cawg.publisher` | The _<<_named_actor,named actor>>_ is a publisher of this _<<C2PA asset>>._
-| `cawg.sponsor` | The _<<_named_actor,named actor>>_ has supported or sponsored the creation of this _<<C2PA asset>>._
-| `cawg.translator` | The _<<_named_actor,named actor>>_ has adapted of this _<<C2PA asset>>_ from a similar work in another language.
+
+| Value
+| Meaning
+
+| `cawg.creator`
+| The _<<_named_actor,named actor>>_ is a primary creator/author of this _<<C2PA asset>>._
+
+| `cawg.contributor`
+| The _<<_named_actor,named actor>>_ is a secondary creator/author of this _<<C2PA asset>>._
+
+| `cawg.editor`
+| The _<<_named_actor,named actor>>_ is an editor of this _<<C2PA asset>>._
+
+| `cawg.producer`
+| The _<<_named_actor,named actor>>_ is a producer of this _<<C2PA asset>>._
+
+| `cawg.publisher`
+| The _<<_named_actor,named actor>>_ is a publisher of this _<<C2PA asset>>._
+
+| `cawg.sponsor`
+| The _<<_named_actor,named actor>>_ has supported or sponsored the creation of this _<<C2PA asset>>._
+
+| `cawg.translator`
+| The _<<_named_actor,named actor>>_ has adapted of this _<<C2PA asset>>_ from a similar work in another language.
+
 |=======================
 
 Other CBOR text string values MAY be used for `role`, subject to the restrictions described in xref:_labels[xrefstyle=full].
