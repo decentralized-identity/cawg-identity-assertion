@@ -13,7 +13,7 @@
         "format": "uri"
       },
       "default": [
-        "https://www.w3.org/ns/credentials/v1",
+        "https://www.w3.org/2018/credentials/v1",
         "https://schema.org",
         "https://cawg.io/identity/1.1/ica/context"
       ],
