@@ -81,7 +81,7 @@ An example of the *<<_identity_claims_aggregation,identity claims aggregation>>*
   },
   "credentialSchema": [
     {
-      "id": "https://cawg.io/identity/1.1/ica/schema/",
+      "id": "https://cawg.io/identity/1.1/ica/schema/vc2.0/",
       "type": "JSONSchema"
     }
   ]  

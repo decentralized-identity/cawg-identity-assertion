@@ -303,7 +303,11 @@ Other mechanisms SHOULD NOT be used because _<<_identity_assertion_consumer,iden
 [#vc-schema]
 ===== Schema
 
-The requirements for identity claims aggregation credentials are summarized in a link:https://www.w3.org/TR/vc-json-schema/[verifiable credentials JSON schema] available at `https://cawg.io/identity/1.1/ica/schema/`.
+The requirements for identity claims aggregation credentials are summarized in a link:https://www.w3.org/TR/vc-json-schema/[verifiable credentials JSON schema] available at:
+
+* `https://cawg.io/identity/1.1/ica/schema/vc1.1/` (when using Verifiable credentials data model 1.1), or
+* `https://cawg.io/identity/1.1/ica/schema/vc2.0/` (when using Verifiable credentials data model 2.0).
+
 The inclusion of the `credentialSchema` property is RECOMMENDED (as shown in the example below) to specify the structure and constraints of the credential’s data.
 
 .Inclusion of credential schema
@@ -316,7 +320,7 @@ The inclusion of the `credentialSchema` property is RECOMMENDED (as shown in the
   ...
   "credentialSchema": [
     {
-      "id": "https://cawg.io/identity/1.1/ica/schema/",
+      "id": "https://cawg.io/identity/1.1/ica/schema/vc2.0/",
       "type": "JSONSchema"
     }
   ]  

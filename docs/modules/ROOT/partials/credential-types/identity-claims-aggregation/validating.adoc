@@ -137,7 +137,7 @@ NOTE: This specification recommends that issuers and validators support the `Bit
 
 ====== Verify the credential’s schema
 
-The requirements for identity claims aggregation credentials are summarized in a link:https://www.w3.org/TR/vc-json-schema/[verifiable credentials JSON schema] available at `https://cawg.io/identity/1.1/ica/schema/`.
+The requirements for identity claims aggregation credentials are summarized in a link:https://www.w3.org/TR/vc-json-schema/[verifiable credentials JSON schema] available at `https://cawg.io/identity/1.1/ica/schema/vc1.1/` or `https://cawg.io/identity/1.1/ica/schema/vc2.0/`.
 It is RECOMMENDED that verifiers use the `credentialSchema` to validate the structure and data integrity of the verifiable credential.
 
 NOTE: The schema document makes use of the `format` JSON Schema keyword.
