@@ -69,7 +69,7 @@ The set of _<<_c2pa_assertion,C2PA assertions>>_ that are referenced by an *<<_i
 Any identifier for which an endpoint system is “able to associate, discover and verify the cryptographic keys associated with a ToIP identifier.”
 This satisfies the ToIP design principle that “messages and data structures exchanged between parties should be verifiable as authentic using standard cryptographic algorithms and protocols.”
 
-See link:++https://github.com/trustoverip/TechArch/blob/v1-PR1/spec.md#64-toip-identifiers++[ToIP identifiers] in the ToIP technology architecture specification.
+See link:https://trustoverip.org/permalink/Design-Principles-for-the-ToIP-Stack-V1.0-2022-11-17.pdf[the ToIP technology architecture specification].
 
 ==== Trust
 
