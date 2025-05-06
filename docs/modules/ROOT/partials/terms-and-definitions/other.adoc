@@ -6,13 +6,15 @@ The _<<_actor,actor>>_ that has control (specifically signature authority) over 
 
 ==== Credential revocation
 
-An action signifying that a digital credential can no longer be considered as valid. This is typically indicated by an action on the part of the credential issuer stating that they can no longer attest to the validity of the information in the credential or an action on the part of the _<<_credential_holder,credential holder>>_ stating that the public/private key pair associated with the credential is no longer valid.
+An action signifying that a digital credential can no longer be considered as valid.
+This is typically indicated by an action on the part of the credential issuer stating that they can no longer attest to the validity of the information in the credential or an action on the part of the _<<_credential_holder,credential holder>>_ stating that the public/private key pair associated with the credential is no longer valid.
 
 Adapted from link:++https://trustoverip.github.io/ctwg-main-glossary/#term:revocation++[Trust Over IP’s definition of revocation].
 
 ==== Identity claims aggregator
 
-An _<<_actor,actor>>_ that collects identity claims (attestations) regarding a _<<_named actor,named actor>>_ from various _<<_identity_provider,identity providers>>_ and can replay those identity claims into *<<_identity assertion,identity assertions>>* on behalf of the _<<_named_actor,named actor>>._ This _<<_actor,actor>>_ MAY be the same as the _<<_identity_assertion_generator,identity assertion generator>>._
+An _<<_actor,actor>>_ that collects identity claims (attestations) regarding a _<<_named actor,named actor>>_ from various _<<_identity_provider,identity providers>>_ and can replay those identity claims into *<<_identity assertion,identity assertions>>* on behalf of the _<<_named_actor,named actor>>._
+This _<<_actor,actor>>_ MAY be the same as the _<<_identity_assertion_generator,identity assertion generator>>._
 
 ==== Identity assertion
 
@@ -26,15 +28,18 @@ NOTE: This role can also be thought of as a *relying party* or *verifier* as def
 
 ==== Identity assertion generator
 
-The non-human (hardware or software) _<<_actor,actor>>_ that is responsible for generating the *<<_identity_assertion,identity assertion>>.* This MAY be the same _<<_actor,actor>>_ as the _<<C2PA claim generator>>._
+The non-human (hardware or software) _<<_actor,actor>>_ that is responsible for generating the *<<_identity_assertion,identity assertion>>.*
+This MAY be the same _<<_actor,actor>>_ as the _<<C2PA claim generator>>._
 
 ==== Identity provider
 
-An _<<_actor,actor>>_ that is attesting to an identity of the _<<_named_actor,named actor>>_ as understood in the context of the _identity provider._ This _<<actor,actor>>_ MAY be the _<<identity_assertion_generator,identity assertion generator>>,_ a third party contacted by the _<<identity_assertion_generator,identity assertion generator>>,_ or the issuer of an identity credential that is used by the _<<identity_assertion_generator,identity assertion generator>>._
+An _<<_actor,actor>>_ that is attesting to an identity of the _<<_named_actor,named actor>>_ as understood in the context of the _identity provider._
+This _<<actor,actor>>_ MAY be the _<<identity_assertion_generator,identity assertion generator>>,_ a third party contacted by the _<<identity_assertion_generator,identity assertion generator>>,_ or the issuer of an identity credential that is used by the _<<identity_assertion_generator,identity assertion generator>>._
 
 ==== Named actor
 
-The _<<_actor,actor>>_ whose relationship to a _<<C2PA asset>>_ is documented by an *<<_identity_assertion,identity assertion>>.* This may also be referred to as a _credential subject_ when identified by the *subject* field of a _<<ToIP verifiable identifier>>._
+The _<<_actor,actor>>_ whose relationship to a _<<C2PA asset>>_ is documented by an *<<_identity_assertion,identity assertion>>.*
+This may also be referred to as a _credential subject_ when identified by the *subject* field of a _<<ToIP verifiable identifier>>._
 
 IMPORTANT: A _named actor_ may be any form of _<<_actor,actor>>,_ including an individual human, an organization of humans, or a non-human (software or hardware device).
 
@@ -42,7 +47,8 @@ IMPORTANT: The _named actor_ is not necessarily the same _<<_actor,actor>>_ as t
 
 ==== Natural language string
 
-A sequence of UTF-8 characters that is intended to be displayed to a human user. When contained within a JSON or CBOR data structure, this may be either:
+A sequence of UTF-8 characters that is intended to be displayed to a human user.
+When contained within a JSON or CBOR data structure, this may be either:
 
 * a single string object, in which case this string is to be displayed as-is to users, regardless of their expressed language preference, or
 * a JSON or CBOR map, in which case the contents should be interpreted as described in link:++https://www.w3.org/TR/vc-data-model/#language-and-base-direction++[§10.1, “Language and base direction,”] of the W3C verifiable credential data model specification.
@@ -51,7 +57,8 @@ The string MUST resolve to a non-empty sequence of UTF-8 characters for all supp
 
 ==== Placeholder assertion
 
-A temporary _<<C2PA assertion>>_ that is created during _<<C2PA claim>>_ generation which reserves space for the eventual content of the *<<_identity_assertion,identity assertion>>.* A placeholder assertion MUST be used when the final file layout of the _<<C2PA asset>>_ is required for the _<<_hard_binding,hard binding>>_ assertion, as described in xref:_interaction_with_data_hash_assertion[xrefstyle=full].
+A temporary _<<C2PA assertion>>_ that is created during _<<C2PA claim>>_ generation which reserves space for the eventual content of the *<<_identity_assertion,identity assertion>>.*
+A placeholder assertion MUST be used when the final file layout of the _<<C2PA asset>>_ is required for the _<<_hard_binding,hard binding>>_ assertion, as described in xref:_interaction_with_data_hash_assertion[xrefstyle=full].
 
 ==== Referenced assertions
 
@@ -59,7 +66,8 @@ The set of _<<_c2pa_assertion,C2PA assertions>>_ that are referenced by an *<<_i
 
 ==== ToIP verifiable identifier
 
-Any identifier for which an endpoint system is “able to associate, discover and verify the cryptographic keys associated with a ToIP identifier.” This satisfies the ToIP design principle that “messages and data structures exchanged between parties should be verifiable as authentic using standard cryptographic algorithms and protocols.”
+Any identifier for which an endpoint system is “able to associate, discover and verify the cryptographic keys associated with a ToIP identifier.”
+This satisfies the ToIP design principle that “messages and data structures exchanged between parties should be verifiable as authentic using standard cryptographic algorithms and protocols.”
 
 See link:++https://github.com/trustoverip/TechArch/blob/v1-PR1/spec.md#64-toip-identifiers++[ToIP identifiers] in the ToIP technology architecture specification.
 

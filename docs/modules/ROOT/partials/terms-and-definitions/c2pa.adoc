@@ -1,10 +1,12 @@
 === Concepts adapted from C2PA technical specification
 
-The following definitions are adapted from the link:++https://c2pa.org/specifications/specifications/2.1/specs/C2PA_Specification.html#_glossary++[glossary] provided in the C2PA technical specification. This specification uses the prefix “C2PA” to denote data structures incorporated from that specification.
+The following definitions are adapted from the link:++https://c2pa.org/specifications/specifications/2.1/specs/C2PA_Specification.html#_glossary++[glossary] provided in the C2PA technical specification.
+This specification uses the prefix “C2PA” to denote data structures incorporated from that specification.
 
 ==== Actor
 
-A human or non-human (hardware or software) that is participating in the C2PA ecosystem. For example: a camera (capture device), image editing software, cloud service, or the person using such tools.
+A human or non-human (hardware or software) that is participating in the C2PA ecosystem.
+For example: a camera (capture device), image editing software, cloud service, or the person using such tools.
 
 NOTE: An organization or group of _actors_ may also be considered an _actor_ in the C2PA ecosystem.
 
@@ -14,11 +16,14 @@ A file or stream of data containing _digital content,_ _asset metadata,_ and a <
 
 For the purposes of this definition, we will extend the typical definition of “file” to include cloud-native and dynamically-generated data.
 
-IMPORTANT: The definition of “C2PA asset” in this specification differs from the definition of “asset” given in the C2PA technical specification. A “C2PA asset” as defined in _this_ specification MUST contain a <<C2PA Manifest>>.
+IMPORTANT: The definition of “C2PA asset” in this specification differs from the definition of “asset” given in the C2PA technical specification.
+A “C2PA asset” as defined in _this_ specification MUST contain a <<C2PA Manifest>>.
 
 ==== C2PA claim
 
-A digitally signed and tamper-evident data structure that references a set of _<<_c2pa_assertion,assertions>>_ by one or more _<<_actor,actors>>,_ concerning a _<<C2PA asset>>,_ and the information necessary to represent the _<<_content_binding,content binding>>._ If any _<<_c2pa_assertion,C2PA assertions>>_ were redacted, then a declaration to that effect is included. This data is a part of the _<<C2PA Manifest>>._
+A digitally signed and tamper-evident data structure that references a set of _<<_c2pa_assertion,assertions>>_ by one or more _<<_actor,actors>>,_ concerning a _<<C2PA asset>>,_ and the information necessary to represent the _<<_content_binding,content binding>>._
+If any _<<_c2pa_assertion,C2PA assertions>>_ were redacted, then a declaration to that effect is included.
+This data is a part of the _<<C2PA Manifest>>._
 
 See link:++https://c2pa.org/specifications/specifications/2.1/specs/C2PA_Specification.html#_claims++[Section 10, “Claims,”] of the C2PA technical specification.
 
@@ -28,13 +33,15 @@ The non-human (hardware or software) _<<_actor,actor>>_ that generates the _<<C2
 
 ==== C2PA assertion
 
-A data structure which represents a statement asserted by an _<<_actor,actor>>_ concerning the _<<C2PA asset>>._ This data is a part of the _<<C2PA Manifest>>._
+A data structure which represents a statement asserted by an _<<_actor,actor>>_ concerning the _<<C2PA asset>>._
+This data is a part of the _<<C2PA Manifest>>._
 
 See link:++https://c2pa.org/specifications/specifications/2.1/specs/C2PA_Specification.html#_assertions++[Section 6, “Assertions,”] of the C2PA technical specification.
 
 ==== C2PA Manifest
 
-The set of information about the _provenance_ of a _<<C2PA asset>>_ based on the combination of one or more _<<_c2pa_assertion,C2PA assertions>>_ (including _<<_content_binding,content bindings>>_), a single _<<C2PA claim>>,_ and a _claim signature._ A _C2PA Manifest_ is part of a _C2PA Manifest Store._
+The set of information about the _provenance_ of a _<<C2PA asset>>_ based on the combination of one or more _<<_c2pa_assertion,C2PA assertions>>_ (including _<<_content_binding,content bindings>>_), a single _<<C2PA claim>>,_ and a _claim signature._
+A _C2PA Manifest_ is part of a _C2PA Manifest Store._
 
 NOTE: A _C2PA Manifest_ can reference other _C2PA Manifests._
 

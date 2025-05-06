@@ -18,9 +18,12 @@ The *<<_identity_assertion,identity assertion>>* should be thought of primarily 
 
 *Governance trust* exists if the following requirements are met to the satisfaction of the _<<_identity_assertion_consumer,identity assertion consumer>>:_
 
-* Am I confident in how the credential(s) were issued to a _<<_named_actor,named actor>>?_ Do I understand the level of assurance offered by the credential issuer? Is it sufficient for me to accept the identity of the _<<_named_actor,named actor>>_ as valid and meaningful?
+* Am I confident in how the credential(s) were issued to a _<<_named_actor,named actor>>?_
+Do I understand the level of assurance offered by the credential issuer?
+Is it sufficient for me to accept the identity of the _<<_named_actor,named actor>>_ as valid and meaningful?
 * Am I confident in how the credential(s) were managed and controlled by the _<<_named_actor,named actor>>,_ _<<credential_holder,credential holder>>,_ and issuer, and then used to sign the content I'm consuming?
-* If the issuer is referenced on a _<<_trust_list,trust list>>,_ do I trust the governance of that _<<_trust_list,trust list>>?_ In other words, do I have confidence in the process by which this issuer was added to and has remained on the _<<_trust_list,trust list>>?_
+* If the issuer is referenced on a _<<_trust_list,trust list>>,_ do I trust the governance of that _<<_trust_list,trust list>>?_
+In other words, do I have confidence in the process by which this issuer was added to and has remained on the _<<_trust_list,trust list>>?_
 
 Software tools supporting _<<_identity_assertion_consumer,identity assertion consumers>>_ can assist in establishing _governance trust_ by making well-informed choices about roots of trust.
 
@@ -31,4 +34,5 @@ Software tools supporting _<<_identity_assertion_consumer,identity assertion con
 * Am I confident that the _<<_named_actor,named actor>>_ will produce valuable content in good faith?
 * Does the _<<_named_actor,named actor>>_ have a reputation and legitimacy that I can rely on?
 
-While _reputation trust_ requires _technical trust_ and _governance trust_ to be established in order to evaluate it meaningfully, these criteria are largely subjective and thus outside the scope of this specification. Also, unlike _technical trust,_ the evaluation of _reputation trust_ is likely to evolve over time as the _<<_identity_assertion_consumer,identity assertion consumer>>_ gains experience with and learns more about the _<<_named_actor,named actor>>._
+While _reputation trust_ requires _technical trust_ and _governance trust_ to be established in order to evaluate it meaningfully, these criteria are largely subjective and thus outside the scope of this specification.
+Also, unlike _technical trust,_ the evaluation of _reputation trust_ is likely to evolve over time as the _<<_identity_assertion_consumer,identity assertion consumer>>_ gains experience with and learns more about the _<<_named_actor,named actor>>._

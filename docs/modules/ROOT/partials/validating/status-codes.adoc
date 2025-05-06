@@ -1,16 +1,20 @@
 === Status codes
 
-The set of standard success and failure codes for *<<_identity_assertion,identity assertion>>* validations are defined below. These follow the format defined by the section titled link:++https://c2pa.org/specifications/specifications/2.1/specs/C2PA_Specification.html#_returning_validation_results++[Section 15.2, Returning validation results,”] of the C2PA technical specification.
+The set of standard success and failure codes for *<<_identity_assertion,identity assertion>>* validations are defined below.
+These follow the format defined by the section titled link:++https://c2pa.org/specifications/specifications/2.1/specs/C2PA_Specification.html#_returning_validation_results++[Section 15.2, Returning validation results,”] of the C2PA technical specification.
 
-The `url` field for a status code MUST always be the label of the *<<_identity_assertion,identity assertion>>.* It is omitted from the tables below.
+The `url` field for a status code MUST always be the label of the *<<_identity_assertion,identity assertion>>.*
+It is omitted from the tables below.
 
 ==== Success codes
 
 [width="100%",cols="4,10",options="header"]
 |=======================
 | Value        |   Meaning
-|`cawg.identity.trusted` | The *<<_identity_assertion,identity assertion>>,* including the referenced credentials and signature binding the _<<_credential_holder,credential holder>>_ to the _<<C2PA claim>>_, is validated. The _<<_named_actor,named actor>>_ is considered *trusted* according to the evaluation in xref:_trust_scenarios_in_identity_assertion[xrefstyle=full].
-|`cawg.identity.well-formed` | The *<<_identity_assertion,identity assertion>>,* including the referenced credentials and signature binding the _<<_credential_holder,credential holder>>_ to the _<<C2PA claim>>_, is validated. The evaluation in xref:_trust_scenarios_in_identity_assertion[xrefstyle=full] could not identify any root of trust for the _<<_named_actor,named actor>>._
+|`cawg.identity.trusted` | The *<<_identity_assertion,identity assertion>>,* including the referenced credentials and signature binding the _<<_credential_holder,credential holder>>_ to the _<<C2PA claim>>_, is validated.
+The _<<_named_actor,named actor>>_ is considered *trusted* according to the evaluation in xref:_trust_scenarios_in_identity_assertion[xrefstyle=full].
+|`cawg.identity.well-formed` | The *<<_identity_assertion,identity assertion>>,* including the referenced credentials and signature binding the _<<_credential_holder,credential holder>>_ to the _<<C2PA claim>>_, is validated.
+The evaluation in xref:_trust_scenarios_in_identity_assertion[xrefstyle=full] could not identify any root of trust for the _<<_named_actor,named actor>>._
 |=======================
 
 ==== Failure codes
@@ -26,7 +30,7 @@ The `url` field for a status code MUST always be the label of the *<<_identity_a
 |`cawg.identity.sig_type.unknown` | The `signer_payload.sig_type` of the *<<_identity_assertion,identity assertion>>* is not recognized.
 |`cawg.identity.pad.invalid` | The `pad1` or `pad2` field contains non-zero bytes.
 |`cawg.identity.expected_partial_claim.mismatch` | The `signer_payload.expected_partial_claim` field did not match the _<<C2PA claim>>_ data structure.
-|`cawg.identity.expected_claim_generator.mismatch` | The `signer_payload.expected_claim_generator` field did not match the X.509 certificate used to sign the _<<C2PA claim>>._ 
+|`cawg.identity.expected_claim_generator.mismatch` | The `signer_payload.expected_claim_generator` field did not match the X.509 certificate used to sign the _<<C2PA claim>>._
 |`cawg.identity.unexpected_countersigner` | An *<<_identity_assertion,identity assertion>>* exists in this _<<C2PA Manifest>>_ that was not described in `signer_payload.expected_countersigners`.
 |`cawg.identity.expected_countersigner.mismatch` | An *<<_identity_assertion,identity assertion>>* exists in this _<<C2PA Manifest>>_ that has the expected `signer_payload` but has different signing credentials than were described in `signer_payload.expected_countersigners`.
 |`cawg.identity.expected_countersigner.missing` | The `signer_payload.expected_countersigners` describes an *<<_identity_assertion,identity assertion>>* that does not exist in this _<<C2PA Manifest>>._

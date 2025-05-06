@@ -1,10 +1,14 @@
 ==== Verifiable credential proof mechanism
 
-The `signature` field of an *<<_identity_assertion,identity assertion>>* using the identity claim aggregation mechanism MUST be secured using a COSE signature as described by link:++https://www.w3.org/TR/vc-jose-cose/#securing-vcs-with-cose++[Section 3.3.1, “Securing JSON-LD verifiable credentials with COSE,”] of the W3C standard _Securing verifiable credentials using JOSE and COSE._ The `signature` payload MUST begin with the tagged `COSE_Sign1` structure. As described in that standard, the unsecured verifiable credential is the unencoded `COSE_Sign1` payload.
+The `signature` field of an *<<_identity_assertion,identity assertion>>* using the identity claim aggregation mechanism MUST be secured using a COSE signature as described by link:++https://www.w3.org/TR/vc-jose-cose/#securing-vcs-with-cose++[Section 3.3.1, “Securing JSON-LD verifiable credentials with COSE,”] of the W3C standard _Securing verifiable credentials using JOSE and COSE._
+The `signature` payload MUST begin with the tagged `COSE_Sign1` structure.
+As described in that standard, the unsecured verifiable credential is the unencoded `COSE_Sign1` payload.
 
-The COSE signature MAY use a link:https://datatracker.ietf.org/doc/html/rfc3161[RFC 3161]-compliant time stamp to provide an additional, independent signal as to when the _<<_identity_claims_aggregator,identity claims aggregator>>_ generated the *<<_identity_assertion,identity assertion>>.* If so, this time stamp shall be generated as described by link:++https://c2pa.org/specifications/specifications/2.1/specs/C2PA_Specification.html#_time_stamps++[Section 10.3.2.5, “Time-stamps,”] of the C2PA technical specification.
+The COSE signature MAY use a link:https://datatracker.ietf.org/doc/html/rfc3161[RFC 3161]-compliant time stamp to provide an additional, independent signal as to when the _<<_identity_claims_aggregator,identity claims aggregator>>_ generated the *<<_identity_assertion,identity assertion>>.*
+If so, this time stamp shall be generated as described by link:++https://c2pa.org/specifications/specifications/2.1/specs/C2PA_Specification.html#_time_stamps++[Section 10.3.2.5, “Time-stamps,”] of the C2PA technical specification.
 
-IMPORTANT: If a timestamp is present, it MUST use a version 2 or later time-stamp as defined in link:++https://c2pa.org/specifications/specifications/2.1/specs/C2PA_Specification.html#_choosing_the_payload++[Section 10.3.2.5.2, “Choosing the payload.”] A version 1 time stamp MUST NOT be used.
+IMPORTANT: If a timestamp is present, it MUST use a version 2 or later time-stamp as defined in link:++https://c2pa.org/specifications/specifications/2.1/specs/C2PA_Specification.html#_choosing_the_payload++[Section 10.3.2.5.2, “Choosing the payload.”]
+A version 1 time stamp MUST NOT be used.
 
 If the _<<_identity_claims_aggregator,identity claims aggregator’s>>_ credential supports querying its online credential status, the _<<_identity_claims_aggregator,identity claims aggregator>>_ SHOULD include credential revocation information as described in link:++https://c2pa.org/specifications/specifications/2.1/specs/C2PA_Specification.html#_credential_revocation_information++[Section 10.3.2.6, “Credential revocation information,”] of the C2PA technical specification.
 

@@ -2,7 +2,8 @@
 
 In some use cases, an _<<_actor,actor>>_ in the system MAY wish to provide an _https://tools.ietf.org/html/rfc5280[X.509 certificate]_ to have an organizational or individual identity described by the certificate associated with the list of _<<_referenced_assertions,referenced assertions>>._
 
-The `signer_payload.sig_type` value for such an assertion MUST be `cawg.x509.cose`. The `signature` value MUST be a _https://datatracker.ietf.org/doc/html/rfc8152[COSE signature]_ as described below.
+The `signer_payload.sig_type` value for such an assertion MUST be `cawg.x509.cose`.
+The `signature` value MUST be a _https://datatracker.ietf.org/doc/html/rfc8152[COSE signature]_ as described below.
 
 ==== Generating the COSE signature
 
@@ -18,14 +19,17 @@ IMPORTANT: An *<<_identity_assertion,identity assertion>>* MUST NOT contain a v1
 
 In each of the above sections, the following changes MUST be applied:
 
-* Any reference to the _claim_ MUST be replaced with the CBOR serialization of the `signer_payload` field from the *<<_identity_assertion,identity assertion>>.* The `signer_payload` data structure MUST be serialized as described in link:++https://www.rfc-editor.org/rfc/rfc8949.html#name-core-deterministic-encoding++[Section 4.2.1, “Core Deterministic Encoding,”] of RFC 8949: Concise Binary Object Representation. The resulting byte string is presented to the _<<_credential_holder,credential holder>>_ for signature.
+* Any reference to the _claim_ MUST be replaced with the CBOR serialization of the `signer_payload` field from the *<<_identity_assertion,identity assertion>>.*
+The `signer_payload` data structure MUST be serialized as described in link:++https://www.rfc-editor.org/rfc/rfc8949.html#name-core-deterministic-encoding++[Section 4.2.1, “Core Deterministic Encoding,”] of RFC 8949: Concise Binary Object Representation.
+The resulting byte string is presented to the _<<_credential_holder,credential holder>>_ for signature.
 * Any reference to the _claim generator_ MUST be replaced with the _<<_actor,actor>>_ whose _X.509 certificate_ is being used for this assertion.
 
 ==== Validating the COSE signature
 
 To validate the COSE signature for an *<<_identity_assertion,identity assertion>>,* the steps described in the listed sections of the C2PA technical specification MUST be followed with adaptations as described:
 
-* link:++https://c2pa.org/specifications/specifications/2.1/specs/C2PA_Specification.html#_validate_the_signature++[Section 15.5, “Validate the signature.”] Disregard the paragraph that starts with “Retrieve the URI reference.” Instead retrieve the COSE signature from the `signature` field of the *<<_identity_assertion,identity assertion>>.*
+* link:++https://c2pa.org/specifications/specifications/2.1/specs/C2PA_Specification.html#_validate_the_signature++[Section 15.5, “Validate the signature.”] Disregard the paragraph that starts with “Retrieve the URI reference.”
+Instead retrieve the COSE signature from the `signature` field of the *<<_identity_assertion,identity assertion>>.*
 * link:++https://c2pa.org/specifications/specifications/2.1/specs/C2PA_Specification.html#_validate_the_time_stamp++[Section 15.6, “Validate the time-stamp”]
 * link:++https://c2pa.org/specifications/specifications/2.1/specs/C2PA_Specification.html#_validate_the_credential_revocation_information++[Section 15.7, “Validate the credential revocation information”]
 

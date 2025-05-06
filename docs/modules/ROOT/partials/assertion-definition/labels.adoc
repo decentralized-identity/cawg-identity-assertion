@@ -2,11 +2,15 @@
 
 Several data types in this specification have labels that can be defined either in this specification or by an external entity.
 
-Labels are non-empty string values organized into namespaces using a period (`.`) as a separator. The namespace component of the label can be an entity or a reference to a well-established standard. (See ABNF below.)
+Labels are non-empty string values organized into namespaces using a period (`.`) as a separator.
+The namespace component of the label can be an entity or a reference to a well-established standard.
+(See ABNF below.)
 
-Labels defined by the CAWG will begin with `cawg.`. All labels beginning with `cawg.` that are not defined in the current version of the specification are reserved for the future use of the CAWG and MUST NOT be assigned by any other entity. Future minor version updates (1.2, 1.3, etc.) to this specification MAY define new values for any label using the `cawg.` prefix.
+Labels defined by the CAWG will begin with `cawg.`.
+All labels beginning with `cawg.` that are not defined in the current version of the specification are reserved for the future use of the CAWG and MUST NOT be assigned by any other entity.
+Future minor version updates (1.2, 1.3, etc.) to this specification MAY define new values for any label using the `cawg.` prefix.
 
-Entity-specific labels (i.e. those not defined by CAWG) SHALL begin with the Internet domain name for the entity similar to how Java packages are defined (e.g., `com.litware`, `net.fineartschool`). 
+Entity-specific labels (i.e. those not defined by CAWG) SHALL begin with the Internet domain name for the entity similar to how Java packages are defined (e.g., `com.litware`, `net.fineartschool`).
 
 [[abnf_for_labels]]
 [source,abnf]

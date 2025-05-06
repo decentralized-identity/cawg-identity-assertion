@@ -2,7 +2,8 @@
 
 _This section is non-normative._
 
-Content creators (_<<_named_actor,named actors>>_) may wish to document their role in creating a _<<C2PA asset>>_ using identity signals that are commonly understood in the mass market. Examples of such signals include:
+Content creators (_<<_named_actor,named actors>>_) may wish to document their role in creating a _<<C2PA asset>>_ using identity signals that are commonly understood in the mass market.
+Examples of such signals include:
 
 * verified web sites
 * social media accounts
@@ -10,7 +11,8 @@ Content creators (_<<_named_actor,named actors>>_) may wish to document their ro
 * professional accreditations
 * organizational affiliations
 
-These common identity signals, though popular, are not well-designed for use as lasting identifiers. Some of the challenges associated with these identity signals include:
+These common identity signals, though popular, are not well-designed for use as lasting identifiers.
+Some of the challenges associated with these identity signals include:
 
 * The methods for accessing, describing, and presenting these signals are widely disparate.
 * These signals typically do not provide the ability to issue signatures on the _<<_named_actor,named actor’s>>_ behalf.
@@ -18,18 +20,22 @@ These common identity signals, though popular, are not well-designed for use as 
 
 To facilitate the use of such identity signals, the _<<_named_actor,named actor>>_ may use the services of a third-party intermediary that they trust to gather these signals and to restate them on their behalf.
 
-We call this intermediary an *<<_identity_claims_aggregator,identity claims aggregator>>.* It performs two important roles:
+We call this intermediary an *<<_identity_claims_aggregator,identity claims aggregator>>.*
+It performs two important roles:
 
 1. It collects and verifies identity attestation claims from various _<<_identity_provider,identity providers>>_ such as social media sites and ID verification vendors.
 2. When the _<<_named_actor,named actor>>_ creates content, it creates a unique asset-specific credential binding the identity attestation claims collected earlier to the specific _<<C2PA asset>>_ being described.
 
-IMPORTANT: An *identity claims aggregation* claim does not support a _<<_named_actor,named actor>>_ using their own credential to directly issue their own signature for an *<<_identity assertion,identity assertion>>.* This may be added in a future version of this specification.
+IMPORTANT: An *identity claims aggregation* claim does not support a _<<_named_actor,named actor>>_ using their own credential to directly issue their own signature for an *<<_identity assertion,identity assertion>>.*
+This may be added in a future version of this specification.
 
 The two workflows performed by the _<<_identity_claims_aggregator,identity claims aggregator>>_ are described in the sections below:
 
 ===== Providing identity claims to identity claims aggregator
 
-In the first workflow, the _<<_named_actor,named actor>>_ asks the _<<_identity_claims_aggregator,identity claims aggregator>>_ to verify an identity claim. The _<<_identity_claims_aggregator,identity claims aggregator>>_ contacts the _<<_identity_provider,identity provider>>_ to verify the identity claim. If that verification is successful, the _<<_identity_claims_aggregator,identity claims aggregator>>_ remembers the provided information for later use on the _<<_named_actor,named actor’s>>_ behalf.
+In the first workflow, the _<<_named_actor,named actor>>_ asks the _<<_identity_claims_aggregator,identity claims aggregator>>_ to verify an identity claim.
+The _<<_identity_claims_aggregator,identity claims aggregator>>_ contacts the _<<_identity_provider,identity provider>>_ to verify the identity claim.
+If that verification is successful, the _<<_identity_claims_aggregator,identity claims aggregator>>_ remembers the provided information for later use on the _<<_named_actor,named actor’s>>_ behalf.
 
 [#ica-workflow-gathering-claims]
 ****
@@ -41,7 +47,8 @@ This workflow can be repeated any number of times to provide additional identity
 
 ===== Creating content using the aggregated identity claims
 
-Once the _<<_identity_claims_aggregator,identity claims aggregator>>_ has verified one or more identity signals, the _<<_named_actor,named actor>>_ can then use an authoring tool to create content. This authoring tool collaborates with the _<<_identity_claims_aggregator,identity claims aggregator>>_ to attach the identity claims which have been aggregated to date to the _<<C2PA asset>>_ being created.
+Once the _<<_identity_claims_aggregator,identity claims aggregator>>_ has verified one or more identity signals, the _<<_named_actor,named actor>>_ can then use an authoring tool to create content.
+This authoring tool collaborates with the _<<_identity_claims_aggregator,identity claims aggregator>>_ to attach the identity claims which have been aggregated to date to the _<<C2PA asset>>_ being created.
 
 [#ica-workflow-creating content]
 ****
@@ -54,11 +61,13 @@ This workflow can be repeated any number of times to create new content on behal
 
 ===== Interpreting an identity assertion using identity claims aggregation
 
-At some later time, an _<<_identity_assertion_consumer,identity assertion consumer>>_ will interpret this *<<_identity assertion,identity assertion>>.* Assuming that the _<<_identity_assertion,identity assertion>>_ is deemed valid and from a trustworthy source, the content of the assertion should be interpreted as follows:
+At some later time, an _<<_identity_assertion_consumer,identity assertion consumer>>_ will interpret this *<<_identity assertion,identity assertion>>.*
+Assuming that the _<<_identity_assertion,identity assertion>>_ is deemed valid and from a trustworthy source, the content of the assertion should be interpreted as follows:
 
 [quote,Signed by identity claims aggregator]
 ____
-The _<<_named_actor,named actor>>_ described by this credential has presented one or more identity signals to this _<<_identity_claims_aggregation,identity claims aggregation>>_ service. Those claims were verified and deemed valid by this service as of the times indicated in the credential.
+The _<<_named_actor,named actor>>_ described by this credential has presented one or more identity signals to this _<<_identity_claims_aggregation,identity claims aggregation>>_ service.
+Those claims were verified and deemed valid by this service as of the times indicated in the credential.
 
 The signature on the credential indicates that the _<<_identity_claims_aggregator,identity claims aggregator>>_ attests that this same _<<_named_actor,named actor>>_ has presented the _<<C2PA asset>>_ described by this _<<C2PA Manifest>>_ to this service and has claimed a role in the production of said asset.
 ____

@@ -7,15 +7,27 @@ The relationships required to establish technical trust are typically described 
 .Basic trust diamond
 image::trust-model/basic-trust-diamond.drawio.svg[Basic trust triangle,width=430,height=250,align="center"]
 
-The four roles depicted can each be performed by a human, organization, machine, or some combination thereof. A _governing authority_ sets the rules over the issuance of conformant identities from _credential issuers_ to _<<_credential_holder,credential holders>>_ and allows _credential issuers_ to appear on a _<<_trust_list,trust list>>_ after it satisfies the conformance of its rules within its governance framework. A _<<_credential_holder,credential holder>>_ establishes a relationship with a _credential issuer._ If the _issuer_ trusts the _<<_credential_holder,credential holder>>,_ it will then issue a digital credential which makes statements about the _<<_named_actor,named actor>>_ (which may or may not be the same _<<_actor,actor>>_ as the _<<_credential_holder,credential holder>>_) and is signed by the _issuer._
+The four roles depicted can each be performed by a human, organization, machine, or some combination thereof.
+A _governing authority_ sets the rules over the issuance of conformant identities from _credential issuers_ to _<<_credential_holder,credential holders>>_ and allows _credential issuers_ to appear on a _<<_trust_list,trust list>>_ after it satisfies the conformance of its rules within its governance framework.
+A _<<_credential_holder,credential holder>>_ establishes a relationship with a _credential issuer._
+If the _issuer_ trusts the _<<_credential_holder,credential holder>>,_ it will then issue a digital credential which makes statements about the _<<_named_actor,named actor>>_ (which may or may not be the same _<<_actor,actor>>_ as the _<<_credential_holder,credential holder>>_) and is signed by the _issuer._
 
-Later, the _<<_credential_holder,credential holder>>_ can then present this credential to a _verifier_ (also often known as a “relying party”). If the _verifier_ has an existing trust relationship with the _credential issuer,_ then the _verifier_ can choose to trust the credential, after checking that credential was issued by an _issuer_ appearing on the _<<_trust_list,trust list>>,_ and the statements made within it.
+Later, the _<<_credential_holder,credential holder>>_ can then present this credential to a _verifier_ (also often known as a “relying party”).
+If the _verifier_ has an existing trust relationship with the _credential issuer,_ then the _verifier_ can choose to trust the credential, after checking that credential was issued by an _issuer_ appearing on the _<<_trust_list,trust list>>,_ and the statements made within it.
 
-This pattern can be repeated if there is not a direct trust relationship between the _verifier_ and _issuer._ The _issuer_ itself might have a credential that is issued by another _issuer_ that is known to the _verifier_ as shown in the following diagram:
+This pattern can be repeated if there is not a direct trust relationship between the _verifier_ and _issuer._
+The _issuer_ itself might have a credential that is issued by another _issuer_ that is known to the _verifier_ as shown in the following diagram:
 
 .Transitive trust triangle
 image::trust-model/transitive-trust-triangle.drawio.svg[Transitive trust triangle,width=570,height=220,align="center"]
 
-In this scenario, _issuer 2_ is playing a dual role as _<<_credential_holder,credential holder>>_ and _credential issuer._ The _verifier_ does not have a direct relationship with the issuer of the credentials that were presented (_issuer 2_). However, it can inspect _issuer 2’s_ credentials and find that they were issued by _issuer 1,_ with whom it does have a direct relationship. Based on the nature of that relationship, it may choose to extend *transitive trust* to _issuer 2_ and thus to the credential that _issuer 2_ issued.
+In this scenario, _issuer 2_ is playing a dual role as _<<_credential_holder,credential holder>>_ and _credential issuer._
+The _verifier_ does not have a direct relationship with the issuer of the credentials that were presented (_issuer 2_).
+However, it can inspect _issuer 2’s_ credentials and find that they were issued by _issuer 1,_ with whom it does have a direct relationship.
+Based on the nature of that relationship, it may choose to extend *transitive trust* to _issuer 2_ and thus to the credential that _issuer 2_ issued.
 
-Web browsers provide a well-known example of transitive trust. Browsers have direct relationships with relatively few root trust anchors. Those anchors, known as _root certificate authorities,_ in turn issue credentials to _certificate authorities_ who then issue credentials to individual web site operators who then sign the content presented to a browser. This pattern may be repeated with multiple layers of intermediate certificate authorities. The web browser evaluates this entire chain of credentials when deciding whether to present a web site as trusted or not.
+Web browsers provide a well-known example of transitive trust.
+Browsers have direct relationships with relatively few root trust anchors.
+Those anchors, known as _root certificate authorities,_ in turn issue credentials to _certificate authorities_ who then issue credentials to individual web site operators who then sign the content presented to a browser.
+This pattern may be repeated with multiple layers of intermediate certificate authorities.
+The web browser evaluates this entire chain of credentials when deciding whether to present a web site as trusted or not.

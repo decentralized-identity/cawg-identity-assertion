@@ -1,6 +1,7 @@
 === Concepts adapted from W3C verifiable credentials specification
 
-The following definitions are adapted from the link:++https://www.w3.org/TR/vc-data-model/#terminology++[W3C verifiable credentials data model] specification, version 1.1. This specification uses the prefix “W3C” to denote concepts incorporated from that specification.
+The following definitions are adapted from the link:++https://www.w3.org/TR/vc-data-model/#terminology++[W3C verifiable credentials data model] specification, version 1.1.
+This specification uses the prefix “W3C” to denote concepts incorporated from that specification.
 
 ==== W3C verifiable credential
 
@@ -8,7 +9,9 @@ A tamper-evident credential that has authorship that can be cryptographically ve
 
 ==== W3C decentralized identifier
 
-A portable URL-based identifier, also known as a *DID,* associated with an entity. These identifiers are most often used in a _<<W3C verifiable credential>>_ and are associated with _<<_credential_subject,credential subjects>>_ such that a _<<W3C verifiable credential>>_ itself can be easily ported from one repository to another without the need to reissue the _<<W3C verifiable credential>>_. An example of a DID is `did:example:123456abcdef`.
+A portable URL-based identifier, also known as a *DID,* associated with an entity.
+These identifiers are most often used in a _<<W3C verifiable credential>>_ and are associated with _<<_credential_subject,credential subjects>>_ such that a _<<W3C verifiable credential>>_ itself can be easily ported from one repository to another without the need to reissue the _<<W3C verifiable credential>>_.
+An example of a DID is `did:example:123456abcdef`.
 
 ==== W3C decentralized identifier document
 

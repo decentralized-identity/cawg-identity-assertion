@@ -2,7 +2,9 @@
 
 The *<<_identity_assertion,identity assertion>>* allows multiple signature types to be represented, although only one _<<ToIP verifiable identifier>>_ and corresponding signature can be used in any single assertion.
 
-The signature type is represented by the `signer_payload.sig_type` field. Some credential types are described in this specification. It is strongly recommended that *<<_identity_assertion,identity assertion>>* validators be prepared to read all of the signature types described in this specification.
+The signature type is represented by the `signer_payload.sig_type` field.
+Some credential types are described in this specification.
+It is strongly recommended that *<<_identity_assertion,identity assertion>>* validators be prepared to read all of the signature types described in this specification.
 
 Other specifications MAY define additional `signer_payload.sig_type` values and the corresponding definition of `signature`, subject to restrictions described in xref:_labels[xrefstyle=full].
 

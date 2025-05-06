@@ -19,7 +19,11 @@ The diagram that follows, with one _<<C2PA Manifest>>_ containing one *<<_identi
 .Overview of identity assertion
 image::overview/single-ia-trust-bubbles.drawio.svg[Single identity assertion trust example,width=240,height=400,align="center"]
 
-In this notation, the small blue circles (A1, A2, etc.) are intended to represent any assertion other than an *<<_identity_assertion,identity assertion>>* or _<<_hard_binding,hard binding>>_ assertion. (As examples, any of these could represent an actions assertion, a metadata assertion, or a thumbnail assertion.) The black circle (HB) is used to represent the _<<_hard_binding,hard binding>>_ assertion, which is a required part of a valid _<<C2PA Manifest>>._ The yellow circle demonstrates the limit of *<<_identity_assertion,identity assertion 1’s>>* trust signal. The teal circle demonstrates the limit of the _<<_c2pa_manifest,C2PA Manifest’s>>_ trust signal.
+In this notation, the small blue circles (A1, A2, etc.) are intended to represent any assertion other than an *<<_identity_assertion,identity assertion>>* or _<<_hard_binding,hard binding>>_ assertion.
+(As examples, any of these could represent an actions assertion, a metadata assertion, or a thumbnail assertion.)
+The black circle (HB) is used to represent the _<<_hard_binding,hard binding>>_ assertion, which is a required part of a valid _<<C2PA Manifest>>._
+The yellow circle demonstrates the limit of *<<_identity_assertion,identity assertion 1’s>>* trust signal.
+The teal circle demonstrates the limit of the _<<_c2pa_manifest,C2PA Manifest’s>>_ trust signal.
 
 The following diagram shows *<<_identity_assertion,identity assertion 1>>* using the _<<_credential_holder,credential holder’s>>_ signature to seal:
 
@@ -79,7 +83,8 @@ Separately, the _<<C2PA Manifest>>_ uses the _<<_claim_generator,claim generator
 The teal circle demonstrates the limit of the _<<_c2pa_manifest,C2PA Manifest’s>>_ trust signal.
 ====
 
-An *<<_identity_assertion,identity assertion>>* may reference one or more other *<<_identity_assertion,identity assertions>>.* As an example, this might be used to convey an organizational endorsement of an individual creator’s credential.
+An *<<_identity_assertion,identity assertion>>* may reference one or more other *<<_identity_assertion,identity assertions>>.*
+As an example, this might be used to convey an organizational endorsement of an individual creator’s credential.
 
 [#trust-signal-scope-nested-ias]
 .Trust signal scope with nested identity assertions

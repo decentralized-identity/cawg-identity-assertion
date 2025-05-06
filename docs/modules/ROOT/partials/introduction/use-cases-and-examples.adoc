@@ -1,31 +1,64 @@
 === Use cases and examples
 
-The following is a non-exhaustive list of potential and general use cases for the *<<_identity_assertion,identity assertion>>.* Some of these are taken from, or built upon, the use cases developed within the link:https://www.originproject.info/[Project Origin Alliance], the link:https://contentauthenticity.org/[Content Authenticity Initiative (CAI)], and the link:https://jpeg.org/jpegtrust/[JPEG Trust] frameworks. Each use case will be described using some generic personas to help make the flow clear.
+The following is a non-exhaustive list of potential and general use cases for the *<<_identity_assertion,identity assertion>>.*
+Some of these are taken from, or built upon, the use cases developed within the link:https://www.originproject.info/[Project Origin Alliance], the link:https://contentauthenticity.org/[Content Authenticity Initiative (CAI)], and the link:https://jpeg.org/jpegtrust/[JPEG Trust] frameworks.
+Each use case will be described using some generic personas to help make the flow clear.
 
-IMPORTANT: The identity assertion SHOULD NOT be construed to convey either _attribution_ or _ownership_ of a _<<C2PA asset>>._ Attribution, ownership, and rights transfers often take place outside of the digital realm. It is outside the scope of this specification to describe such transfers. It is possible that some other assertion could convey such information; such an assertion could be included in the set of _<<_referenced_assertions,referenced assertions.>>_
+IMPORTANT: The identity assertion SHOULD NOT be construed to convey either _attribution_ or _ownership_ of a _<<C2PA asset>>._
+Attribution, ownership, and rights transfers often take place outside of the digital realm.
+It is outside the scope of this specification to describe such transfers.
+It is possible that some other assertion could convey such information; such an assertion could be included in the set of _<<_referenced_assertions,referenced assertions.>>_
 
 ==== Enhancing clarity around provenance and edits for journalistic work
 
-A photojournalist Alice uses a Content Credentials-enabled capture device during a newsworthy event she is covering. Her capture device is linked to a digital wallet containing her professional credentials and records her identity in each captured asset. She then imports these assets into a Content Credentials-enabled editing application. Her identity is again associated with the edits that she has made. After editing, she sends her assets to her photo editor, Bob. Bob makes additional edits also using a Content Credentials-enabled application. A new identity assertion is recorded for these edits identifying Bob as the person responsible for those edits. The finalized asset is moved into the content management system of a news organization, which is also Content Credentials-enabled, before posting the asset to social media. Anyone viewing these assets can see the identity of Alice, Bob, and the news organization in a Content Credentials-enabled viewer.
+A photojournalist Alice uses a Content Credentials-enabled capture device during a newsworthy event she is covering.
+Her capture device is linked to a digital wallet containing her professional credentials and records her identity in each captured asset.
+She then imports these assets into a Content Credentials-enabled editing application.
+Her identity is again associated with the edits that she has made.
+After editing, she sends her assets to her photo editor, Bob.
+Bob makes additional edits also using a Content Credentials-enabled application.
+A new identity assertion is recorded for these edits identifying Bob as the person responsible for those edits.
+The finalized asset is moved into the content management system of a news organization, which is also Content Credentials-enabled, before posting the asset to social media.
+Anyone viewing these assets can see the identity of Alice, Bob, and the news organization in a Content Credentials-enabled viewer.
 
 ==== Enhance the evidentiary value of critical footage
 
-A human rights defender Jane manages to capture footage containing Content Credentials-enabled provenance of violence during a protest. Jane’s capture device is linked to a digital wallet containing her professional credentials and records her identity in each captured asset. Jane sends the footage to a human rights organization that verifies that the asset meets video-as-evidence criteria. The human rights organization determines that releasing Jane’s identity to the public could pose a safety or privacy risk, so they redact the identity assertion using a Content Credentials-enabled editing application before publishing the footage.
+A human rights defender Jane manages to capture footage containing Content Credentials-enabled provenance of violence during a protest.
+Jane’s capture device is linked to a digital wallet containing her professional credentials and records her identity in each captured asset.
+Jane sends the footage to a human rights organization that verifies that the asset meets video-as-evidence criteria.
+The human rights organization determines that releasing Jane’s identity to the public could pose a safety or privacy risk, so they redact the identity assertion using a Content Credentials-enabled editing application before publishing the footage.
 
 ==== Election integrity and protecting political campaigns from deepfakes
 
-Aarav is the director of social communications for a political candidate in an upcoming election. He feels concerned that in efforts to manipulate voters, bad actors will create deepfake videos to misrepresent the candidate. To protect the campaign, Aarav decides that all official communications will be created, produced, and published with Content Credentials-enabled tools. The identity assertion equips Aarav and his team with the ability to represent the campaign as the organizational author of the content that they publish. Aarav encourages voters to verify any digital campaign content to ensure that the material has Content Credentials that link the assets to the campaign.
+Aarav is the director of social communications for a political candidate in an upcoming election.
+He feels concerned that in efforts to manipulate voters, bad actors will create deepfake videos to misrepresent the candidate.
+To protect the campaign, Aarav decides that all official communications will be created, produced, and published with Content Credentials-enabled tools.
+The identity assertion equips Aarav and his team with the ability to represent the campaign as the organizational author of the content that they publish.
+Aarav encourages voters to verify any digital campaign content to ensure that the material has Content Credentials that link the assets to the campaign.
 
 ==== Brand protection in digital marketing
 
-An advertising agency representing a popular sneaker brand wants to ensure that consumers are only purchasing the shoes through official channels. They have found several fraudulent campaigns online claiming to offer the shoes at a discount. To address these scams, the agency decides to incorporate Content Credentials into their creative process, using the identity assertion to represent the designer responsible for the campaign. Before the campaign goes live, the agency redacts the designer’s name and publishes the assets with Content Credentials using the identity assertion to represent the sneaker brand. Now consumers can refer to Content Credentials to identify legitimate promotional campaigns from the sneaker brand.
+An advertising agency representing a popular sneaker brand wants to ensure that consumers are only purchasing the shoes through official channels.
+They have found several fraudulent campaigns online claiming to offer the shoes at a discount.
+To address these scams, the agency decides to incorporate Content Credentials into their creative process, using the identity assertion to represent the designer responsible for the campaign.
+Before the campaign goes live, the agency redacts the designer’s name and publishes the assets with Content Credentials using the identity assertion to represent the sneaker brand.
+Now consumers can refer to Content Credentials to identify legitimate promotional campaigns from the sneaker brand.
 
 ==== Attribution for digital creators
 
-One morning, Charlie, an up-and-coming digital artist, woke up to find that one of their designs went viral on social media. Charlie felt upset to see their art detached from their name. Charlie had spent months working on their artwork and was disappointed not to receive credit or compensation for their work. Moving forward, Charlie decides to use the identity assertion to link their name, social media, and copyright information to the art they create. Now, when Charlie posts their content to social media platforms that display Content Credentials, viewers can easily link the artwork back to Charlie.
+One morning, Charlie, an up-and-coming digital artist, woke up to find that one of their designs went viral on social media.
+Charlie felt upset to see their art detached from their name.
+Charlie had spent months working on their artwork and was disappointed not to receive credit or compensation for their work.
+Moving forward, Charlie decides to use the identity assertion to link their name, social media, and copyright information to the art they create.
+Now, when Charlie posts their content to social media platforms that display Content Credentials, viewers can easily link the artwork back to Charlie.
 
 IMPORTANT: Copyright is not directly described by the *<<_identity_assertion,identity assertion>>* but an *<<_identity_assertion,identity assertion>>* can reference other assertions, such as the link:https://cawg.io/metadata/[CAWG metadata assertion], which can contain such information using common vocabularies such as the link:https://www.dublincore.org/resources/glossary/dublin_core/[Dublin Core metadata] vocabulary.
 
 ==== Audio sampling and artistic collaboration
 
-Eve is a musician with a talent for releasing songs featuring clever lyrics and catchy beats. Ever since Eve’s music gained traction on audio streaming apps, artists have reached out asking permission to sample her beats. Eve views these collaborations as an opportunity to help new listeners discover her music, so it is important to her that the samples are traceable back to her. She decides to begin recording her songs using a Content Credentials-enabled device linked to a digital wallet containing her identity credentials and her profile on music streaming applications. Eve also asserts her standard terms and conditions to facilitate the permission process using (forthcoming) link:https://jpeg.org/jpegtrust/[JPEG Trust] assertions. Now, when other artists release songs that sample Eve’s tunes, she can demonstrate her contribution to the final work.
+Eve is a musician with a talent for releasing songs featuring clever lyrics and catchy beats.
+Ever since Eve’s music gained traction on audio streaming apps, artists have reached out asking permission to sample her beats.
+Eve views these collaborations as an opportunity to help new listeners discover her music, so it is important to her that the samples are traceable back to her.
+She decides to begin recording her songs using a Content Credentials-enabled device linked to a digital wallet containing her identity credentials and her profile on music streaming applications.
+Eve also asserts her standard terms and conditions to facilitate the permission process using (forthcoming) link:https://jpeg.org/jpegtrust/[JPEG Trust] assertions.
+Now, when other artists release songs that sample Eve’s tunes, she can demonstrate her contribution to the final work.

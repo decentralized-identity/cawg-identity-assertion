@@ -6,10 +6,14 @@ NOTE: This specification refers to a “public review draft” of the ToIP techn
 
 The ToIP architecture specification introduces the concept of _<<_toip_verifiable_identifier,verifiable identifier>>_ as follows:
 
-> Design Principle #5 (https://trustoverip.org/permalink/Design-Principles-for-the-ToIP-Stack-V1.0-2022-11-17.pdf[Cryptographic Verifiability]) states that “messages and data structures exchanged between parties should be verifiable as authentic using standard cryptographic algorithms and protocols”. This requires that Endpoint Systems be able to associate, discover and verify the cryptographic keys associated with a ToIP identifier. This specification will refer to identifiers that meet this basic requirement of cryptographic verifiability as verifiable identifiers (VIDs).
--- https://github.com/trustoverip/TechArch/blob/main/spec.md#64-toip-identifiers[Section 6.4: ToIP identifiers]
+> Design Principle #5 (https://trustoverip.org/permalink/Design-Principles-for-the-ToIP-Stack-V1.0-2022-11-17.pdf[Cryptographic Verifiability]) states that “messages and data structures exchanged between parties should be verifiable as authentic using standard cryptographic algorithms and protocols”.
+This requires that Endpoint Systems be able to associate, discover and verify the cryptographic keys associated with a ToIP identifier.
+This specification will refer to identifiers that meet this basic requirement of cryptographic verifiability as verifiable identifiers (VIDs).
+-- Section 6.4: ToIP identifiers
 
-NOTE: The ToIP definition of the term “verifiable identifier” is well-aligned with the design goals of this specification. As of this writing, ToIP has just begun the process of producing a technical standard that describes how to _implement_ verifiable identifiers. This specification will incorporate relevant technical standards for verifiable identifiers as they become available.
+NOTE: The ToIP definition of the term “verifiable identifier” is well-aligned with the design goals of this specification.
+As of this writing, ToIP has just begun the process of producing a technical standard that describes how to _implement_ verifiable identifiers.
+This specification will incorporate relevant technical standards for verifiable identifiers as they become available.
 
 This specification describes mechanisms to support two common individual and organizational identity mechanisms that fit the conceptual description of _<<ToIP verifiable identifier>>:_
 
