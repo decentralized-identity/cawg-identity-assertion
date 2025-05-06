@@ -1,4 +1,3 @@
 == Standard terms
 
 The key words “MUST,” “MUST NOT,” “REQUIRED,” “SHALL,” “SHALL NOT,” “SHOULD,” “SHOULD NOT,” “RECOMMENDED,” “NOT RECOMMENDED,” “MAY,” and “OPTIONAL” in this document are to be interpreted as described in https://tools.ietf.org/html/bcp14[BCP 14], https://tools.ietf.org/html/rfc2119[RFC 2119], and https://tools.ietf.org/html/rfc8174[RFC 8174] when they appear in any casing (upper, lower, or mixed).
-

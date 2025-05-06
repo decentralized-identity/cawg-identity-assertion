@@ -1,0 +1,71 @@
+=== CBOR schema
+
+The schema for this type is defined by the `identity` rule in the following https://datatracker.ietf.org/doc/html/rfc8610[CDDL definition]:
+
+[source,cddl]
+----
+identity = {
+  "signer_payload": $signer-payload-map, ; content to be signed by credential holder
+  "signature": bstr, ; byte string of the signature
+  "pad1": bstr, ; byte string filled with binary `0x00` values used for filling up space
+  ? "pad2": bstr, ; optional byte string filled with binary `0x00` values used for filling up space
+}
+
+signer-payload-map = {
+  "referenced_assertions": [1* $hashed-uri-map],
+  "sig_type": tstr .size (1..max-tstr-length), ; a string identifying the data type of the signature field
+  ? "role": [1* tstr .size (1..max-tstr-length)], ; one or more strings defining the named actor’s relationship(s) to this C2PA asset
+  ? "expected_partial_claim": $hash-map, ; hash of expected partial claim
+  ? "expected_claim_generator": $hash-map, ; hash of expected claim signer credential
+  ? "expected_countersigners": [1* $expected-countersigner-map], ; array of expected other identity assertion descriptions
+}
+
+hash-map = {
+  "alg": tstr .size (1..max-tstr-length), ; a string identifying the cryptographic hash algorithm used to compute this hash, taken from the C2PA hash algorithm identifier list
+  "hash": bstr, ;  byte string containing the hash value
+}
+
+expected-countersigner-map = {
+  "partial_signer_payload": $signer-payload-map ; signer_payload map from other identity assertion minus any `expected_countersigner` field
+  ? "expected_credentials": $hash-map ; expected identity assertion credentials
+}
+----
+
+IMPORTANT: Future minor version updates (1.1, 1.2, etc.) to this specification MAY add new fields to the `signer-payload-map` description, provided that such new data members are optional and there is a well-specified default meaning that is compatible with the 1.0 version of this specification. Such updates to the specification SHOULD continue to use the `cawg.identity` assertion label.
+
+Possible values for the `signer_payload.sig_type` field and the corresponding interpretations of the `signature` field are described in xref:_credentials_signatures_and_validation_methods[xrefstyle=full].
+
+The `hashed-uri-map` rule is defined in link:++https://c2pa.org/specifications/specifications/1.3/specs/C2PA_Specification.html#_hashed_uris++[Section 8.3.1, “Hashed URIs,”] of the C2PA technical specification.
+
+Possible values for the text string entries in the `signer_payload.role` field are provided in xref:_named_actor_roles[xrefstyle=full].
+
+==== Example
+
+An example in https://www.rfc-editor.org/rfc/rfc8949.html#name-diagnostic-notation[CBOR-Diag] is shown below, which is non-normative:
+
+[source,json]
+----
+{
+  "signer_payload": {
+    "sig_type": "cawg.x509.cose",
+    "referenced_assertions": [
+      {
+        "url": "self#jumbf=c2pa/urn:uuid:F9168C5E-CEB2-4faa-B6BF-329BF39FA1E4/c2pa.assertions/c2pa.hash.data",
+        "hash": b64'U9Gyz05tmpftkoEYP6XYNsMnUbnS/KcktAg2vv7n1n8='
+      },
+      {
+        "url": "self#jumbf=c2pa/urn:uuid:F9168C5E-CEB2-4faa-B6BF-329BF39FA1E4/c2pa.assertions/c2pa.thumbnail.claim.jpeg",
+        "hash": b64'G5hfJwYeWTlflxOhmfCO9xDAK52aKQ+YbKNhRZeq92c='
+      },
+      {
+        "url": "self#jumbf=c2pa/urn:uuid:F9168C5E-CEB2-4faa-B6BF-329BF39FA1E4/c2pa.assertions/c2pa.ingredient.v2",
+        "hash": b64'Yzag4o5jO4xPyfANVtw7ETlbFSWZNfeM78qbSi8Abkk='
+      }
+    ],
+    "role": ["cawg.creator"],
+  },
+  "signature": b64'....', // COSE signature
+  "pad1": b64'....', // zero-filled pad buffer
+  "pad2": b64'....'  // zero-filled pad buffer
+}
+----

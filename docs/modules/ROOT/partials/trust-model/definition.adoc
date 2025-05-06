@@ -1,0 +1,34 @@
+=== What does trust mean?
+
+_This section is non-normative._
+
+This specification defines three distinct kinds of trust:
+
+==== Technical trust
+
+*Technical trust* exists if the following requirements are met to the satisfaction of the _<<_identity_assertion_consumer,identity assertion consumer>>:_
+
+* Can I prove that the content I’m consuming was signed by a credential associated with a _<<_named_actor,named actor>>_ and that the content is unmodified from what the _<<_named_actor,named actor>>_ produced at the time it was signed?
+* Can I trust that the identity signals in the credential point to a _<<_named_actor,named actor>>?_
+* Do I trust that the identifier for the credential *issuer* is unique?
+
+The *<<_identity_assertion,identity assertion>>* should be thought of primarily as providing a framework for establishing _technical trust_ between a _<<_named_actor,named actor>>_ and an _<<_identity_assertion_consumer,identity assertion consumer>>._
+
+==== Governance trust
+
+*Governance trust* exists if the following requirements are met to the satisfaction of the _<<_identity_assertion_consumer,identity assertion consumer>>:_
+
+* Am I confident in how the credential(s) were issued to a _<<_named_actor,named actor>>?_ Do I understand the level of assurance offered by the credential issuer? Is it sufficient for me to accept the identity of the _<<_named_actor,named actor>>_ as valid and meaningful?
+* Am I confident in how the credential(s) were managed and controlled by the _<<_named_actor,named actor>>,_ _<<credential_holder,credential holder>>,_ and issuer, and then used to sign the content I'm consuming?
+* If the issuer is referenced on a _<<_trust_list,trust list>>,_ do I trust the governance of that _<<_trust_list,trust list>>?_ In other words, do I have confidence in the process by which this issuer was added to and has remained on the _<<_trust_list,trust list>>?_
+
+Software tools supporting _<<_identity_assertion_consumer,identity assertion consumers>>_ can assist in establishing _governance trust_ by making well-informed choices about roots of trust.
+
+==== Reputation trust
+
+*Reputation trust* exists if the following requirements are met to the satisfaction of the _<<_identity_assertion_consumer,identity assertion consumer>>:_
+
+* Am I confident that the _<<_named_actor,named actor>>_ will produce valuable content in good faith?
+* Does the _<<_named_actor,named actor>>_ have a reputation and legitimacy that I can rely on?
+
+While _reputation trust_ requires _technical trust_ and _governance trust_ to be established in order to evaluate it meaningfully, these criteria are largely subjective and thus outside the scope of this specification. Also, unlike _technical trust,_ the evaluation of _reputation trust_ is likely to evolve over time as the _<<_identity_assertion_consumer,identity assertion consumer>>_ gains experience with and learns more about the _<<_named_actor,named actor>>._

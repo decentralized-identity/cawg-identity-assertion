@@ -1,0 +1,99 @@
+
+=== Trust scenarios in identity assertion
+
+The `signature` in an *<<_identity_assertion,identity assertion>>* could be considered as a new credential documenting the relationship between _<<_named_actor,named actor>>_ and _<<C2PA asset>>,_ which will be referred to in this section as an _asset-specific credential._
+
+IMPORTANT: “Content Credential” is a trademarked term that refers to _<<_c2pa_manifest,C2PA Manifests>>_ and MUST NOT be used in reference to *<<_identity_assertion,identity assertion>>* signatures.
+
+For each form of credential that an _<<_identity_asertion_consumer,identity assertion consumer>>_ is prepared to accept, it SHOULD maintain:
+
+. a list of trust relationships that it is prepared to accept when interpreting any *<<_identity_assertion,identity assertion>>,* and
+. one or more mechanisms to check for credentials that have been _<<_credential_revocation,revoked>>_ by the _issuer._
+
+There are a few possible relationships between the implementation of the *<<_identity_assertion,identity assertion>>,* _<<_named_actor,named actor>>,_ and _credential issuer,_ as documented in the following subsections.
+
+IMPORTANT: The trust decisions described in the scenarios should only be evaluated once the *<<_identity_assertion,identity assertion>>* and the signature material within have been successfully validated as described in xref:_validating_the_identity_assertion[xrefstyle=full].
+
+The trust decision can result in one of three descriptions of the _<<_named_actor,named actor>>:_
+
+* *Trusted:* The _<<_identity_asertion_consumer,identity assertion consumer>>_ can verify a trust relationship to the _<<_named_actor,named actor>>_ through its established roots of trust. The _<<_identity_asertion_consumer,identity assertion consumer>>_ found no evidence that the credential was _<<_credential_revocation,revoked>>_ at the time the *<<_identity_assertion,identity assertion>>* was created.
+* *Well-formed:* The _<<_identity_asertion_consumer,identity assertion consumer>>_ can not verify a trust relationship to the _<<_named_actor,named actor>>._ The _<<_identity_asertion_consumer,identity assertion consumer>>_ found no evidence that the credential was _<<_credential_revocation,revoked>>_ at the time the *<<_identity_assertion,identity assertion>>* was created.
+* *Revoked:* The credential used for signing the *<<_identity_assertion,identity assertion>>* had been _<<_credential_revocation,revoked>>_ at the time the *<<_identity_assertion,identity assertion>>* was created.
+
+==== Named actor as issuer
+
+In this scenario, the _<<_credential_holder,credential holder>>_ possesses a credential that describes the _<<_named_actor,named actor>>_ and is provisioned with the ability to generate digital signatures on the _<<_named_actor,named actor’s>>_ behalf.
+
+This scenario is implicit in the X.509 certificate-based workflow as described in xref:_x_509_certificates_and_cose_signatures[xrefstyle=full]. Other credential types MAY also follow this scenario.
+
+The _<<_credential_holder,credential holder>>_ uses this signature authority directly to generate the _asset-specific credential,_ as depicted in the following diagram, which is non-normative:
+
+.Named actor as issuer
+image::trust-model/named-actor-as-issuer.drawio.svg[Named actor as issuer,width=570,height=240,align="center"]
+
+In this scenario, the _<<_identity_assertion_consumer,identity assertion consumer>>_ SHOULD make its trust decision based on the following predicates:
+
+. Is there a direct trust relationship with the _<<_named_actor,named actor>>?_ If so, the *<<_identity_assertion,identity assertion>>* SHOULD be treated as *trusted.*
+. Is there a transitive trust relationship with the _<<_named_actor,named actor>>_ via its _credential issuer?_ (In other words, does the _<<_identity_assertion_consumer,identity assertion consumer>>_ trust the _credential issuer_ to issue valid signature credentials?)
+.. If so, was the _<<_named_actor,named actor’s>>_ credential _<<_credential_revocation,revoked>>_ at the time the *<<_identity_assertion,identity assertion>>* was signed? If so, the *<<_identity_assertion,identity assertion>>* SHOULD be treated as *revoked.*
+.. If the transitive trust relationship exists and the credential has not been _<<_credential_revocation,revoked>>,_ the *<<_identity_assertion,identity assertion>>* SHOULD be treated as *trusted.*
+. If neither relationship can be demonstrated, the *<<_identity_assertion,identity assertion>>* SHOULD be treated as *well-formed.*
+
+IMPORTANT: Any available information about credential _<<_credential_revocation,revocation>>_ SHOULD be included in the _<<_identity_assertion_consumer,identity assertion consumer’s>>_ report about the *<<_identity_assertion,identity assertion>>* regardless of *trusted* or *untrusted* status.
+
+NOTE: The direct trust relationship case is possible, but relatively uncommon.
+
+==== Named actor without signature authority
+
+In this scenario, the _<<_credential_holder,credential holder>>_ possesses a credential that describes the _<<_named_actor,named actor>>_ but does not have the ability to generate digital signatures on the _<<_named_actor,named actor’s>>_ behalf.
+
+In this scenario, the hardware or software implementation that is generating the *<<_identity_assertion,identity assertion>>* MAY request a summary of the _<<_named_actor,named actor’s>>_ credential from the _<<_credential_holder,credential holder>>,_ and gather that information into the *<<_identity_assertion,identity assertion>>,* which it will then sign using its own credentials.
+
+.Example using W3C verifiable credentials
+[sidebar]
+****
+This example, which is non-normative, depicts a possible workflow for this scenario. In this scenario, the _<<_credential_holder,credential holder>>_ wishes to use a W3C verifiable credential held in a wallet to generate an *<<_identity_assertion,identity assertion>>* on behalf of the credential’s _<<_named_actor,named actor>>._
+
+In this example, the wallet is prepared to selectively disclose portions of the credential via W3C verifiable presentation, but can neither reveal the entire credential nor issue other forms of signature.
+
+[mermaid,width=100%]
+....
+sequenceDiagram
+    participant G as Identity assertion generator
+    participant W as Wallet
+    participant H as Credential holder
+
+    Note right of G: Create signer_payload
+
+    G->>W: Presentation request<br>including signer_payload
+    W->>H: Request consent for presentation
+    H->>W: Consent granted
+    W->>G: Verifiable presentation
+
+    Note right of G: Generate new asset-specific<br>credential using VP content
+....
+
+****
+
+In this scenario, the _issuer_ of the _asset-specific credential_ is not the _<<_credential_holder,credential holder>>_ but the _<<_actor,actor>>_ that is generating the *<<_identity_assertion,identity assertion>>,* as depicted in the following diagram, which is non-normative:
+
+.Named actor without signature authority
+image::trust-model/no-signature-authority.drawio.svg[Named actor without signature authority,width=570,height=320,align="center"]
+
+In this scenario, the _<<_identity_assertion_consumer,identity assertion consumer>>_ SHOULD make its trust decision based on the following predicates:
+
+. Does the _<<_identity_assertion_consumer,identity assertion consumer>>_ trust the _<<_identity_assertion_generator,identity assertion generator>>_ to request a credential summary from the _<<_credential_holder,credential holder>>_ and accurately reflect that credential summary into the *<<_identity_assertion,identity assertion>>?*
+.. Is there a direct trust relationship with the _<<_identity_assertion_generator,identity assertion generator>>?_ If so, proceed to step 2.
+.. Is there a transitive trust relationship with the _<<_identity_assertion_generator,identity assertion generator>>_ via its _credential issuer?_ (In other words, does the _<<_identity_assertion_consumer,identity assertion consumer>>_ trust the _<<_identity_assertion_generator,identity assertion generator’s>>_ _credential issuer_ to issue valid signature credentials?)
+.. If so, was the _<<_identity_assertion_generator,identity assertion generator’s>>_ credential _<<_credential_revocation,revoked>>_ at the time the *<<_identity_assertion,identity assertion>>* was signed? If so, do not proceed. The *<<_identity_assertion,identity assertion>>* SHOULD be treated as *revoked.*
+.. If the transitive trust relationship exists and the credential has not been _<<_credential_revocation,revoked>>,_ proceed to step 2.
+.. If neither relationship can be demonstrated, do not proceed. The *<<_identity_assertion,identity assertion>>* SHOULD be treated as *well-formed.*
+. Does the _<<_identity_assertion_consumer,identity assertion consumer>>_ trust the _<<_named_actor,named actor’s>> credential issuer_ to issue valid credentials?
+.. Is there a direct trust relationship with the _<<_named_actor,named actor’s>> credential issuer?_ If so, proceed to step 3.
+.. Is there a transitive trust relationship with the _<<_named_actor,named actor’s>> credential issuer_ via its _credential issuer?_ (In other words, does the _<<_identity_assertion_consumer,identity assertion consumer>>_ trust the _<<named_actor,named actor’s>> credential issuer_ to issue valid credentials?) If so, proceed to step 3.
+.. If neither relationship can be demonstrated, do not proceed. The *<<_identity_assertion,identity assertion>>* SHOULD be treated as *well-formed.*
+. Was the _<<_named_actor,named actor’s>>_ credential _<<_credential_revocation,revoked>>_ at the time the *<<_identity_assertion,identity assertion>>* was signed?
+.. If so, the *<<_identity_assertion,identity assertion>>* SHOULD be treated as *revoked.*
+.. If no such _<<_credential_revocation,revocation>>_ has been issued, the *<<_identity_assertion,identity assertion>>* SHOULD be treated as *trusted.*
+
+IMPORTANT: Any available information about _<<_credential_revocation,credential revocation>>_ SHOULD be included in the _<<_identity_assertion_consumer,identity assertion consumer’s>>_ report about the *<<_identity_assertion,identity assertion>>* regardless of *trusted* or *untrusted* status.

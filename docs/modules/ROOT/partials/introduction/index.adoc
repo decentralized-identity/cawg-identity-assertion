@@ -1,0 +1,13 @@
+== Introduction
+
+_This section is non-normative._
+
+include::scope.adoc[]
+
+include::c2pa-technical-specification.adoc[]
+
+include::trust-over-ip-technical-architecture.adoc[]
+
+include::conceptual-overview.adoc[]
+
+include::use-cases-and-examples.adoc[]

@@ -1,0 +1,7 @@
+== Creating the identity assertion
+
+include::presenting-for-signature.adoc[]
+
+include::creating-the-assertion.adoc[]
+
+include::data-hash-assertion.adoc[]

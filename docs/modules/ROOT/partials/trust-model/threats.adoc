@@ -1,0 +1,105 @@
+=== Threats to trust model
+
+_This section is non-normative._
+
+This section enumerates a number of potential attacks on the *<<_identity_assertion,identity assertion>>* trust model. If concrete guidance to mitigate or prevent a specific attack is available, that guidance should be incorporated as specific normative requirements elsewhere in this specification and referenced here.
+
+==== Replay attacks
+
+An attacker could attempt to extract a valid *<<_identity_assertion,identity assertion>>* out of one _<<_c2pa_asset,C2PA asset>>_ and embed it in a new _<<_c2pa_asset,C2PA asset>>_ of an attacker's choosing without causing a validation error. This scenario could allow an attacker to falsely attribute the new _<<_c2pa_asset,C2PA asset>>_ to a victim’s identity without their consent or knowledge. If the attacker’s _<<_c2pa_asset,C2PA asset>>_ is controversial or illegal, then falsely attributing it to a victim’s identity could result in severe consequences for the victim. The system must ensure that an attacker can not apply an existing *<<_identity_assertion,identity assertion>>* to a different _<<_c2pa_asset,C2PA asset>>._
+
+To prevent this attack, we require that a valid *<<_identity_assertion,identity assertion>>* contain a `signer_payload.referenced_assertions` which includes a _<<_hard_binding,hard binding>>_ assertion that properly describes the _<<_c2pa_asset,C2PA asset>>._ A compliant _<<_identity_assertion_consumer,identity assertion consumer>>_ should detect that the _<<_hard_binding,hard binding>>_ assertion referenced by the original *<<_identity_assertion,identity assertion>>* does not match the attacker’s _<<_c2pa_asset,C2PA asset>>_ and fail validation.
+
+==== Parsing and validation errors
+
+Any content including, but not limited to the _<<_named_actor,named actor’s>>_ identity, could be subject to a number of parsing or validation attacks:
+
+* *Injection of code* (HTML, JavaScript, etc.) into a text field so that the attacker can attempt to control what is displayed to the end user. _Does the specification support markup in the text fields? Should all fields be considered unicode strings?_
+* *Text fields of excessive length:* These can cause buffer overflows or could be an attempt to "push" trusted UI indicators out of the rendered view of the user. _Should the specification place an upper bound of the length of given fields?_
+* *Injection of special characters:* These can be truncation attacks. For instance, if the UI parser is written in C, then an attacker might try to inject a null byte to cause discrepancies in the code about what should be displayed. _Are there any special characters necessitated by the specification that need to be escaped before being placed into the text field of an assertion?_
+
+The effectiveness of such attacks will necessarily be dependent on the language and other related development tooling in use for any given implementation. Beyond reminding implementers that parsing and validation errors are a likely attack surface, it is outside the scope of this specification to provide language-specific guidance.
+
+==== Name collisions, homoglyph attacks, and typo-squatting attacks
+
+An attacker could make use of visually-similar Unicode characters to mislead an end user into accepting a mistaken assertion of identity on behalf of a specific _<<_named_actor,named actor>>._ Such attacks are common in phishing and impersonation attacks conducted on domain names and social media.
+
+Similarly, it is likely that two or more _<<_named_actor,named actors>>_ may legitimately have the same or very similar names. Whether legitimate or not, similar names may cause confusion among _<<_identity_assertion_consumer,identity assertion consumers>>_ absent other signals that disambiguate specific individuals or organizations. If anonymous identities are supported, _<<_identity_assertion,identity assertions>>_ should also contain signals to disambiguate between anonymous identities.
+
+IMPORTANT: The Creator Assertions Working Group supports the principle of link:https://www.icann.org/ua[Universal Acceptance as described by ICANN]. No mitigation for the attacks described in this section should result in preferential treatment for identifiers in any language or script system over any other language or script system.
+
+Implementers are encouraged to apply one or more of the following approaches to mitigate this potential attack:
+
+* Credential issuers are encouraged to verify proposed names carefully to avoid malicious use of names. Intermediate authorities (_<<_trust list,trust lists>>,_ intermediate CAs, etc.) are encouraged to require such verification as part of their governance terms.
+* Software tools that support _<<_identity_assertion_consumer,identity assertion consumers>>_ are encouraged to maintain a list of trust anchors that have well-established governance terms designed to avoid the inclusion of inadvertently or maliciously misleading identity credentials and to reference those roots of trust in their user experience.
+* Software tools that support _<<_identity_assertion_consumer,identity assertion consumers>>_ are encouraged to maintain lists of known _<<_named_actor,named actors>>_ via unique identifiers available with each credential type rather than the human-readable display names.
+* Software tools that support _<<_identity_assertion_consumer,identity assertion consumers>>_ are encouraged to make visible the evaluation of an identity assertion as trusted, well-formed, or invalid.
+* Software tools that support _<<_identity_assertion_consumer,identity assertion consumers>>_ are encouraged to display additional detail about the _<<_named_actor,named actor>>,_ such as the unique identifiers behind the credential, upon user request.
+* Future versions of this specification will likely allow linking independent verifiable trust signals (social accounts, web sites, etc.). As those become available, _<<_named_actor,named actors>>_ are encouraged to include those signals and _<<_identity_assertion_consumer,identity assertion consumers>>_ are encouraged to verify those signals.
+
+==== Revocation of credential
+
+There are numerous scenarios which may result in the credential issued to a _<<_credential_holder,credential holder>>_ being _<<_credential_revocation,revoked>>._ Some are adverse, such as credential compromise or acting in bad faith. Other scenarios are routine, such as changes to the name, address, or other identifying information contained within the credentials.
+
+The _<<_identity_assertion_consumer,identity assertion consumer>>_ should make a best effort to verify the status of the credential as of the time of *<<_identity_assertion,identity assertion>>* creation. The exact mechanism will vary based on the credential type and will be specified in the appropriate subsection of xref:_credentials_signatures_and_validation_methods[xrefstyle=full]. If a credential is found to be _<<_credential_revocation,revoked>>_ at that time, this information should be prominently displayed in any user experience regarding the *<<_identity_assertion,identity assertion>>.* Absent specific information as to the cause for _<<_credential_revocation,revocation,>>_ a _<<_identity_assertion_consumer,identity assertion consumer>>_ should not assume that a _<<_credential_revocation,revocation>>_ is an indication of an adverse event.
+
+Software tools that support _<<_identity_assertion_consumer,Identity assertion consumers>>_ are encouraged to be mindful of harms or risks – such as generating network traffic that may indicate interest in particular content – that may accrue to the _<<_identity_assertion_consumer,identity assertion consumer>>_ in the process of making online inquiries about such status.
+
+==== Compromise of private key material
+
+In practice, the _<<_credential_holder,credential holder’s>>_ signing keys will be issued to systems that perform *<<_identity_assertion,identity assertion>>* signing operations. These systems may make these operations available to end users and/or be deployed to user-owned platforms (e.g., mobile phones). Issuance or disclosure of signing keys to malicious actors enables attackers to create claim signatures on arbitrary assets using the compromised identity. The resulting *<<_identity_assertion,identity assertions>>* will be valid in terms of the *<<_identity_assertion,identity assertion>>* specification, but effectively allow for spoofing identity.
+
+It is therefore important that systems that manage *<<_identity_assertion,identity assertion>>* signing keys adhere to security and key management best practices. This includes leveraging platform-specific features (e.g., hardware security modules and cloud key management services), minimizing key reuse, and _<<_credential_revocation,revoking>>_ keys when compromise is suspected. For more information on key management, see the link:https://csrc.nist.gov/Projects/Key-Management/Key-Management-Guidelines[NIST Key Management Guidelines].
+
+Some *<<_identity_assertion,identity assertion>>* generation and signing systems may be exposed to untrusted users. Exploitation or misuse of these systems may allow attackers to create *<<_identity_assertion,identity assertion>>* signatures on arbitrary assets using identities provided by the system. The resulting *<<_identity_assertion,identity assertions>>* will be valid in terms of the *<<_identity_assertion,identity assertion>>* specification, but effectively allow for spoofing identity. The impact of such an attack may be amplified if identities are shared between users, and/or if the attack goes undetected for an extended period of time.
+
+*<<_identity_assertion,Identity assertion>>* generation and signing systems should consider industry best practices for information security, secure development and operation, and anti-abuse practices, including leveraging available platform-specific features for deployment (e.g., link:https://developer.android.com/training/safetynet[Android SafetyNet], link:https://developer.apple.com/documentation/devicecheck[Apple DeviceCheck and AppAttest]).
+
+Capture devices, such as non-smartphone cameras, often do not have a mechanism for restricting access to specific users. It is recommended that such devices should not hold credentials for _<<_named_actor,named actors>>_ and should not generate *<<_identity_assertion,identity assertion>>* unless they can access more secure credential-access mechanisms such as a digital wallet.
+
+==== Tampering with identity assertion content
+
+An attacker could attempt to alter the content of an *<<_identity_assertion,identity assertion>>* to substitute different credentials or alter the attestations included in `signer_payload` in order to create a misleading of the _<<_named_actor,named actor>>_ or the _<<_c2pa_asset,C2PA asset>>._
+
+A compliant _<<_identity_assertion_consumer,identity assertion consumer>>_ should validate the `signature` field of the *<<_identity_assertion,identity assertion>>.* If the content of `signer_payload` has been altered, the signature should not match and the _<<_identity_assertion_consumer,identity assertion consumer>>_ should fail validation in that case.
+
+The signature from the _<<_claim_generator,claim generator>>_ provides an additional level of tamper evidence. In the event an attacker substitutes a new *<<_identity_assertion,identity assertion>>* which contains a new signature that is valid, the hash reference from the _<<_c2pa_claim,C2PA claim>>_ should still mismatch. A compliant _<<_c2pa_manifest_consumer,C2PA Manifest Consumer>>_ should fail validation in that case. When validation of a _<<_c2pa_manifest,C2PA Manifest>>_ has failed, a compliant _<<_identity_assertion_consumer,identity assertion consumer>>_ should not attempt to interpret the content of any *<<_identity_assertion,identity assertion>>* in that _<<_c2pa_manifest,C2PA Manifest>>._
+
+==== Re-signing by an adversarial claim generator
+
+An attacker could take a valid _<<_c2pa_asset,C2PA asset>>_ and create a new _<<C2PA Manifest>>_ with a new signature from a new _<<_claim_generator,claim generator>>_ that alters the context that was anticipated by the original _<<_credential_holder,credential holder>>_ when signing the *<<_identity_assertion,identity assertion>>.*
+
+[#new-context-adversarial-claim-generator]
+.New context introduced by adversarial claim generator
+[example]
+====
+This diagram builds upon xref:trust-signal-scope-one-ia[xrefstyle=full], to show how an adversarial _<<_claim_generator,claim generator>>_ could alter the context for the *<<_identity_assertion,identity assertion>>.*
+
+.Re-contextualization attack
+image::adversarial-claim-generator/adversarial-trust-bubbles.drawio.svg[Adversarial claim generator example,width=520,height=400,align="center"]
+
+In this example, the attacker has used a new _<<_claim_generator,claim generator’s>>_ signature to re-contextualize the original _<<_c2pa_asset,C2PA asset>>_ without the original _<<_credential_holder,credential holder’s>>_ knowledge.
+
+[IMPORTANT]
+.Scope of attack surface
+======
+In this scenario, the attacker _could:_
+
+* Remove any _<<_c2pa_assertion,C2PA assertions>>_ not referenced in the *<<_identity_assertion,identity assertion>>* (A3 in this example).
+* Introduce new _<<_c2pa_assertion,C2PA assertions>>_ (A4 and A5 in this example).
+* Substitute a new _<<_claim_generator,claim generator>>_ that is unknown to the _<<_credential_holder,credential holder>>._
+
+The attacker could not:
+
+* Modify the asset content (because the _<<_hard_binding,hard binding>>_ assertion would not match the new asset).
+* Modify any of the _<<_c2pa_assertion,C2PA assertions>>_ referenced in the *<<_identity_assertion,identity assertion>>* (A1 or A2 in this example).
+======
+====
+
+A _<<_credential_holder,credential holder>>_ can prevent these attacks by using one or more of the following optional mechanisms in `signer_payload` which are intended to limit the content of the enclosing _<<C2PA Manifest>>:_
+
+* `expected_partial_claim`, which describes the content of the expected _<<C2PA claim>>_ in which the *<<_identity_assertion,identity assertion>>* appears.
+* `expected_claim_generator`, which describes the X.509 certificate of the expected _<<C2PA claim generator>>._
+* `expected_countersigners`, which describes the signing credential(s) of the expected _<<_named_actor,named actors>>_ for other *<<_identity_assertion,identity assertions>>* in the same _<<C2PA Manifest>>._
+
+See xref:_overview[xrefstyle=full], for complete description of these mechanisms.

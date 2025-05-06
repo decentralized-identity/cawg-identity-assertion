@@ -1,0 +1,5 @@
+=== Scope
+
+This specification describes a _<<C2PA assertion>>_ that allows a _<<_named_actor,named actor>>_ to document their relationship to a _<<C2PA asset>>_ produced by them or on their behalf independently from the _<<C2PA claim generator>>,_ and to allow _<<_identity_assertion_consumer,consumers>>_ of a _<<C2PA asset>>_ to independently verify that the received asset was in fact produced by the _<<_named_actor,named actor>>_ and has not been tampered with.
+
+This specification draws upon and extends existing work from two standards organizations:

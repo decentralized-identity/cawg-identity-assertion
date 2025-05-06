@@ -1,0 +1,25 @@
+=== Labels
+
+Several data types in this specification have labels that can be defined either in this specification or by an external entity.
+
+Labels are non-empty string values organized into namespaces using a period (`.`) as a separator. The namespace component of the label can be an entity or a reference to a well-established standard. (See ABNF below.)
+
+Labels defined by the CAWG will begin with `cawg.`. All labels beginning with `cawg.` that are not defined in the current version of the specification are reserved for the future use of the CAWG and MUST NOT be assigned by any other entity. Future minor version updates (1.2, 1.3, etc.) to this specification MAY define new values for any label using the `cawg.` prefix.
+
+Entity-specific labels (i.e. those not defined by CAWG) SHALL begin with the Internet domain name for the entity similar to how Java packages are defined (e.g., `com.litware`, `net.fineartschool`). 
+
+[[abnf_for_labels]]
+[source,abnf]
+.ABNF for labels
+----
+namespaced-label = qualified-namespace label
+qualified-namespace = "cawg" / entity
+entity = entity-component *( "." entity-component )
+entity-component = 1( DIGIT / ALPHA ) *( DIGIT / ALPHA / "-" / "_" )
+label = 1*( "." label-component )
+label-component = 1( DIGIT / ALPHA ) *( DIGIT / ALPHA / "-" / "_" )
+----
+
+The period-separated components of a label follow the variable naming convention (`[a-zA-Z][a-zA-Z0-9_-]*`) specified in the POSIX or C locale, with the restriction that the use of a repeated underscore character (`__`) is reserved for labelling multiple assertions of the same type.
+
+WARNING: While the use of labels defined by external entities is permitted, implementers should be aware that such labels may not be widely understood by other implementations.

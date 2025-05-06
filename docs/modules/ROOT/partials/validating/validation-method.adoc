@@ -1,0 +1,54 @@
+=== Validation method
+
+IMPORTANT: Validation of the _<<C2PA Manifest>>_ MUST be completed with a finding that the manifest is at least _well-formed_ as per link:++https://c2pa.org/specifications/specifications/2.1/specs/C2PA_Specification.html#_well_formed_manifest++[Section 14.3.2, Well-formed manifest,”] of the C2PA technical specification before a validator attempts to report on the validity of an *<<_identity_assertion,identity assertion>>.*
+
+An *<<_identity_assertion,identity assertion>>* MUST contain a valid CBOR data structure that contains the required fields as documented in the `identity` rule in xref:_cbor_schema[xrefstyle=full]. The `cawg.identity.cbor.invalid` error code SHALL be used to report assertions that do not follow this rule. A validator SHALL NOT consider any extra fields not documented in the `identity` rule during the validation process.
+
+NOTE: Extra fields can be read and processed in non-validation scenarios.
+
+For each entry in `signer_payload.referenced_assertions`, the validator MUST verify that the same entry exists in either the `created_assertions` or `gathered_assertions` entry of the _<<C2PA claim>>._ (For version 1 claims, the entry must appear in the `assertions` entry.) The `cawg.identity.assertion.mismatch` error code SHALL be used to report violations of this rule.
+
+The validator SHOULD verify that no entry in `signer_payload.referenced_assertions` is duplicated. The `cawg.identity.assertion.duplicate` error code SHALL be used to report violations of this rule.
+
+The validator MUST ensure that `signer_payload.referenced_assertions` contains at least one _<<_hard_binding,hard binding>>_ assertion as described in link:++https://c2pa.org/specifications/specifications/2.1/specs/C2PA_Specification.html#_hard_bindings++[Section 9.2, “Hard bindings”] of the C2PA technical specification. The `cawg.identity.hard_binding_missing` error code SHALL be used to report a missing _<<_hard_binding,hard binding>>_ assertion.
+
+The validator MUST maintain a list of valid `signer_payload.sig_type` values and corresponding code paths for the `signature` values that it is prepared to accept. Validators SHOULD be prepared to accept all signature types described in xref:_credentials_signatures_and_validation_methods[xrefstyle=full]. The `cawg.identity.sig_type.unknown` error code SHALL be used to report assertions that contain unrecognized `signer_payload.sig_type` values.
+
+The `signature` field of an *<<_identity_assertion,identity assertion>>* MUST contain a valid signature. The procedure for validating each signature type and corresponding status codes are described in xref:_credentials_signatures_and_validation_methods[xrefstyle=full].
+
+The `pad1` and `pad2` fields of an *<<_identity_assertion,identity assertion>>* MUST contain only zero-value (`0x00`) bytes. The `cawg.identity.pad.invalid` error code SHALL be used to report assertions that contain other values in these fields.
+
+==== Validating the `expected_partial_claim` field
+
+If the *<<_identity_assertion,identity assertion>>* contains an `expected_partial_claim` field in `signer_payload`, it MUST be validated as follows:
+
+. Locate the _<<C2PA claim>>_ data structure that includes this *<<_identity_assertion,identity assertion>>.*
+. Replace the `hash` value for the specific *<<_identity_assertion,identity assertion>>* being validated with all zero-value (`0x00`) bytes.
+. If the *<<_identity_assertion,identity assertion>>* contains an `expected_countersigners` field in `signer_payload`, for each entry in the `expected_countersigners` array where an *<<_identity_assertion,identity assertion>>* can be found that matches the signing credentials used as described in xref:_serialization_for_credential_types[], replace the `hash` field for that *<<_identity_assertion,identity assertion>>* being validated with all zero-value (`0x00`) bytes.
+. Serialize the updated _<<C2PA claim>>_ data structure using link:++https://www.rfc-editor.org/rfc/rfc8949.html#name-core-deterministic-encoding++[Section 4.2.1, “Core deterministic encoding,”] of RFC 8949: Concise binary object representation.
+. Compute a hash of the serialized _<<C2PA claim>>_ data structure using the hash algorithm described by `expected_partial_claim.alg`.
+
+The resulting hash MUST exactly match the value present in `expected_partial_claim.hash`. The `cawg.identity.expected_partial_claim.mismatch` error code SHALL be used to report assertions that contain other values.
+
+==== Validating the `expected_claim_generator` field
+
+If the *<<_identity_assertion,identity assertion>>* contains an `expected_claim_generator` field in `signer_payload`, it MUST be validated as follows:
+
+. Locate the end-entity signing certificate that is present in the _<<C2PA claim>>_ signature. It can be located as described in link:https://c2pa.org/specifications/specifications/2.1/specs/C2PA_Specification.html#x509_certificates[Section 14.6, “X.509 certificates,”] of the C2PA technical specification.
+. Identify the CBOR bytes specific to this signing certifcate. If necessary, any re-serialization should be performed using link:++https://www.rfc-editor.org/rfc/rfc8949.html#name-core-deterministic-encoding++[Section 4.2.1, “Core deterministic encoding,”] of RFC 8949: Concise binary object representation.
+. Compute a hash of the serialized end-entity certificate using the hash algorithm described by `expected_claim_generator.alg`.
+
+The resulting hash MUST exactly match the value present in `expected_claim_generator.hash`. The `cawg.identity.expected_claim_generator.mismatch` error code SHALL be used to report assertions that contain other values.
+
+==== Validating the `expected_countersigners` field
+
+If the *<<_identity_assertion,identity assertion>>* contains an `expected_countersigners` field in `signer_payload`, it MUST be validated as follows:
+
+. For every _other_ *<<_identity_assertion,identity assertion>>* that is present in the <<C2PA Manifest>>:
+.. Find the `signer_payload` map in that *<<_identity_assertion,identity assertion>>*. Remove any `expected_countersigners` field that is found in that `signer_payload` map. This will be referred to in the rest of this process as the _partial signer payload._
+.. Search the `expected_countersigners` list _in the current *<<_identity_assertion,identity assertion>>* being validated_ for an entry where `partial_signer_payload` matches the just-computed _partial signer payload._ If no such entry can be found, stop validating and return the `cawg.identity.unexpected_countersigner` error code.
+.. If the entry in `expected_countersigners` also contains an `expected_credentials` entry:
+... Serialize the signing credential as a CBOR byte string as described in xref:_serialization_for_credential_types[]. This serialization should be performed using link:++https://www.rfc-editor.org/rfc/rfc8949.html#name-core-deterministic-encoding++[Section 4.2.1, “Core deterministic encoding,”] of RFC 8949: Concise binary object representation.
+... Compute a hash of the serialized signing credential using the algorithm specified by the `alg` entry in the `expected_credentials` map.
+... Compare the just-computed hash with the `hash` entry in the `expected_credentials` map. If they do not match, stop validating and return the `cawg.identity.expected_countersigner.mismatch` error code.
+. If any entry exists in `expected_countersigners` that was not matched by the previous loop, the `cawg.identity.expected_countersigner.missing` error code SHOULD be returned.

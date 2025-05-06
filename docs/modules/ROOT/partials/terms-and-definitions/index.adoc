@@ -1,0 +1,7 @@
+== Terms and definitions
+
+include::c2pa.adoc[]
+
+include::w3c-vc.adoc[]
+
+include::other.adoc[]

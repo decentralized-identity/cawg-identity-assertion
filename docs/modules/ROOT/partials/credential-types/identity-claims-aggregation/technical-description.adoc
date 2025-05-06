@@ -1,0 +1,284 @@
+==== Identity claims aggregation technical description
+
+The _<<_identity_claims_aggregator,identity claims aggregator>>_ will produce a specific type of _<<_W3C verifiable credential,W3C verifiable credential>>_ called an “identity claims aggregation” that binds the identity attestation claims to the _<<C2PA asset>>._ This credential, once signed with the _<<_identity_claims_aggregator,identity claims aggregator’s>>_ private key, is the `signature` value for the *<<_identity_assertion,identity assertion>>.* The signature value is further described in xref:_verifiable_credential_proof_mechanism[xrefstyle=full].
+
+The `signer_payload.sig_type` value for such an assertion MUST be `cawg.identity_claims_aggregation`.
+
+The trust model in this scenario is as described in xref:_named_actor_without_signature_authority[xrefstyle=full].
+
+An *identity claims aggregation* MUST meet all requirements for a verifiable credential as described in the W3C Verifiable credentials data model (either https://www.w3.org/TR/vc-data-model/[version 1.1] or https://www.w3.org/TR/vc-data-model-2.0/[version 2.0]) and additional requirements as stated in the remainder of this section.
+
+[#vc-property-context]
+===== Context
+
+The `@context` property MUST be present and MUST contain at least the following two entries:
+
+* `https://www.w3.org/2018/credentials/v1` _or_ `https://www.w3.org/ns/credentials/v2`, depending on which version of the W3C verifiable credentials data model is being used
+* `https://cawg.io/identity/1.1/ica/context/`
+
+[#vc-property-type]
+===== Type
+
+The `type` property MUST be present and MUST contain at least the following two entries:
+
+* `VerifiableCredential`
+* `IdentityClaimsAggregationCredential`
+
+[#vc-property-issuer]
+===== Issuer
+
+The `issuer` property MUST be present and MUST follow the format as specified in link:++https://www.w3.org/TR/vc-data-model/#issuer++[Section 4.5, “Issuer,”] of the Verifiable credentials data model.
+
+[#vc-property-validFrom]
+===== Validity
+
+If using https://www.w3.org/TR/vc-data-model/[Verifiable credentials data model, version 1.1], the `issuanceDate` field MUST exist and it MUST express the date and time when the credential becomes valid, as specified in link:++https://www.w3.org/TR/vc-data-model/#issuance-date++[Section 4.6, “Issuance date,”] of the Verifiable credentials data model.
+
+If using https://www.w3.org/TR/vc-data-model-2.0/[Verifiable credentials data model, version 2.0], the `validFrom` field MUST exist and it MUST express the date and time when the credential becomes valid, as specified in link:++https://www.w3.org/TR/vc-data-model-2.0/#validity-period++[Section 4.8, “Validity period,”] of the Verifiable credentials data model.
+
+[#vc-credentialsubject-verifiedIdentities]
+===== Verified identities
+
+The `verifiedIdentities` property MUST be present and MUST be a non-empty array. Every item in the array MUST contain information about the _<<_named_actor,named actor>>_ as verified by the _<<_identity_assertion_generator,identity assertion generator>>_ or a service contacted by the _<<_identity_assertion_generator,identity assertion generator>>._
+
+.Example:
+[source,json]
+----
+"credentialSubject": {
+  ...
+  "verifiedIdentities": [
+    {
+      "name": "First-Name Last-Name",
+      "type": "cawg.document_verification",
+      "provider": {
+        "id": "https://example-id-verifier.com",
+        "name": "Example ID Verifier",
+      },
+      "verifiedAt": "2024-07-26T22:30:15Z"
+    },
+    {
+      "type": "cawg.web_site",
+      "uri": "named-actor-site.example",
+      "verifiedAt": "2024-09-25T22:13:35Z"
+    },
+    {
+      "type": "cawg.affiliation",
+      "provider": {
+        "id": "https://example-affiliated-organization.com",
+        "name": "Example Affiliated Organization",
+      },
+      "verifiedAt": "2024-07-26T22:29:57Z"
+    },
+    {
+      "type": "cawg.social_media",
+      "name": "Silly Cats 929",
+      "username": "username",
+      "uri": "https://example-social-network.com/username",
+      "provider": {
+        "id": "https://example-social-network.com",
+        "name": "Example Social Network"
+      },
+      "verifiedAt": "2024-05-27T08:40:39.569856Z"
+    },
+    {
+      "type": "cawg.crypto_wallet",
+      "address": "fa64ef445f994138bdeb9baac6ce1e16",
+      "uri": "https://example-crypto-wallet.com/fa64ef445f994138bdeb9baac6ce1e16",
+      "provider": {
+        "id": "https://example-crypto-wallet.com",
+        "name": "Example Crypto Wallet"
+      },
+      "verifiedAt": "2024-05-27T08:40:39.569856Z"
+    }
+  ]
+  ...
+}
+----
+
+[#vc-credentialsubject-verifiedidentity-type]
+====== Verified identity type
+
+The `verifiedIdentities[?].type` property MUST be present and MUST be a non-empty string that defines the type of verification that was performed by the _<<_identity_provider,identity provider>>._ This specification defines the following values which _<<_identity_assertion_consumer,identity assertion consumers>>_ SHOULD be prepared to accept:
+
+[width="100%",cols="4,10",options="header"]
+|=======================
+| Value        |  Meaning
+| `cawg.document_verification` | The _<<_identity_provider,identity provider>>_ has verified one or more government-issued identity documents presented by the _<<_named_actor,named actor>>._
+| `cawg.web_site` | The _<<_named_actor,named actor>>_ has proven control over a specific domain to the _<<_identity_claims_aggregator,identity claims aggregator>>._
+| `cawg.affiliation` | The _<<_identity_provider,identity provider>>_ is attesting to the _<<_named_actor,named actor’s>>_ membership in an organization. This could be a professional organization or an employment relationship.
+| `cawg.social_media` | The _<<_named_actor,named actor>>_ has demonstrated control over an account (typically a social media account) hosted by the _<<_identity_provider,identity provider>>._
+| `cawg.crypto_wallet` | The _<<_named_actor,named actor>>_ has demonstrated control over an account (typically a crypto-wallet) hosted by the _<<_identity_provider,identity provider>>._ 
+|=======================
+
+Other string values MAY be used in `verifiedIdentities[?].type`, subject to restrictions described in xref:_labels[xrefstyle=full].
+
+[#vc-credentialsubject-verifiedidentity-name]
+====== Display name
+
+The `verifiedIdentities[?].name` property MAY be present. If present, it MUST NOT be empty and must be a string defining the _<<_named_actor,named actor’s>>_ name as understood by the _<<_identity_provider,identity provider>>._
+
+If the `type` of this verified identity is `cawg.document_verification`, the `verifiedIdentities[?].name` property MUST be present and MUST exactly match the name found on the identity documents.
+
+[#vc-credentialsubject-verifiedidentity-username]
+====== User name
+
+The `verifiedIdentities[?].username` property MAY be present. If present, it MUST be a non-empty text string representing the _<<_named_actor,named actor’s>>_ user name as assigned by the _<<_identity_provider,identity provider>>._
+
+If the `type` of this verified identity is `cawg.social_media`, the `verifiedIdentities[?].username` property MUST be present and MUST be the unique alphanumeric string that can be used to identity the _<<_named_actor,named actor>>_ within this service.
+
+[#vc-credentialsubject-verifiedidentity-address]
+====== Address
+
+The `verifiedIdentities[?].address` property MAY be present. If present, it MUST be a non-empty text string representing the _<<_named_actor,named actor’s>>_ cryptographic address as assigned by the _<<_identity_provider,identity provider>>._
+
+If the `type` of this verified identity is `cawg.crypto_wallet`, the `verifiedIdentities[?].address` property MUST be present and MUST be the unique alphanumeric string that can be used to identity the _<<_named_actor,named actor>>_ within this service.
+
+[#vc-credentialsubject-verifiedidentity-uri]
+====== URI
+
+The `verifiedIdentities[?].uri` property MAY be present. If present, it must be a valid URI which is the primary point of contact for the _<<_named_actor,named actor>>_ as assigned by the _<<_identity_provider,identity provider>>._
+
+If the `type` of this verified identity is `cawg.web_site`, the `verifiedIdentities[?].uri` property MUST be present and must be the primary web URI for the _<<_named_actor,named actor’s>>_ web site as validated by the _<<_identity_claims_aggregator,identity claims aggregator>>._
+
+If the `type` of this verified identity is `cawg.social_media`, it is RECOMMENDED that the `verifiedIdentities[?].uri` be the primary web URI for the _<<_named_actor,named actor’s>>_ social media account.
+
+IMPORTANT: The presence of the `verifiedIdentities[?].uri` property SHOULD NOT be construed as a representation that the entirety of content available at any future time at that URI is attested to by the _<<_named_actor,named actor>>,_ but rather that there was a demonstrable relationship between the _<<_named_actor,named actor>>_ and the URI at the stated time of verification. (See xref:vc-credentialsubject-verifiedidentity-verifiedat[].)
+
+[#vc-credentialsubject-verifiedidentity-method]
+====== Identity verification method
+
+The `verifiedIdentities[?].method` property is OPTIONAL. If present, it MUST be a non-empty string that defines the method by which the _<<_identity_assertion_generator,identity assertion generator>>_ contacted the _<<_identity_provider,identity provider>>_ to obtain the verification. This specification defines the following values which _<<_identity_assertion_consumer,identity assertion consumers>>_ SHOULD be prepared to accept:
+
+[width="100%",cols="3,10,4",options="header",stripes=even]
+|=======================
+| Value
+| Meaning
+| Trust anchor
+
+| `cawg.dns_record`
+| The _<<_identity_claims_aggregator,identity claims aggregator>>_ provided unique content to the _<<_named_actor,named actor>>_ to place in a DNS record. This content was subsequently verified by the _<<_identity_claims_aggregator,identity claims aggregator>>_.
+
+*Example:* link:https://www.ietf.org/archive/id/draft-ietf-dnsop-domain-verification-techniques-03.html[Domain Control Validation using DNS (IETF Draft)]
+| Self-asserted
+
+| `cawg.uri_file_verification`
+| The _<<_identity_claims_aggregator,identity claims aggregator>>_ provided unique file content to the _<<_named_actor,named actor>>_ to place at the claimed URI. This content was subsequently verified by the _<<_identity_claims_aggregator,identity claims aggregator>>_.
+
+*Example:* link:https://docs.digicert.com/en/certcentral/manage-certificates/supported-dcv-methods-for-validating-the-domains-on-ov-ev-tls-ssl-certificate-orders/use-the-http-practical-demonstration-validation-method-to-verify-domain-control.html[Use the HTTP Practical Demonstration DCV method to verify domain control (Digicert)]
+| Self-asserted
+
+| `cawg.email`
+| The _<<_identity_claims_aggregator,identity claims aggregator>>_ sent an e-mail to the claimed domain’s administrative contacts and received an appropriate response to prove control over the domain.
+
+*Example:* link:++https://docs.digicert.com/en/certcentral/manage-certificates/supported-dcv-methods-for-validating-the-domains-on-ov-ev-tls-ssl-certificate-orders/use-the-email-dcv-method-to-verify-domain-control.html++[Use Email verification to verify domain control on an OV or EV TLS certificate (Digicert)]
+| Domain registrar and e-mail provider
+
+| `cawg.uri_meta_tag_verification`
+| The _<<_identity_claims_aggregator,identity claims aggregator>>_ provided unique content to the _<<_named_actor,named actor>>_ to be placed in an HTML `<meta>` tag at the claimed URI. This content was subsequently verified by the _<<_identity_claims_aggregator,identity claims aggregator>>_.
+
+*Example:* link:https://support.google.com/webmasters/answer/9008080?visit_id=638690062950474628-2219554616&rd=1#meta_tag_verification&zippy=%2Chtml-tag[Verification method details: HTML tag (Google Support)]
+| Self-asserted
+
+| `cawg.federated_login`
+| The _<<_identity_claims_aggregator,identity claims aggregator>>_ initiated, at the _<<_named_actor,named actor’s>>_ request, a federated log-in to a service operated by an _<<_identity_provider,identity provider>>._ The _<<_identity_claims_aggregator,identity claims aggregator>>_ received and recorded information about the _<<_named_actor,named actor>>._
+
+*Example:* link:https://datatracker.ietf.org/doc/html/rfc6749[OAuth2]
+| _<<_identity_provider,Identity provider>>_
+
+|=======================
+
+Other string values MAY be used in `verifiedIdentities[?].method`, subject to restrictions described in xref:_labels[xrefstyle=full].
+
+The examples provided here are non-normative, but are intended to demonstrate the kind of procedures described by each method type.
+
+[#vc-credentialsubject-verifiedidentity-verifiedat]
+====== Identity verification date
+
+The `verifiedIdentities[?].verifiedAt` MUST be present and MUST be a valid date-time as specified by link:https://datatracker.ietf.org/doc/html/rfc3339[RFC 3339]. It represents the earlier of the following:
+
+* The date and time when the relationship between the _<<_named_actor,named actor>>_ and the _<<_identity_provider,identity provider>>_ was verified by the _<<_identity_assertion_generator,identity assertion generator>>._
+* In the case where the _<<_named_actor,named actor’s>>_ identity was verified by a third party (for example, for document verification), the date and time at which the _<<_named_actor,named actor’s>>_ identity was verified by the third party.
+
+[#vc-credentialsubject-verifiedidentity-provider]
+====== Identity provider details
+
+The `verifiedIdentities[?].provider` property MUST be an object and MUST be present. It contains details about the _<<_identity_provider,identity provider>>_ and the identity verification process. This specification mentions at least two properties that MAY be used to represent the _<<_named_actor,named actor’s>>_ verification details: `id` and `name`.
+
+[#vc-credentialsubject-verifiedidentity-provider-id]
+Identity provider ID::
+The `verifiedIdentities[?].provider.id` SHOULD be present. If present, it MUST be a valid URI that contains information about the _<<_identity_provider,identity provider>>._ This SHOULD NOT be confused with any information about the _<<_named_actor,named actor>>_ itself. It is RECOMMENDED that this resolve to a xref:_w3c_decentralized_identifier_document[xrefstyle=full] if one is available.
+
+[#vc-credentialsubject-verifiedidentity-provider-name]
+Identity provider name::
+The `verifiedIdentities[?].provider.name` MUST be present and MUST be a _<<_natural_language_string,natural language string>>._ The `verifiedIdentities[?].provider.name` property is the name of the _<<_identity_provider,identity provider>>._
+
+===== Binding to C2PA asset
+
+The `credentialSubject` field MUST contain a `c2paAsset` entry, which MUST be the JSON serialization of the `signer_payload` data structure presented for signature with the following adaptations:
+
+* All CBOR bytestring values in `signer_payload` data structure (for example, `hash` entries in the hashlink data structure) MUST be converted to the corresponding base 64 encoding as specified in link:++https://datatracker.ietf.org/doc/html/rfc4648#section-4++[Section 4, “Base 64 Encoding,”] of RFC 4648. The base 64 encoding MUST NOT use the URL-safe variation of base 64. The encoding MUST NOT include line feeds or additional annotations not directly required by the core base 64 specification.
+* The JSON encoding MUST use the field names exactly as specified in xref:_overview[xrefstyle=full].
++
+IMPORTANT: Field names in the `signer_payload` data structure (see xref:_overview[xrefstyle=full]) are specified using lower-case letters with underscore characters (commonly referred to as `snake_case`). Field names in the verifiable credential data model are typically specified using lower-case letters with upper-case letters for word breaks (commonly referred to as `camelCase`). A translation between the two styles MUST NOT be performed as it creates the potential for miscommunication.
+
+[#example-c2pa-asset-section]
+.`c2paAsset` entry
+[example]
+====
+[source,json]
+----
+"credentialSubject": {
+  ...
+  "c2paAsset": {
+    ...
+    "referenced_assertions": [
+      {
+        "url": "self#jumbf=c2pa/urn:uuid:F9168C5E-CEB2-4faa-B6BF-329BF39FA1E4/c2pa.assertions/c2pa.hash.data",
+        "hash": "U9Gyz05tmpftkoEYP6XYNsMnUbnS/KcktAg2vv7n1n8="
+      },
+      {
+        "url": "self#jumbf=c2pa/urn:uuid:F9168C5E-CEB2-4faa-B6BF-329BF39FA1E4/c2pa.assertions/c2pa.thumbnail.claim.jpeg",
+        "hash": "G5hfJwYeWTlflxOhmfCO9xDAK52aKQ+YbKNhRZeq92c="
+      },
+      {
+        "url": "self#jumbf=c2pa/urn:uuid:F9168C5E-CEB2-4faa-B6BF-329BF39FA1E4/c2pa.assertions/c2pa.ingredient.v2",
+        "hash": "Yzag4o5jO4xPyfANVtw7ETlbFSWZNfeM78qbSi8Abkk="
+      }
+    ],
+    "sig_type": "cawg.identity_claims_aggregation"
+    ...
+  }
+  ...
+}
+----
+====
+
+===== Credential status (revocation)
+
+An _<<_identity_claims_aggregator,identity claims aggregator>>_ SHOULD allow for an *<<_identity_claims_aggregation,identity claims aggregation>>* claim to be revoked by adding a `credentialStatus` section to the credential as described in link:++https://www.w3.org/TR/vc-data-model/#status++[§4.9, Status], of the Verifiable credentials data model, and subject to the following recommendations:
+
+* At least one entry SHOULD have its `statusPurpose` field set to `revocation`.
+* Status list credentials SHOULD be expressed using a link:https://www.w3.org/TR/vc-bitstring-status-list/[W3C bitstring status list], version 1.0 or later. Other mechanisms SHOULD NOT be used because _<<_identity_assertion_consumer,identity assertion consumers>>_ may not be prepared to correctly interpret such status lists.
+
+[#vc-schema]
+===== Schema
+
+The requirements for identity claims aggregation credentials are summarized in a link:https://www.w3.org/TR/vc-json-schema/[verifiable credentials JSON schema] available at `https://cawg.io/identity/1.1/ica/schema/`. The inclusion of the `credentialSchema` property is RECOMMENDED (as shown in the example below) to specify the structure and constraints of the credential’s data.
+
+.Inclusion of credential schema
+[#example-with-schema]
+[example]
+====
+[source,json]
+----
+{
+  ...
+  "credentialSchema": [
+    {
+      "id": "https://cawg.io/identity/1.1/ica/schema/",
+      "type": "JSONSchema"
+    }
+  ]  
+}
+----
+====

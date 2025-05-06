@@ -1,0 +1,119 @@
+=== Conceptual overview
+
+Each *<<_identity_assertion,identity assertion>>* instance allows exactly one _<<_credential_holder,credential holder>>_ to sign a data structure known as `signer_payload`, which among other things includes a list of _<<_c2pa_assertion,C2PA assertions>>_ which will subsequently be included in a _<<C2PA Manifest>>._
+
+The _<<_credential_holder,credential holder’s>>_ signature should generally be construed as reflective of the _<<_named_actor,named actor’s>>_ authorization of or active participation in the production of the the _<<C2PA asset>>_ in which it appears, as described by the specific _<<_c2pa_assertion,C2PA assertions>>_ that are referenced in the *<<_identity_assertion,identity assertion>>.*
+
+Each *<<_identity_assertion,identity assertion>>* contains a `signer_payload` with hashlink references to one or more other _<<_c2pa_assertion,C2PA assertions>>,_ known here as _<<_referenced_assertions,referenced assertions>>,_ and a signature from the _<<_credential_holder,credential holder>>_ over that payload, thus providing a non-repudiable, tamper-evident binding between the _<<_named_actor,named actor>>_ and the list of _<<_referenced_assertions,referenced assertions>>._
+
+The `signer_payload` and corresponding signature from the _<<_credential_holder,credential holder>>_ binds this identity assertion to a specific _<<C2PA asset>>_ and allows the _<<_credential_holder,credential holder>>_ to endorse or make additional statements about the _<<_named_actor,named actor’s>>_ relationship to that _<<C2PA asset>>._
+
+The *<<_identity_assertion,identity assertion>>* should be thought of as a trust signal that is independent from (and thus, in _addition_ to) the trust signal provided by the _<<C2PA claim generator>>_ itself.
+
+[#trust-signal-scope-one-ia]
+.Trust signal scope with one identity assertion
+[example]
+====
+The diagram that follows, with one _<<C2PA Manifest>>_ containing one *<<_identity_assertion,identity assertion>>,* is intended to illustrate the most basic example of the two trust signals available and how they intersect:
+
+.Overview of identity assertion
+image::overview/single-ia-trust-bubbles.drawio.svg[Single identity assertion trust example,width=240,height=400,align="center"]
+
+In this notation, the small blue circles (A1, A2, etc.) are intended to represent any assertion other than an *<<_identity_assertion,identity assertion>>* or _<<_hard_binding,hard binding>>_ assertion. (As examples, any of these could represent an actions assertion, a metadata assertion, or a thumbnail assertion.) The black circle (HB) is used to represent the _<<_hard_binding,hard binding>>_ assertion, which is a required part of a valid _<<C2PA Manifest>>._ The yellow circle demonstrates the limit of *<<_identity_assertion,identity assertion 1’s>>* trust signal. The teal circle demonstrates the limit of the _<<_c2pa_manifest,C2PA Manifest’s>>_ trust signal.
+
+The following diagram shows *<<_identity_assertion,identity assertion 1>>* using the _<<_credential_holder,credential holder’s>>_ signature to seal:
+
+* assertions A1 and A2,
+* the portion of the asset that does not include the _<<C2PA Manifest Store>>_ (via HB), and
+* any other information in `signer_payload`.
+
+.Identity assertion structure
+image::overview/identity-assertion-structure.drawio.svg[Trust model for identity assertion,width=490,height=430,align="center"]
+
+The following diagram shows the _<<C2PA Manifest>>_ using the _<<_claim_generator,claim generator’s>>_ signature to seal:
+
+* assertions A1, A2, and A3,
+* identity assertion 1,
+* the portion of the asset that does not include the _<<C2PA Manifest Store>>_ (via HB), and
+* any other information in the claim data structure.
+
+.C2PA Manifest structure
+image::overview/manifest-structure.drawio.svg[Trust model for C2PA Manifest,width=520,height=470,align="center"]
+====
+
+The *<<_identity_assertion,identity assertion>>* may be repeated any number of times to convey information specific to distinct _<<_named-actor,named actors>>._
+
+[#trust-signal-scope-two-ias]
+.Trust signal scope with two non-overlapping identity assertions
+[example]
+====
+The diagram that follows extends xref:trust-signal-scope-one-ia[xrefstyle=full], by showing how two *<<_identity_assertion,identity assertions>>* could be used to describe distinct assertions attested to by two distinct _<<_named_actor,named actors>>:_
+
+.Two non-overlapping identity assertions
+image::overview/non-overlapping-trust-bubbles.drawio.svg[Two non-overlapping identity assertions example,width=400,height=400,align="center"]
+
+In this example, *<<_identity_assertion,identity assertion 1>>* is using its _<<_credential_holder,credential holder’s>>_ signature to seal:
+
+* assertions A1 and A2,
+* the portion of the asset that does not include the _<<C2PA Manifest Store>>_ (via HB), and
+* any other information in its `signer_payload`.
+
+The yellow circle demonstrates the limit of *<<_identity_assertion,identity assertion 1’s>>* trust signal.
+
+In this example, *<<_identity_assertion,identity assertion 2>>* is using its _<<_credential_holder,credential holder’s>>_ signature to seal:
+
+* assertions A3, A4, and A5,
+* the portion of the asset that does not include the _<<C2PA Manifest Store>>_ (via HB), and
+* any other information in its `signer_payload`.
+
+The dark blue circle demonstrates the limit of *<<_identity_assertion,identity assertion 2’s>>* trust signal.
+
+Separately, the _<<C2PA Manifest>>_ uses the _<<_claim_generator,claim generator’s>>_ signature to seal:
+
+* assertions A1, A2, A3, A4, A5, and A6,
+* identity assertion 1,
+* identity assertion 2,
+* the portion of the asset that does not include the _<<C2PA Manifest Store>>_ (via HB), and
+* any other information in the claim data structure.
+
+The teal circle demonstrates the limit of the _<<_c2pa_manifest,C2PA Manifest’s>>_ trust signal.
+====
+
+An *<<_identity_assertion,identity assertion>>* may reference one or more other *<<_identity_assertion,identity assertions>>.* As an example, this might be used to convey an organizational endorsement of an individual creator’s credential.
+
+[#trust-signal-scope-nested-ias]
+.Trust signal scope with nested identity assertions
+[example]
+====
+The diagram that follows modifies xref:trust-signal-scope-two-ias[xrefstyle=full], by showing how one *<<_identity_assertion,identity assertion>>* could be used to attest to the validity of another *<<_identity_assertion,identity assertion>>:*
+
+.Nested identity assertions
+image::overview/nested-trust-bubbles.drawio.svg[Nested identity assertions example,width=400,height=400,align="center"]
+
+In this example, *<<_identity_assertion,identity assertion 1>>* is using its _<<_credential_holder,credential holder’s>>_ signature to seal:
+
+* assertions A1 and A2,
+* the portion of the asset that does not include the _<<C2PA Manifest Store>>_ (via HB), and
+* any other information in its `signer_payload`.
+
+The yellow circle demonstrates the limit of *<<_identity_assertion,identity assertion 1’s>>* trust signal.
+
+In this example, *<<_identity_assertion,identity assertion 2>>* is using its _<<_credential_holder,credential holder’s>>_ signature to seal:
+
+* assertions A1, A2, A3, A4, and A5,
+* identity assertion 1,
+* the portion of the asset that does not include the _<<C2PA Manifest Store>>_ (via HB), and
+* any other information in its `signer_payload`.
+
+The dark blue circle demonstrates the limit of *<<_identity_assertion,identity assertion 2’s>>* trust signal, which completely overlaps the limit of *<<_identity_assertion,identity assertion 1’s>>* trust signal.
+
+Separately, the _<<C2PA Manifest>>_ uses the _<<_claim_generator,claim generator’s>>_ signature to seal:
+
+* assertions A1, A2, A3, A4, A5, and A6,
+* identity assertion 1,
+* identity assertion 2,
+* the portion of the asset that does not include the _<<C2PA Manifest Store>>_ (via HB), and
+* any other information in the claim data structure.
+
+The teal circle demonstrates the limit of the _<<_c2pa_manifest,C2PA Manifest’s>>_ trust signal.
+====

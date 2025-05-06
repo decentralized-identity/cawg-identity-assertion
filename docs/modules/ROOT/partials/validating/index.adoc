@@ -1,0 +1,5 @@
+== Validating the identity assertion
+
+include::validation-method.adoc[]
+
+include::status-codes.adoc[]

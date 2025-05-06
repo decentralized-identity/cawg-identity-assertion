@@ -1,0 +1,50 @@
+=== Interaction with data hash assertion
+
+IMPORTANT: The process described in this section MUST be followed when using a data hash assertion as described by link:++https://c2pa.org/specifications/specifications/2.1/specs/C2PA_Specification.html#_data_hash++[Section 18.5, “Data hash,”] of the C2PA technical specification. This process MAY be followed when using other _<<_hard_binding,hard binding>>_ assertions.
+
+The C2PA technical specification explains the need for pre-computing the _<<_c2pa_asset,C2PA asset’s>>_ final file layout when using a data hash assertion as follows:
+
+> Some asset file formats require file offsets of the C2PA Manifest Store and asset content to be fixed before the manifest is signed, so that _<<_hard_binding,hard bindings>>_ will correctly align with the content they authenticate. Unfortunately, the size of a manifest and its signature cannot be precisely known until after signing, which could cause file offsets to change. For example, in JPEG-1 files, the entire C2PA Manifest Store must appear in the file before the image data, and so its size will affect the file offsets of content being authenticated.
+-- link:++https://c2pa.org/specifications/specifications/2.1/specs/C2PA_Specification.html#_multiple_step_processing++[Section 10.4: “Multiple step processing”]
+
+Similarly, the size of the *<<_identity_assertion,identity assertion>>* cannot be known until its signature is obtained. Changing the size of the *<<_identity_assertion,identity assertion>>* after file layout is completed would invalidate the file offsets contained within the data hash assertion.
+
+In this case, it is necessary to use a _<<_placeholder_assertion,placeholder assertion>>_ to reserve space for the content of the final *<<_identity_assertion,identity assertion>>* (including its signature) which will be created later.
+
+When using a data hash assertion, an _<<_identity_assertion_generator,identity assertion generator>>_ MUST follow the process described in link:++https://c2pa.org/specifications/specifications/2.1/specs/C2PA_Specification.html#_creating_a_claim++[Section 10.3, “Creating a claim,”] and link:++https://c2pa.org/specifications/specifications/2.1/specs/C2PA_Specification.html#_multiple_step_processing++[Section 10.4, “Multiple step processing,”] of the C2PA technical specification with additional steps as described below:
+
+1. link:++https://c2pa.org/specifications/specifications/2.1/specs/C2PA_Specification.html#_creating_assertions++[Section 10.3.1, “Creating assertions.”] Any *<<_identity_assertion,identity assertion>>* that will be added to the claim MUST be represented during this step by an assertion using the same label as the final *<<_identity_assertion,identity assertion>>.* The content of the _<<_placeholder_assertion,placeholder assertion>>_ is unimportant, except that the size in bytes of the _<<_placeholder_assertion,placeholder assertion>>_ MUST be large enough to accommodate the final *<<_identity_assertion,identity assertion>>.*
+2. link:++https://c2pa.org/specifications/specifications/2.1/specs/C2PA_Specification.html#_adding_assertions_and_redactions++[Section 10.3.2.1, “Adding assertions and redactions”]
+3. link:++https://c2pa.org/specifications/specifications/2.1/specs/C2PA_Specification.html#_adding_ingredients++[Section 10.3.2.2, “Adding ingredients”]
+4. link:++https://c2pa.org/specifications/specifications/2.1/specs/C2PA_Specification.html#_connecting_the_signature++[Section 10.3.2.3, “Connecting the signature”]
+5. If using C2PA 1.x process, link:++https://c2pa.org/specifications/specifications/1.4/specs/C2PA_Specification.html#_prepare_the_xmp++[Section 11.4.1, “Prepare the XMP”].
+6. link:++https://c2pa.org/specifications/specifications/2.1/specs/C2PA_Specification.html#_create_content_bindings++[Section 10.4.1, “Create content bindings”]
+7. The list of _<<_referenced_assertions,referenced assertions>>_ (including the _<<_hard_binding,hard binding>>_ assertion) MUST be presented to the _<<_credential_holder,credential holder>>_ for each *<<_identity_assertion,identity assertion>>* to be added, as described in xref:_presenting_the_signer_payload_data_structure_for_signature[xrefstyle=full] by the corresponding _<<_credential_holder,credential holder>>._ Once each signature has been obtained, the _<<_placeholder_assertion,placeholder assertion>>_ content MUST be replaced with the final *<<_identity_assertion,identity assertion>>* content incorporating that signature. The _<<_identity_assertion_generator,identity assertion generator>>_ SHOULD independently validate the signature from the _<<_credential_holder,credential holder>>_ before proceeding.
+8. The remaining steps from link:++https://c2pa.org/specifications/specifications/2.1/specs/C2PA_Specification.html#_multiple_step_processing++[Section 10.4, “Multiple step processing,”] MUST now be completed.
+9. link:++https://c2pa.org/specifications/specifications/2.1/specs/C2PA_Specification.html#_signing_a_claim++[Section 10.3.2.4, “Signing a claim”]
+10. link:++https://c2pa.org/specifications/specifications/2.1/specs/C2PA_Specification.html#_time_stamps++[Section 10.3.2.5, “Time stamps”]
+11. link:++https://c2pa.org/specifications/specifications/2.1/specs/C2PA_Specification.html#_credential_revocation_information++[Section 10.3.2.6, “Credential revocation information”]
+
+These steps are also represented by the following sequence diagram, which is non-normative:
+
+[mermaid,width=100%]
+....
+sequenceDiagram
+    participant G as Identity assertion generator
+    participant H as Credential holder
+
+    G->>G: Create assertions
+    Note right of G: Includes placeholder assertions
+    G->>G: Create content bindings
+    
+    loop For each credential holder
+    G->>H: Request signature over list of referenced assertions
+    H->>G: Provide signature over list of referenced assertions
+    G->>G: Independently verify signature
+    end
+
+    G->>G: Replace placeholder assertions with final identity assertions
+    G->>G: Create claim
+    G->>G: Issue claim generator signature for final claim
+    G->>G: Create manifest store
+....

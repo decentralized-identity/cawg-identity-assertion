@@ -1,0 +1,7 @@
+== Assertion definition
+
+include::overview.adoc[]
+
+include::cbor-schema.adoc[]
+
+include::labels.adoc[]
