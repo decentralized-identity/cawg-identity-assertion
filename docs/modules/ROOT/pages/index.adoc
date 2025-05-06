@@ -9,7 +9,7 @@ The link:https://c2pa.org/specifications/specifications/2.1/specs/C2PA_Specifica
 
 This specification describes a _<<C2PA assertion>>_ referred to here as the *<<_identity_assertion,identity assertion>>* that can be added to a _<<C2PA Manifest>>_ to enable a _<<_credential_holder,credential holder>>_ to prove control over a digital identity and to use that identity to document the _<<_named_actor,named actor’s>>_ role(s) in the _<<C2PA asset>>’s_ lifecycle.
 
-*Version 1.1 Draft 04 May 2025* · xref:_version_history[]
+*Version 1.1 Draft 06 May 2025* · xref:_version_history[]
 
 IMPORTANT: This specification differs from the link:https://cawg.io/identity/1.0/[1.0 version] primarily in the addition of xref:_identity_claims_aggregation[xrefstyle=full].
 
@@ -40,7 +40,7 @@ IMPORTANT: This document references link:https://c2pa.org/specifications/specifi
 
 === Trust over IP technical architecture
 
-The https://trustoverip.org[Trust over IP Foundation (ToIP)] has developed a https://github.com/trustoverip/TechArch/blob/main/spec.md[technical architecture specification] for describing a decentralized digital trust infrastructure.
+The https://trustoverip.org[Trust over IP Foundation (ToIP)] has developed a https://trustoverip.org/wp-content/uploads/ToIP-Technical-Architecture-Specification-V1.0-PR1-2022-11-14.pdf[technical architecture specification] for describing a decentralized digital trust infrastructure.
 
 NOTE: This specification refers to a “public review draft” of the ToIP technical architecture specification published on 14 November 2022 which is current as of the writing of this specification.
 
