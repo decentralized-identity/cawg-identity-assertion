@@ -1,0 +1,301 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cawg.io/schemas/v1/creator-identity-assertion.json",
+  "title": "IdentityClaimsAggregationCredential",
+  "description": "Creator Identity Assertion Credential Schema for usage in JsonSchema",
+  "type": "object",
+  "properties": {
+    "@context": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "format": "uri"
+      },
+      "default": [
+        "https://www.w3.org/2018/credentials/v1",
+        "https://schema.org",
+        "https://cawg.io/identity/1.1/ica/context"
+      ],
+      "description": "Linked Data context for Verifiable Credentials version 1.1 with CAWG extension"
+    },
+    "type" : {
+      "type": "array",
+      "minItems": 2,
+      "items": {
+        "type": "string"
+      },
+      "allOf": [
+        {
+          "contains": { "const": "VerifiableCredential" }
+        },
+        {
+          "contains": { "const": "IdentityClaimsAggregationCredential" }
+        }
+      ]
+    },
+    "issuer": {
+      "oneOf": [
+        {
+          "$ref": "#/definitions/nonEmptyUri"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "id": {
+              "$ref": "#/definitions/nonEmptyUri"
+            },
+            "name": {
+              "$ref": "#/definitions/nonEmptyString"
+            }
+          },
+          "required": ["id"]
+        }
+      ]
+    },
+    "issuanceDate": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "expirationDate": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "credentialSubject": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "#/definitions/nonEmptyUri"
+        },
+        "verifiedIdentities": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "$ref": "#/definitions/nonEmptyString"
+              }
+            },
+            "required": ["type"],
+            "if": {
+              "properties": {
+                "type": {
+                  "const": "cawg.social_media"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "username": {
+                  "$ref": "#/definitions/nonEmptyString"
+                },
+                "uri": {
+                  "$ref": "#/definitions/nonEmptyUri"
+                },
+                "provider": {
+                  "$ref": "#/definitions/identifiableObject"
+                },
+                "verifiedAt": {
+                  "$ref": "#/definitions/nonEmptyString",
+                  "format": "date-time"
+                },
+                "name": {
+                  "$ref": "#/definitions/nonEmptyString"
+                },
+                "method": {
+                  "$ref": "#/definitions/nonEmptyString"
+                }
+              },
+              "required": ["username", "uri", "provider", "verifiedAt"]
+            },
+            "else": {
+              "if": {
+                "properties": {
+                  "type": {
+                    "const": "cawg.crypto_wallet"
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "address": {
+                    "$ref": "#/definitions/nonEmptyString"
+                  },
+                  "provider": {
+                    "$ref": "#/definitions/identifiableObject"
+                  },
+                  "verifiedAt": {
+                    "$ref": "#/definitions/nonEmptyString",
+                    "format": "date-time"
+                  },
+                  "name": {
+                    "$ref": "#/definitions/nonEmptyString"
+                  },
+                  "method": {
+                    "$ref": "#/definitions/nonEmptyString"
+                  }
+                },
+                "required": ["address", "provider", "verifiedAt"]
+              },
+              "else": {
+                "if": {
+                  "properties": {
+                    "type": {
+                      "const": "cawg.document_verification"
+                    }
+                  }
+                },
+                "then": {
+                  "properties": {
+                    "name": {
+                      "$ref": "#/definitions/nonEmptyString"
+                    },
+                    "provider": {
+                      "$ref": "#/definitions/identifiableObject"
+                    },
+                    "verifiedAt": {
+                      "$ref": "#/definitions/nonEmptyString",
+                      "format": "date-time"
+                    },
+                    "method": {
+                      "$ref": "#/definitions/nonEmptyString"
+                    }
+                  },
+                  "required": ["name", "provider", "verifiedAt"]
+                },
+                "else": {
+                  "if": {
+                    "properties": {
+                      "type": {
+                        "const": "cawg.affiliation"
+                      }
+                    }
+                  },
+                  "then": {
+                    "properties": {
+                      "name": {
+                        "$ref": "#/definitions/nonEmptyString"
+                      },
+                      "provider": {
+                        "$ref": "#/definitions/identifiableObject"
+                      },
+                      "verifiedAt": {
+                        "$ref": "#/definitions/nonEmptyString",
+                        "format": "date-time"
+                      },
+                      "method": {
+                        "$ref": "#/definitions/nonEmptyString"
+                      }
+                    },
+                    "required": ["provider", "verifiedAt"]
+                  },
+                  "else": {
+                    "if": {
+                      "properties": {
+                        "type": {
+                          "const": "cawg.web_site"
+                        }
+                      }
+                    },
+                    "then": {
+                      "properties": {
+                        "uri": {
+                          "$ref": "#/definitions/nonEmptyUri"
+                        },
+                        "verifiedAt": {
+                          "$ref": "#/definitions/nonEmptyString",
+                          "format": "date-time"
+                        },
+                        "method": {
+                          "$ref": "#/definitions/nonEmptyString"
+                        }
+                      },
+                      "required": [
+                        "uri",
+                        "verifiedAt"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "c2paAsset": {
+          "type": "object",
+          "minProperties": 1,
+          "properties": {
+            "referenced_assertions": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "object",
+                "properties": {
+                  "url": {
+                    "$ref": "#/definitions/nonEmptyString"
+                  },
+                  "hash": {
+                    "$ref": "#/definitions/nonEmptyString"
+                  },
+                  "alg": {
+                    "$ref": "#/definitions/nonEmptyString"
+                  }
+                },
+                "required": ["hash"]
+              }
+            },
+            "sig_type": {
+              "type": "string"
+            },
+            "role": {
+              "type": "string",
+              "enum": ["cawg.creator", "cawg.contributor", "cawg.editor", "cawg.producer",
+                "cawg.publisher", "cawg.sponsor", "cawg.translator"]
+            },
+            "expected_partial_claim": {
+              "type": "string"
+            },
+            "expected_claim_generator": {
+              "type": "string"
+            },
+            "expected_countersigners": {
+              "type": "string"
+            }
+          },
+          "required": ["referenced_assertions", "sig_type"]
+        }
+      },
+      "required": ["verifiedIdentities", "c2paAsset"]
+    }
+  },
+  "required": ["@context", "type", "issuer", "issuanceDate", "credentialSubject"],
+  "$defs": {
+    "nonEmptyString": {
+      "type": "string",
+      "minLength": 1,
+      "description": "A non-empty string"
+    },
+    "nonEmptyUri": {
+      "type": "string",
+      "minLength": 1,
+      "format": "uri",
+      "description": "A non-empty URI string"
+    },
+    "identifiableObject": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/nonEmptyUri",
+          "description": "The unique identifier URI"
+        },
+        "name": {
+          "$ref": "#/$defs/nonEmptyString",
+          "description": "The name of the object"
+        }
+      },
+      "required": ["name"],
+      "description": "An object with an identifiable URI and name"
+    }
+  }
+}

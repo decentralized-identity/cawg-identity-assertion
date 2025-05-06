@@ -162,3 +162,4 @@ _This section is non-normative._
 *06 May 2025*
 
 * Fix link to Trust Over IP technical architecture document.
+* Add specific schemas for each VC schema version and JSON-LD context.
