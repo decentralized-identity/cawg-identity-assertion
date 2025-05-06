@@ -3,5 +3,5 @@
 
 _This section is non-normative._
 
-This specification is an active working draft.
-If you wish to contribute to its development, please view the link:++https://cawg.io/#_contributing++[CAWG contributing guide].
+This specification has been approved by the Creator Assertions Working Group and is pending link:++https://github.com/decentralized-identity/org/blob/main/work-item-lifecycle.md#74-final-approval++[final approval by DIF’s Steering Committee].
+If you wish to contribute to the development of a future version of this specification, please view the link:++https://cawg.io/#_contributing++[CAWG contributing guide].

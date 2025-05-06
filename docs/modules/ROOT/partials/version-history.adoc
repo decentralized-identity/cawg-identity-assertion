@@ -163,3 +163,4 @@ _This section is non-normative._
 
 * Fix link to Trust Over IP technical architecture document.
 * Add specific schemas for each VC schema version and JSON-LD context.
+* Working group approved as 1.1 final.
