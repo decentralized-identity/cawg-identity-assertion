@@ -7,7 +7,7 @@
 
 include::partial$abstract.adoc[]
 
-*Version 1.1 Working Group Approved 06 May 2025* · xref:_version_history[]
+*Version 1.1 DIF Ratified Specification 16 May 2025* · xref:_version_history[]
 
 IMPORTANT: This specification differs from the link:https://cawg.io/identity/1.0/[1.0 version] primarily in the addition of xref:_identity_claims_aggregation[xrefstyle=full].
 
