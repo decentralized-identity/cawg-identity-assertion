@@ -1,9 +1,10 @@
 === Presenting the `signer_payload` data structure for signature
 
-Prior to presenting the _<<_credential_holder,credential holder>>_ with the `signer_payload` data structure for signature, the _<<_referenced_assertions,referenced assertions>>_ MUST themselves be created.
+Prior to presenting the _<<_credential_holder,credential holder>>_ with the `signer_payload` data structure for signature, any _<<_referenced_assertions,referenced assertions>>_ that are in the same _<<C2PA claim>>_ as the *<<_identity_assertion, identity assertion>>* MUST themselves be created.
 This process is described in link:++https://c2pa.org/specifications/specifications/2.1/specs/C2PA_Specification.html#_creating_assertions++[Section 10.3.1, “Creating assertions,”] of the C2PA technical specification.
 
-The list of _<<_referenced_assertions,referenced assertions>>_ MUST include the same _<<_hard_binding,hard binding>>_ assertion that is present in the _<<C2PA claim>>_ itself.
+The list of _<<_referenced_assertions,referenced assertions>>_ MUST include the _<<_hard_binding,hard binding>>_ assertion that describes the active manifest as described in the opening paragraph of link:++https://spec.c2pa.org/specifications/specifications/2.2/specs/C2PA_Specification.html#_validate_the_assets_content++[Section 15.12, “Validate the asset’s content,”] of the C2PA technical specification.
+
 The list of _<<_referenced_assertions,referenced assertions>>_ SHOULD include any _<<_c2pa_assertion,assertions>>_ necessary to allow the _<<_actor,actor>>_ to accurately describe their relationship to the content.
 For example, a `c2pa.actions` assertion could be referenced to attest that the _<<_actor,actor>>_ performed those specific actions.
 
