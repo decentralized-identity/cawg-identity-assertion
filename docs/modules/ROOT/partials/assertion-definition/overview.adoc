@@ -38,7 +38,7 @@ If this occurs, these assertions SHALL be given unique labels as described by li
 The list of _<<_referenced_assertions,referenced assertions>>_ contained in `signer_payload.referenced_assertions` is subject to the following requirements:
 
 * For each assertion listed, an assertion with the same `url`, `alg`, and `hash` values MUST also be listed in the `created_assertions`, `gathered_assertions`, or `assertions` field of either:
-** the same _<<C2PA claim>>_ in which the *<<_identity_assertion,identity assertion>>* appears.
+** the same _<<C2PA claim>>_ in which the *<<_identity_assertion,identity assertion>>* appears, or
 ** any _<<C2PA claim>>_ which can be found by recursively tracing the ingredient manifests (as described by link:++https://spec.c2pa.org/specifications/specifications/2.2/specs/C2PA_Specification.html#ingredient_assertion++[Section 18.15, “Ingredient manifests,”] of the C2PA technical specification) of the _<<C2PA claim>>_ in which the *<<_identity_assertion,identity assertion>>* appears.
 +
 NOTE: The `assertions` field appears only in version 1.x of the C2PA technical specification.
