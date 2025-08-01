@@ -1,0 +1,214 @@
+/* CAWG home page customizations */
+body.home .nav-container {
+  display: none;
+}
+
+body.home .tagline-large {
+  margin: 4.2em 0 1em;
+  font-size: 250%;
+  font-weight: 900;
+  line-height: 1.2em;
+  hyphens: none;
+}
+
+body.home .tagline-small {
+  font-size: 120%;
+  max-width: 35rem;
+  hyphens: none;
+}
+
+body.home article.doc {
+  max-width: 90vw;
+  min-height: 80vh;
+}
+
+body.home article.doc div.feature-flex {
+  display: flex;
+  gap: 2rem;
+  align-items: flex-start;
+}
+
+body.home article.doc div.feature-flex div.feature-text {
+  flex: 1;
+  margin-left: 4em;
+  min-width: 0; /* Prevents flex item from overflowing */
+  max-width: 40rem;
+}
+
+body.home article.doc div.feature-flex div.feature-image {
+  flex: 0 0 auto;
+  margin-top: 6em;
+  max-width: 50%;
+}
+
+/* Responsive behavior - stack on smaller screens */
+@media (max-width: 768px) {
+  body.home article.doc div.feature-flex {
+    flex-direction: column;
+  }
+  
+  body.home article.doc div.feature-flex div.feature-image {
+    max-width: 100%;
+  }
+}
+
+article.doc div.home-nav {
+  text-align: center;
+  font-size: 130%;
+  margin: 5em 0;
+  color: #666;
+}
+
+article.doc div.home-nav a {
+  border-left: 1px solid #ccc;
+  color: black;
+  font-weight: 600;
+  margin: 0 .75em 0 0;
+  padding: .25em 0 .25em .75em;
+}
+
+article.doc div.home-nav a:first-of-type {
+  border-left: none;
+}
+
+/* Pages with the cawg-logo style have a large background image of the logo. */
+body.cawg-logo::before {
+  content: "";
+  position: absolute;
+  top: 5rem;
+  left: 1.5rem;
+  width: 450px;
+  height: 450px;
+  background-image: url(../img/cawg-logo-black.svg);
+  background-size: 450px 450px;
+  background-position: top left;
+  background-repeat: no-repeat;
+  opacity: 0.05;
+  z-index: -1;
+}
+
+/* Add a style named -title to remove title. Currently used on main page. */
+body.-title h1.page {
+  display: none;
+}
+
+/*
+  Hide left-navbar (but consume space for it) on pages with -left-nav style
+  and all meeting notes pages.
+*/
+body.-left-nav .nav-container,
+body.module-meeting-notes .nav-container {
+  visibility: hidden;
+}
+
+/* Customizations for top-right navigation. */
+.navbar-end .navbar-item {
+  margin-top: 0.55em;
+}
+
+.navbar-item.navbar-item-home,
+.navbar-item.navbar-item-home:hover {
+  padding-left: 3em;
+  background: url(../img/home-white.svg) no-repeat !important;
+  background-position: left 1em center !important;
+  background-size: 22% !important;
+}
+
+.navbar-item.navbar-item-home:hover {
+  background-color: black !important;
+}
+
+.nav-panel-explore .context {
+  display: none; /* CAWG override from display: flex; */
+}
+
+.toolbar {
+  display: none; /* CAWG override from display: flex; */
+}
+
+/* Customize presentation of code snippets. */
+code {
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background: none;
+}
+
+pre code {
+  border: none;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+/* Tweak rendering of headers. */
+.doc h1,
+.doc h2,
+.doc h3,
+.doc h4,
+.doc h5,
+.doc h6 {
+  margin: 1rem 0; /* CAWG: Was 1rem 0 0 */
+}
+
+.doc h2 { /* CAWG: Was .doc h2:not(.discrete) */
+  border-bottom: 1px solid #e1e1e1;
+  margin-left: -1rem;
+  margin-right: -1rem;
+  padding: 0.4rem 1rem 0.1rem;
+}
+
+.doc h3:not(.discrete),
+.doc h4:not(.discrete),
+.doc h5:not(.discrete) { /* CAWG: Added h5 to this list */
+  font-weight: 600;
+}
+
+.doc h5 {
+  font-size: 95%; /* CAWG: Override browser default style sheet */
+}
+
+.doc h6 {
+  font-size: 90%; /* CAWG: Override browser default style sheet */
+  font-weight: 600;
+  color: #555;
+}
+
+/* Customize presentation of examples. */
+.doc .exampleblock > .content,
+.doc details.result > .content {
+  padding: 1rem 1rem 0.75rem;
+  background: #e1e1e1;
+  border-radius: 0.5rem;
+  border: none !important;
+  width: 100%;
+  word-wrap: anywhere;
+}
+
+/* Customize header to add DIF and CAWG logos. */
+.navbar-brand .navbar-dif-logo {
+  background: url(../img/dif-logo-white.png) no-repeat left;
+  background-size: 82%;
+  align-self: center;
+  padding: 0 0 0 4.2em;
+  border-right: 1px solid #ccc;
+  margin-right: 0.75em;
+  height: 2em;
+  font-size: 122%;
+  flex-wrap: wrap;
+  line-height: 1;
+}
+
+.navbar-brand .navbar-item {
+  background: url(../img/cawg-logo-white.svg) no-repeat left;
+  align-self: center;
+  color: #fff;
+  padding: 6px 0 0 2.2em;
+  height: 4em;
+  font-size: 122%;
+  flex-wrap: wrap;
+  line-height: 1;
+}
+
+.navbar-brand .navbar-item a { /* CAWG: was .navbar-brand .navbar-item:first-child a */
+  color: inherit;
+  word-wrap: normal;
+}

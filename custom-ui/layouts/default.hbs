@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+{{> head defaultPageTitle='Untitled'}}
+  </head>
+  <!-- CAWG customization adds module-{{page.module}} -->
+  <body class="article{{#with (or page.attributes.role page.role)}} {{{this}}}{{/with}} module-{{page.module}}">
+{{> header}}
+{{> body}}
+{{> footer}}
+  </body>
+</html>
