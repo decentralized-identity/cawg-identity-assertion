@@ -46,6 +46,9 @@ The evaluation in xref:_trust_scenarios_in_identity_assertion[xrefstyle=full] co
 | `cawg.identity.hard_binding_missing`
 | The *<<_identity_assertion,identity assertion>>* does not reference a _<<_hard_binding,hard binding>>_ assertion.
 
+| `cawg.identity.hard_binding_incorrect`
+| The *<<_identity_assertion,identity assertion>>* does not reference the correct _<<_hard_binding,hard binding>>_ assertion.
+
 | `cawg.identity.sig_type.unknown`
 | The `signer_payload.sig_type` of the *<<_identity_assertion,identity assertion>>* is not recognized.
 
