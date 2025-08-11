@@ -1,0 +1,78 @@
+{
+  "@context": [
+    "https://www.w3.org/ns/credentials/v2",
+    "https://cawg.io/identity/1.1/ica/context/"
+  ],
+  "type": [
+    "VerifiableCredential",
+    "IdentityClaimsAggregationCredential"
+  ],
+  "issuer": "did:web:connected-identities.identity.adobe.com",
+  "validFrom": "2024-05-27T11:40:40Z",
+  "credentialSubject": {
+    "id": "did:web:connected-identities.identity.adobe.com:user:jsadkfnaksdnj",    
+    "verifiedIdentities": [
+      {
+        "name": "First-Name Last-Name",
+        "type": "cawg.document_verification",
+        "provider": {
+          "id": "https://example-id-verifier.com",
+          "name": "Example ID Verifier"
+        },
+        "verifiedAt": "2024-07-26T22:30:15Z"
+      },
+      {
+        "type": "cawg.affiliation",
+        "provider": {
+          "id": "https://example-affiliated-organization.com",
+          "name": "Example Affiliated Organization"
+        },
+        "verifiedAt": "2024-07-26T22:29:57Z"
+      },
+      {
+        "type": "cawg.social_media",
+        "name": "Silly Cats 929",
+        "username": "username",
+        "uri": "https://example-social-network.com/username",
+        "provider": {
+          "id": "https://example-social-network.com",
+          "name": "Example Social Network"
+        },
+        "verifiedAt": "2024-05-27T08:40:39.569856Z"
+      },
+      {
+        "type": "cawg.crypto_wallet",
+        "username": "username",
+        "uri": "https://example-crypto-wallet.com/username",
+        "provider": {
+          "id": "https://example-crypto-wallet.com",
+          "name": "Example Crypto Wallet"
+        },
+        "verifiedAt": "2024-05-27T08:40:39.569856Z"
+      }
+    ],
+    "c2paAsset": {
+      "referenced_assertions": [
+        {
+          "url": "self#jumbf=c2pa/urn:uuid:F9168C5E-CEB2-4faa-B6BF-329BF39FA1E4/c2pa.assertions/c2pa.hash.data",
+          "hash": "U9Gyz05tmpftkoEYP6XYNsMnUbnS/KcktAg2vv7n1n8="
+        },
+        {
+          "url": "self#jumbf=c2pa/urn:uuid:F9168C5E-CEB2-4faa-B6BF-329BF39FA1E4/c2pa.assertions/c2pa.thumbnail.claim.jpeg",
+          "hash": "G5hfJwYeWTlflxOhmfCO9xDAK52aKQ+YbKNhRZeq92c="
+        },
+        {
+          "url": "self#jumbf=c2pa/urn:uuid:F9168C5E-CEB2-4faa-B6BF-329BF39FA1E4/c2pa.assertions/c2pa.ingredient.v2",
+          "hash": "Yzag4o5jO4xPyfANVtw7ETlbFSWZNfeM78qbSi8Abkk="
+        }
+      ],
+      "sig_type": "cawg.identity_claims_aggregation"
+    }
+  },
+  "credentialSchema": [
+    {
+      "id": "https://cawg.io/identity/1.1/ica/schema/vc2.0/",
+      "type": "JSONSchema"
+    }
+  ]  
+}
