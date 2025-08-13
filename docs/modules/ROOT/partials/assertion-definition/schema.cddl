@@ -8,7 +8,7 @@ identity = {
 signer-payload-map = {
   "referenced_assertions": [1* $hashed-uri-map],
   "sig_type": tstr .size (1..max-tstr-length), ; a string identifying the data type of the signature field
-  ? "role": [1* tstr .size (1..max-tstr-length)], ; one or more strings defining the named actor’s relationship(s) to this C2PA asset
+  ? "role": [1* (tstr .size (1..max-tstr-length))], ; one or more strings defining the named actor’s relationship(s) to this C2PA asset
   ? "expected_partial_claim": $hash-map, ; hash of expected partial claim
   ? "expected_claim_generator": $hash-map, ; hash of expected claim signer credential
   ? "expected_countersigners": [1* $expected-countersigner-map], ; array of expected other identity assertion descriptions
