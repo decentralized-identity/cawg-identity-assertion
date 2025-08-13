@@ -35,7 +35,7 @@ The evaluation in xref:_trust_scenarios_in_identity_assertion[xrefstyle=full] co
 | The CBOR of the *<<_identity_assertion,identity assertion>>* is not valid.
 
 | `cawg.identity.assertion.mismatch`
-| The *<<_identity_assertion,identity assertion>>* contains an assertion reference that could not be found in the _<<C2PA claim>>._
+| The *<<_identity_assertion,identity assertion>>* contains an assertion reference that could not be found in the _<<C2PA claim>>_ or any ingredient’s claim.
 
 | `cawg.identity.assertion.duplicate`
 | The *<<_identity_assertion,identity assertion>>* contains one or more duplicate assertion references.
