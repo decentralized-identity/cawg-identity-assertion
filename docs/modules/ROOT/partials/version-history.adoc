@@ -6,3 +6,7 @@ _This section is non-normative._
 *31 July 2025*
 
 * Started 1.2-draft version of this specification, derived from the xref:1.1@ROOT:index.adoc[1.1 version of this specification]. (xref:1.1@ROOT:index.adoc#_version_history[Version history])
+
+*13 August 2025*
+
+* Fix an incorrect CDDL definition. Add lint tools to prevent further such errors.

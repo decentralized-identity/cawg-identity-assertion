@@ -4,31 +4,7 @@ The schema for this type is defined by the `identity` rule in the following http
 
 [source,cddl]
 ----
-identity = {
-  "signer_payload": $signer-payload-map, ; content to be signed by credential holder
-  "signature": bstr, ; byte string of the signature
-  "pad1": bstr, ; byte string filled with binary `0x00` values used for filling up space
-  ? "pad2": bstr, ; optional byte string filled with binary `0x00` values used for filling up space
-}
-
-signer-payload-map = {
-  "referenced_assertions": [1* $hashed-uri-map],
-  "sig_type": tstr .size (1..max-tstr-length), ; a string identifying the data type of the signature field
-  ? "role": [1* tstr .size (1..max-tstr-length)], ; one or more strings defining the named actor’s relationship(s) to this C2PA asset
-  ? "expected_partial_claim": $hash-map, ; hash of expected partial claim
-  ? "expected_claim_generator": $hash-map, ; hash of expected claim signer credential
-  ? "expected_countersigners": [1* $expected-countersigner-map], ; array of expected other identity assertion descriptions
-}
-
-hash-map = {
-  "alg": tstr .size (1..max-tstr-length), ; a string identifying the cryptographic hash algorithm used to compute this hash, taken from the C2PA hash algorithm identifier list
-  "hash": bstr, ;  byte string containing the hash value
-}
-
-expected-countersigner-map = {
-  "partial_signer_payload": $signer-payload-map ; signer_payload map from other identity assertion minus any `expected_countersigner` field
-  ? "expected_credentials": $hash-map ; expected identity assertion credentials
-}
+include::schema.cddl[]
 ----
 
 IMPORTANT: Future minor version updates (1.1, 1.2, etc.) to this specification MAY add new fields to the `signer-payload-map` description, provided that such new data members are optional and there is a well-specified default meaning that is compatible with the 1.0 version of this specification.
