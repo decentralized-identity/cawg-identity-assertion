@@ -10,3 +10,7 @@ _This section is non-normative._
 *13 August 2025*
 
 * Fix an incorrect CDDL definition. Add lint tools to prevent further such errors.
+
+*27 August 2025*
+
+* Allow referenced assertions to refer to assertions in ingredient manifests. This makes the identity assertion compatible with C2PA update manifests.
