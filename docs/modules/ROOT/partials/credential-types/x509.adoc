@@ -23,7 +23,7 @@ In each of the above sections, the following changes MUST be applied:
 The `signer_payload` data structure MUST be serialized as described in link:++https://www.rfc-editor.org/rfc/rfc8949.html#name-core-deterministic-encoding++[Section 4.2.1, “Core Deterministic Encoding,”] of RFC 8949: Concise Binary Object Representation.
 The resulting byte string is presented to the _<<_credential_holder,credential holder>>_ for signature.
 * Any reference to the _claim generator_ MUST be replaced with the _<<_actor,actor>>_ whose _X.509 certificate_ is being used for this assertion.
-* The *<<_identity_assertion,identity assertion>>* generator SHALL use a certificate that complies with the trust model described in xref:_trust_model_for_x_509_certificates[xrefstyle=full].
+* The *<<_identity_assertion,identity assertion>>* generator SHALL use an _X.509 certificate_ that complies with the trust model described in xref:_trust_model_for_x_509_certificates[xrefstyle=full].
 
 ==== Validating the COSE signature
 
