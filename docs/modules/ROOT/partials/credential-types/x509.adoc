@@ -43,29 +43,48 @@ In each of the above sections, the following changes MUST be applied:
 
 ==== Trust model for X.509 certificates
 
-The trust model for *<<_identity_assertion,identity assertions>>* using X.509 certificates SHALL be configured in the same manner as stated in link:++https://spec.c2pa.org/specifications/specifications/2.2/specs/C2PA_Specification.html#_trust_model++[Section 14, “Trust model,”] of the C2PA technical specification, except as described in the remainder of this section.
+A validator shall maintain the following information for evaluating CAWG X.509 signers, known as the *CAWG trust list*:
 
-A validator SHALL maintain a trust list, referred to as the *CAWG signers list,* independent from any implementation of the link:++https://spec.c2pa.org/specifications/specifications/2.2/specs/C2PA_Specification.html#_c2pa_signers++[C2PA signers list]. This list SHALL be formed in the same manner as the C2PA signers list, except that:
+* A list of accepted Extended Key Usage (EKU) values. For each accepted EKU value,
+** A list of accepted Certificate Policy (CP) values.
+** A list of X.509 certificate trust anchors.
 
-* The *CAWG signers list* MUST contain the following trust anchors:
-** European Union Trust List (EUTL)
-** Adobe Acrobat Trust List (AATL)
-+
-_(TO DO: Find links for these.)_
-+
-The *CAWG signers list* MUST NOT include the C2PA Trust List by default.
-A validator SHOULD allow a user to configure additional trust anchors.
-
-* The *CAWG signers list* MUST be configured to recognize certificates with the following EKUs:
-** `id-kp-emailProtection` (1.3.6.1.5.5.7.3.4)
-** `id-kp-documentSigning` (1.3.6.1.5.5.7.3.36)
-+
-The *CAWG signers list* SHOULD NOT be configured to recognize the `c2pa-kp-claimSigning` EKU (1.3.6.1.4.1.62558.2.1) by default.
-A validator SHOULD allow a user to configure EKUs.
-
-_(TO DO: Consider referencing https://cabforum.org/uploads/CA-Browser-Forum-SMIMEBR-1.0.11.pdf[CA/B forum requirements for publicly-trusted S/MIME certificates].
-This document is still in draft form, so I’m not sure we can refer to it yet.
-Also, I think we would want to exclude the mailbox-validated use cases.)_
+The list of accepted EKUS MUST include `id-kp-documentSigning` (1.3.6.1.5.5.7.3.36).
+No certificate policy or trust anchors are required for `id-kp-documentSigning` at this time.
 
 The requirements for link:++https://spec.c2pa.org/specifications/specifications/2.2/specs/C2PA_Specification.html#_time_stamping_authorities++[Time stamping authorities] and link:++https://spec.c2pa.org/specifications/specifications/2.2/specs/C2PA_Specification.html#_private_credential_storage++[Private credential storage] are identical to those stated in the C2PA technical standard.
 An implementation MAY share the implementation for these two trust lists between C2PA and CAWG implementations.
+
+[#interim-trust-model]
+===== Interim trust model additions
+
+[IMPORTANT]
+.Time restrictions for this section
+====
+The configuration options described in this section are valid only for *identity assertions* generated on or before 31 March 2027.
+An *identity assertion* generator MUST include a valid time stamp in the C2PA manifest or CAWG identity assertion.
+An *identity assertion* validator MUST be configured to _verify_ *identity assertions* that were valid at the time of issuance regardless of time of validation.
+====
+
+As of this writing (September 2025), the CAWG has not identified a suitable publicly-governed trust infrastructure for document and content signing.
+In order to facilitate the use of CAWG identity assertions before such a trust infrastructure exists, the *CAWG trust list* is extended to include support for S/MIME certificates.
+The requirements for such certificates are a subset of requirements specified by the CA/Browser Forum in https://cabforum.org/uploads/CA-Browser-Forum-SMIMEBR-1.0.11.pdf[Baseline Requirements for the Issuance and Management of Publicly‐Trusted S/MIME Certificates, version 1.0.11].
+
+The *CAWG trust list* MUST be configured to recognize certificates with `id-kp-emailProtection` (1.3.6.1.5.5.7.3.4) for *identity assertions* issued during the validity window described above.
+
+For this EKU, the following certificate policy IDs MUST be accepted:
+
+* Organization-validated Multipurpose (2.23.140.1.5.2.2)
+* Organization-validated Strict (2.23.140.1.5.2.3)
+* Sponsor-validated Multipurpose (2.23.140.1.5.3.2)
+* Sponsor-validated Strict (2.23.140.1.5.3.3)
+* Individual-validated Multipurpose (2.23.140.1.5.4.2)
+* Individual-validated Strict (2.23.140.1.5.4.3)
+
+This list does not include Mailbox-validated or “legacy” certificate purpose OIDs.
+
+For this EKU, the following trust roots must be recognized :
+
+_(TO DO: Verify inventory of publicly available S/MIME trust roots.)_
+
+_(TO DO: Coordinate with IPTC Project Origin to include their designated trust roots.)_
