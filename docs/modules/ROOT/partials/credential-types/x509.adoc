@@ -85,6 +85,9 @@ The *CAWG trust list* MUST be configured to accept any certificate that meets *a
 IMPORTANT: This list does not include Mailbox-validated or “legacy” certificate purpose OIDs.
 3. The certificate chains up to one of the following roots of trust:
 +
-** _(TO DO: Verify inventory of publicly available S/MIME trust roots.)_
-** The https://iptc.org/verified-news-publishers-list/[IPTC Origin Verified News Publishers List]. A PEM-encoded version of this list is available at https://iptc.org/verified-news-publishers-list/verified-news-publishers-list.pem.
+** The https://wiki.mozilla.org/CA[Mozilla Root Store with the Email (S/MIME) Trust Bit Enabled].
+A PEM-encoded version of this list is available at https://ccadb.my.salesforce-sites.com/mozilla/IncludedRootsPEMTxt?TrustBitsInclude=Email.
+** The https://iptc.org/verified-news-publishers-list/[IPTC Origin Verified News Publishers List].
+A PEM-encoded version of this list is available at https://iptc.org/verified-news-publishers-list/verified-news-publishers-list.pem.
+** _TO DO: Are there other publicly-available roots to consider?_
 4. The certificate was valid and not revoked at time of signature.
