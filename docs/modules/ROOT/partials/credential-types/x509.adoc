@@ -62,7 +62,9 @@ An implementation MAY share the implementation for these two trust lists between
 .Time restrictions for this section
 ====
 The configuration options described in this section are valid only for *identity assertions* generated on or before 31 March 2027.
-An *identity assertion* generator MUST include a valid time stamp in the C2PA manifest or CAWG identity assertion.
+
+An *identity assertion* generator MUST include a valid time stamp in the C2PA manifest or CAWG identity assertion as described in link:++https://c2pa.org/specifications/specifications/2.1/specs/C2PA_Specification.html#_time_stamps++[Section 10.3.2.5, “Time-stamps”], except that a v1 time-stamp as defined in link:++https://c2pa.org/specifications/specifications/2.1/specs/C2PA_Specification.html#_choosing_the_payload++[Section 10.3.2.5.2, “Choosing the payload,”] MUST NOT be used.
+
 An *identity assertion* validator MUST be configured to _verify_ *identity assertions* that were valid at the time of issuance regardless of time of validation.
 ====
 
