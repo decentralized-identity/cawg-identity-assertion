@@ -49,7 +49,7 @@ A validator shall maintain the following information for evaluating CAWG X.509 s
 ** A list of accepted Certificate Policy (CP) values.
 ** A list of X.509 certificate trust anchors.
 
-The list of accepted EKUS MUST include `id-kp-documentSigning` (1.3.6.1.5.5.7.3.36).
+The list of accepted EKUs MUST include `id-kp-documentSigning` (1.3.6.1.5.5.7.3.36).
 No certificate policy or trust anchors are required for `id-kp-documentSigning` at this time.
 
 The requirements for link:++https://spec.c2pa.org/specifications/specifications/2.2/specs/C2PA_Specification.html#_time_stamping_authorities++[Time stamping authorities] and link:++https://spec.c2pa.org/specifications/specifications/2.2/specs/C2PA_Specification.html#_private_credential_storage++[Private credential storage] are identical to those stated in the C2PA technical standard.
