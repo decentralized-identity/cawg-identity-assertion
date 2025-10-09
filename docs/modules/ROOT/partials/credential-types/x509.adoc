@@ -69,7 +69,7 @@ An *identity assertion* validator MUST be configured to _verify_ *identity asser
 ====
 
 As of this writing (October 2025), the CAWG has not identified a suitable publicly-governed trust infrastructure for content assertion signing.
-In order to facilitate the use of CAWG identity assertions before such a trust infrastructure exists, the *CAWG trust list* is extended to include support for S/MIME certificates.
+In order to facilitate the use of CAWG identity assertions before fully publicly-governed trust infrastructure that meets all requirements exists, the *CAWG trust list* is extended to include support for S/MIME certificates and specific trust anchor lists able to issue them.
 The requirements for such certificates, stated below, are adapted from requirements specified by the CA/Browser Forum in https://cabforum.org/uploads/CA-Browser-Forum-SMIMEBR-1.0.11.pdf[Baseline Requirements for the Issuance and Management of Publicly‐Trusted S/MIME Certificates, version 1.0.11].
 
 The *CAWG trust list* MUST be configured to accept any certificate that meets *all* of the following requirements when used to sign an *identity assertion* issued during the validity window described above.
