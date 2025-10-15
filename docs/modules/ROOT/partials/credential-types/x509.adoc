@@ -24,6 +24,7 @@ The `signer_payload` data structure MUST be serialized as described in link:++ht
 The resulting byte string is presented to the _<<_credential_holder,credential holder>>_ for signature.
 * Any reference to the _claim generator_ MUST be replaced with the _<<_actor,actor>>_ whose _X.509 certificate_ is being used for this assertion.
 * The *<<_identity_assertion,identity assertion>>* generator SHALL use an _X.509 certificate_ that complies with the trust model described in xref:_trust_model_for_x_509_certificates[xrefstyle=full].
+* A generator MAY choose to rely on the time-stamp that it expects to be added to the C2PA Claim Signature, or as a separate link:++https://spec.c2pa.org/specifications/specifications/2.1/specs/C2PA_Specification.html#time_stamp_manifests++[C2PA Time-stamp Manifest], instead of adding a separate time-stamp to the <<_identity_assertion,identity assertion>> signature.
 
 ==== Validating the COSE signature
 
@@ -40,6 +41,7 @@ In each of the above sections, the following changes MUST be applied:
 * Any reference to the _claim generator_ MUST be replaced with the _<<_actor,actor>>_ whose _X.509 certificate_ is being used for this assertion.
 * A validator MUST NOT issue the status `cawg.identity.trusted` for an *<<_identity_assertion,identity assertion>>* unless the _X.509 certificate_ is found to comply with the trust model as described in xref:_trust_model_for_x_509_certificates[xrefstyle=full].
 * A validator SHALL consider any v1 time-stamp as defined in link:++https://c2pa.org/specifications/specifications/2.1/specs/C2PA_Specification.html#_choosing_the_payload++[Section 10.3.2.5.2, “Choosing the payload”] to be invalid.
+* When validating the certificate of the identity assertion signature, the validator SHOULD use the C2PA Claim Signature link:++https://spec.c2pa.org/specifications/specifications/2.1/specs/C2PA_Specification.html#_time_stamps++[Time-Stamp] or a subsequent link:++https://spec.c2pa.org/specifications/specifications/2.1/specs/C2PA_Specification.html#time_stamp_manifests++[C2PA Time-stamp Manifest] to determine the time of signing, if a Time-stamp is not present in the Identity Assertion signature.
 
 ==== Trust model for X.509 certificates
 
@@ -52,8 +54,7 @@ A validator shall maintain the following information for evaluating CAWG X.509 s
 The list of accepted EKUs MUST include `id-kp-documentSigning` (1.3.6.1.5.5.7.3.36).
 No certificate policy or trust anchors are required for `id-kp-documentSigning` at this time.
 
-The requirements for link:++https://spec.c2pa.org/specifications/specifications/2.2/specs/C2PA_Specification.html#_time_stamping_authorities++[Time stamping authorities] and link:++https://spec.c2pa.org/specifications/specifications/2.2/specs/C2PA_Specification.html#_private_credential_storage++[Private credential storage] are identical to those stated in the C2PA technical standard.
-An implementation MAY share the implementation for these two trust lists between C2PA and CAWG implementations.
+The trust list requirements for link:++https://spec.c2pa.org/specifications/specifications/2.2/specs/C2PA_Specification.html#_time_stamping_authorities++[Time stamping authorities] and link:++https://spec.c2pa.org/specifications/specifications/2.2/specs/C2PA_Specification.html#_private_credential_storage++[Private credential storage] are identical to those stated in the C2PA technical standard. An implementation MAY share these two trust lists between C2PA and CAWG implementations, or may choose to maintain separate lists for CAWG and C2PA signatures.
 
 [#interim-trust-model]
 ===== Interim trust model additions
@@ -68,7 +69,6 @@ An *identity assertion* generator MUST include a valid time stamp in the C2PA ma
 An *identity assertion* validator MUST be configured to _verify_ *identity assertions* that were valid at the time of issuance regardless of time of validation.
 ====
 
-As of this writing (October 2025), the CAWG has not identified a suitable publicly-governed trust infrastructure for content assertion signing.
 In order to facilitate the use of CAWG identity assertions before fully publicly-governed trust infrastructure that meets all requirements exists, the *CAWG trust list* is extended to include support for S/MIME certificates and specific trust anchor lists able to issue them.
 The requirements for such certificates, stated below, are adapted from requirements specified by the CA/Browser Forum in https://cabforum.org/uploads/CA-Browser-Forum-SMIMEBR-1.0.11.pdf[Baseline Requirements for the Issuance and Management of Publicly‐Trusted S/MIME Certificates, version 1.0.11].
 
@@ -91,5 +91,3 @@ IMPORTANT: This list does not include Mailbox-validated or “legacy” certific
 A PEM-encoded version of this list is available at https://ccadb.my.salesforce-sites.com/mozilla/IncludedRootsPEMTxt?TrustBitsInclude=Email.
 ** The https://iptc.org/verified-news-publishers-list/[IPTC Origin Verified News Publishers List].
 A PEM-encoded version of this list is available at https://iptc.org/verified-news-publishers-list/verified-news-publishers-list.pem.
-** _TO DO: Are there other publicly-available roots to consider?_
-4. The certificate was valid and not revoked at time of signature.
