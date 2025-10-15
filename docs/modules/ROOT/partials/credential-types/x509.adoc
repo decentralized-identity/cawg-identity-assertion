@@ -44,4 +44,6 @@ In each of the above sections, the following changes MUST be applied:
 
 A *CAWG identity assertion consumer* MAY wish to display an icon or logo for the _<<_named_actor,named actor>>._
 To locate such a graphic, it SHALL look inside the embedded certificate for a logotype as defined in https://datatracker.ietf.org/doc/rfc9399/[RFC 9399].
-If no logotype is present, the Manifest Consumer MAY use icons or logos from other sources in an implementation-dependent manner.
+If no logotype is found in the certificate, the Manifest Consumer MAY use icons or logos from other sources in an implementation-dependent manner.
+
+IMPORTANT: A *CAWG identity assertion consumer* SHOULD NOT display any icon or logo, regardless of source, unless the certificate status is deemed to be trusted.
