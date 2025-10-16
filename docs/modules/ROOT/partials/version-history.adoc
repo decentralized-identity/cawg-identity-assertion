@@ -14,3 +14,7 @@ _This section is non-normative._
 *27 August 2025*
 
 * Allow referenced assertions to refer to assertions in ingredient manifests. This makes the identity assertion compatible with C2PA update manifests.
+
+*16 October 2025*
+
+* Updated links to point to version 2.2 of C2PA Content Credentials specification.

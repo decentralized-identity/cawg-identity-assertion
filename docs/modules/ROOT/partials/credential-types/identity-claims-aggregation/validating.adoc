@@ -85,7 +85,7 @@ If the signature does not match, the validator MUST issue the failure code `cawg
 
 The validator SHALL inspect the time stamp included in the `COSE_Sign1` data structure if it is present.
 This will be stored in a COSE unprotected header named `sigTst2`.
-If such a header is found, the validator SHALL follow the procedure described in link:++https://c2pa.org/specifications/specifications/2.1/specs/C2PA_Specification.html#_time_stamps++[Section 10.3.2.5, “Time-stamps,”] of the C2PA technical specification.
+If such a header is found, the validator SHALL follow the procedure described in link:++https://spec.c2pa.org/specifications/specifications/2.2/specs/C2PA_Specification.html#_time_stamps++[Section 10.3.2.5, “Time-stamps,”] of the C2PA technical specification.
 If the validation is successful, the validator MUST issue the success code `cawg.ica.time_stamp.validated`.
 If the validation is not successful, the validator MUST issue the status code `cawg.ica.time_stamp.invalid`.
 It MAY continue validation, but MUST NOT use the time stamp in any further validation calculation.
@@ -102,7 +102,7 @@ If this field is missing, the validator MUST issue the failure code `cawg.ica.va
 The validator SHALL compare the effective date of the credential against each of the following values, if available:
 
 * Current date and time
-* Time stamp for the C2PA Manifest as described in link:++https://c2pa.org/specifications/specifications/2.1/specs/C2PA_Specification.html#_time_stamps++[Section 10.3.2.5, “Time-stamps,”] of the C2PA technical specification
+* Time stamp for the C2PA Manifest as described in link:++https://spec.c2pa.org/specifications/specifications/2.2/specs/C2PA_Specification.html#_time_stamps++[Section 10.3.2.5, “Time-stamps,”] of the C2PA technical specification
 * Time stamp for the COSE signature as described in xref:_verifiable_credential_proof_mechanism[xrefstyle=full]
 
 If the credential’s effective date is later than any of the above values, the validator MUST issue the failure code `cawg.ica.valid_from.invalid` but MAY continue validation.
@@ -114,7 +114,7 @@ If this field is missing, the validator SHALL proceed without issuing any status
 If the expiration date is present, the validator SHALL compare the expiration date of the credential against each of the following values, if available:
 
 * Current date and time
-* Time stamp for the C2PA Manifest as described in link:++https://c2pa.org/specifications/specifications/2.1/specs/C2PA_Specification.html#_time_stamps++[Section 10.3.2.5, “Time-stamps,”] of the C2PA technical specification
+* Time stamp for the C2PA Manifest as described in link:++https://spec.c2pa.org/specifications/specifications/2.2/specs/C2PA_Specification.html#_time_stamps++[Section 10.3.2.5, “Time-stamps,”] of the C2PA technical specification
 * Time stamp for the COSE signature as described in xref:_verifiable_credential_proof_mechanism[xrefstyle=full]
 
 If the credential’s expiration date is earlier than any of the above values, the validator MUST issue the failure code `cawg.ica.valid_until.invalid` but MAY continue validation.
