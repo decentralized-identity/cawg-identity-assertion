@@ -24,7 +24,7 @@ The `signer_payload` data structure MUST be serialized as described in link:++ht
 The resulting byte string is presented to the _<<_credential_holder,credential holder>>_ for signature.
 * Any reference to the _claim generator_ MUST be replaced with the _<<_actor,actor>>_ whose _X.509 certificate_ is being used for this assertion.
 * The *<<_identity_assertion,identity assertion>>* generator SHALL use an _X.509 certificate_ that complies with the trust model described in xref:_trust_model_for_x_509_certificates[xrefstyle=full].
-* A generator MAY choose to rely on the time-stamp that it expects to be added to the C2PA Claim Signature, or as a separate link:++https://spec.c2pa.org/specifications/specifications/2.1/specs/C2PA_Specification.html#time_stamp_manifests++[C2PA Time-stamp Manifest], instead of adding a separate time-stamp to the <<_identity_assertion,identity assertion>> signature.
+* A generator MAY choose to rely on the time-stamp that it expects to be added to the C2PA Claim Signature, or as a separate link:++https://spec.c2pa.org/specifications/specifications/2.1/specs/C2PA_Specification.html#time_stamp_manifests++[Time-stamp Manifest] or link:++https://spec.c2pa.org/specifications/specifications/2.2/specs/C2PA_Specification.html#timestamp_assertion++[Time-stamp Assertion], instead of adding a separate time-stamp to the <<_identity_assertion,identity assertion>> signature.
 
 ==== Validating the COSE signature
 
@@ -41,7 +41,7 @@ In each of the above sections, the following changes MUST be applied:
 * Any reference to the _claim generator_ MUST be replaced with the _<<_actor,actor>>_ whose _X.509 certificate_ is being used for this assertion.
 * A validator MUST NOT issue the status `cawg.identity.trusted` for an *<<_identity_assertion,identity assertion>>* unless the _X.509 certificate_ is found to comply with the trust model as described in xref:_trust_model_for_x_509_certificates[xrefstyle=full].
 * A validator SHALL consider any v1 time-stamp as defined in link:++https://c2pa.org/specifications/specifications/2.1/specs/C2PA_Specification.html#_choosing_the_payload++[Section 10.3.2.5.2, “Choosing the payload”] to be invalid.
-* When validating the certificate of the identity assertion signature, the validator SHOULD use the C2PA claim signature link:++https://spec.c2pa.org/specifications/specifications/2.1/specs/C2PA_Specification.html#_time_stamps++[time-stamp] or a subsequent link:++https://spec.c2pa.org/specifications/specifications/2.1/specs/C2PA_Specification.html#time_stamp_manifests++[C2PA Time-stamp Manifest] to determine the time of signing, if a time-stamp is not present in the Identity Assertion signature.
+* When validating the certificate of the identity assertion signature, the validator SHOULD use the C2PA claim signature link:++https://spec.c2pa.org/specifications/specifications/2.1/specs/C2PA_Specification.html#_time_stamps++[time-stamp] or a subsequent link:++https://spec.c2pa.org/specifications/specifications/2.1/specs/C2PA_Specification.html#time_stamp_manifests++[Time-stamp Manifest] or link:++https://spec.c2pa.org/specifications/specifications/2.2/specs/C2PA_Specification.html#timestamp_assertion++[Time-stamp Assertion] to determine the time of signing, if a time-stamp is not present in the Identity Assertion signature.
 
 ==== Trust model for X.509 certificates
 
