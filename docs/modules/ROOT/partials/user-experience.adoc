@@ -5,13 +5,13 @@ _This section is non-normative._
 === Approach
 
 The Creator Assertions Working Group intends, in a forthcoming document, to provide clear recommendations and guidance for implementers of identity-based provenance user experiences (UX).
-Similar to the C2PA’s link:https://c2pa.org/specifications/specifications/2.0/ux/UX_Recommendations.html[User experience guidance for implementers], CAWG UX recommendations aim to define best practices for presenting CAWG identity assertions within a _<<_c2pa_manifest,C2PA Manifest>>._
+Similar to the C2PA’s https://spec.c2pa.org/specifications/specifications/2.0/ux/UX_Recommendations.html[User experience guidance for implementers], CAWG UX recommendations aim to define best practices for presenting CAWG identity assertions within a _<<_c2pa_manifest,C2PA Manifest>>._
 The recommendations strive to describe standard, readily-recognizable experiences that:
 
 * provide _<<named_actors,named actors>>_ a means to express *<<_identity_assertion,identity assertions>>* about a _<<_c2pa_asset,C2PA asset>>,_ and
 * provide _<<_identity_assertion_consumer,identity assertion consumers>>_ with additional information about the _<<_c2pa_asset,C2PA asset>>_ they are experiencing, thereby empowering them to understand who is involved in its creation.
 
-CAWG UX recommendations should adhere to the same principles and levels of information disclosure outlined in the link:https://c2pa.org/specifications/specifications/2.0/ux/UX_Recommendations.html[C2PA UX Guidance].
+CAWG UX recommendations should adhere to the same principles and levels of information disclosure outlined in the https://spec.c2pa.org/specifications/specifications/2.0/ux/UX_Recommendations.html[C2PA UX Guidance].
 
 === Public review, feedback, and evolution
 

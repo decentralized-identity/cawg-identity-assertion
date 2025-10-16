@@ -1,6 +1,6 @@
 === Validation method
 
-IMPORTANT: Validation of the _<<C2PA Manifest>>_ MUST be completed with a finding that the manifest is at least _well-formed_ as per link:++https://c2pa.org/specifications/specifications/2.1/specs/C2PA_Specification.html#_well_formed_manifest++[Section 14.3.2, Well-formed manifest,”] of the C2PA technical specification before a validator attempts to report on the validity of an *<<_identity_assertion,identity assertion>>.*
+IMPORTANT: Validation of the _<<C2PA Manifest>>_ MUST be completed with a finding that the manifest is at least _well-formed_ as per link:++https://spec.c2pa.org/specifications/specifications/2.2/specs/C2PA_Specification.html#_well_formed_manifest++[Section 14.3.2, Well-formed manifest,”] of the C2PA technical specification before a validator attempts to report on the validity of an *<<_identity_assertion,identity assertion>>.*
 
 An *<<_identity_assertion,identity assertion>>* MUST contain a valid CBOR data structure that contains the required fields as documented in the `identity` rule in xref:_cbor_schema[xrefstyle=full].
 The `cawg.identity.cbor.invalid` error code SHALL be used to report assertions that do not follow this rule.
@@ -49,7 +49,7 @@ The `cawg.identity.expected_partial_claim.mismatch` error code SHALL be used to 
 If the *<<_identity_assertion,identity assertion>>* contains an `expected_claim_generator` field in `signer_payload`, it MUST be validated as follows:
 
 . Locate the end-entity signing certificate that is present in the _<<C2PA claim>>_ signature.
-It can be located as described in link:https://c2pa.org/specifications/specifications/2.1/specs/C2PA_Specification.html#x509_certificates[Section 14.6, “X.509 certificates,”] of the C2PA technical specification.
+It can be located as described in link:https://spec.c2pa.org/specifications/specifications/2.2/specs/C2PA_Specification.html#x509_certificates[Section 14.6, “X.509 certificates,”] of the C2PA technical specification.
 . Identify the CBOR bytes specific to this signing certifcate.
 If necessary, any re-serialization should be performed using link:++https://www.rfc-editor.org/rfc/rfc8949.html#name-core-deterministic-encoding++[Section 4.2.1, “Core deterministic encoding,”] of RFC 8949: Concise binary object representation.
 . Compute a hash of the serialized end-entity certificate using the hash algorithm described by `expected_claim_generator.alg`.

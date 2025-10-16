@@ -9,13 +9,13 @@ The `signature` value MUST be a _https://datatracker.ietf.org/doc/html/rfc8152[C
 
 To generate the COSE signature for an *<<_identity_assertion,identity assertion>>,* the steps described in the listed sections of the C2PA technical specification MUST be followed with adaptations as described subsequently:
 
-* link:++https://c2pa.org/specifications/specifications/2.1/specs/C2PA_Specification.html#_signing_a_claim++[Section 10.3.2.4, “Signing a claim”]
-* link:++https://c2pa.org/specifications/specifications/2.1/specs/C2PA_Specification.html#_time_stamps++[Section 10.3.2.5, “Time-stamps”]
+* link:++https://spec.c2pa.org/specifications/specifications/2.2/specs/C2PA_Specification.html#_signing_a_claim++[Section 10.3.2.4, “Signing a claim”]
+* link:++https://spec.c2pa.org/specifications/specifications/2.2/specs/C2PA_Specification.html#_time_stamps++[Section 10.3.2.5, “Time-stamps”]
 +
-IMPORTANT: An *<<_identity_assertion,identity assertion>>* MUST NOT contain a v1 time-stamp as defined in link:++https://c2pa.org/specifications/specifications/2.1/specs/C2PA_Specification.html#_choosing_the_payload++[Section 10.3.2.5.2, “Choosing the payload.”]
-* link:++https://c2pa.org/specifications/specifications/2.1/specs/C2PA_Specification.html#_credential_revocation_information++[Section 10.3.2.6, “Credential revocation information”]
-* link:++https://c2pa.org/specifications/specifications/2.1/specs/C2PA_Specification.html#_hashing++[Section 13.1, “Hashing”]
-* link:++https://c2pa.org/specifications/specifications/2.1/specs/C2PA_Specification.html#_digital_signatures++[Section 13.2, “Digital signatures”]
+IMPORTANT: An *<<_identity_assertion,identity assertion>>* MUST NOT contain a v1 time-stamp as defined in link:++https://spec.c2pa.org/specifications/specifications/2.2/specs/C2PA_Specification.html#_choosing_the_payload++[Section 10.3.2.5.2, “Choosing the payload.”]
+* link:++https://spec.c2pa.org/specifications/specifications/2.2/specs/C2PA_Specification.html#_credential_revocation_information++[Section 10.3.2.6, “Credential revocation information”]
+* link:++https://spec.c2pa.org/specifications/specifications/2.2/specs/C2PA_Specification.html#_hashing++[Section 13.1, “Hashing”]
+* link:++https://spec.c2pa.org/specifications/specifications/2.2/specs/C2PA_Specification.html#_digital_signatures++[Section 13.2, “Digital signatures”]
 
 In each of the above sections, the following changes MUST be applied:
 
@@ -28,14 +28,14 @@ The resulting byte string is presented to the _<<_credential_holder,credential h
 
 To validate the COSE signature for an *<<_identity_assertion,identity assertion>>,* the steps described in the listed sections of the C2PA technical specification MUST be followed with adaptations as described:
 
-* link:++https://c2pa.org/specifications/specifications/2.1/specs/C2PA_Specification.html#_validate_the_signature++[Section 15.5, “Validate the signature.”] Disregard the paragraph that starts with “Retrieve the URI reference.”
+* link:++https://spec.c2pa.org/specifications/specifications/2.2/specs/C2PA_Specification.html#_validate_the_signature++[Section 15.5, “Validate the signature.”] Disregard the paragraph that starts with “Retrieve the URI reference.”
 Instead retrieve the COSE signature from the `signature` field of the *<<_identity_assertion,identity assertion>>.*
-* link:++https://c2pa.org/specifications/specifications/2.1/specs/C2PA_Specification.html#_validate_the_time_stamp++[Section 15.6, “Validate the time-stamp”]
-* link:++https://c2pa.org/specifications/specifications/2.1/specs/C2PA_Specification.html#_validate_the_credential_revocation_information++[Section 15.7, “Validate the credential revocation information”]
+* link:++https://spec.c2pa.org/specifications/specifications/2.2/specs/C2PA_Specification.html#_validate_the_time_stamp++[Section 15.6, “Validate the time-stamp”]
+* link:++https://spec.c2pa.org/specifications/specifications/2.2/specs/C2PA_Specification.html#_validate_the_credential_revocation_information++[Section 15.7, “Validate the credential revocation information”]
 
 In each of the above sections, the following changes MUST be applied:
 
 * Any reference to the _claim_ MUST be replaced with the CBOR serialization of the `signer_payload` field from the *<<_identity_assertion,identity assertion>>.*
 * Any reference to the _claim generator_ MUST be replaced with the _<<_actor,actor>>_ whose _X.509 certificate_ is being used for this assertion.
-* The validator SHALL maintain one or more _<<_trust_list,trust lists>>_ which do not need to be the same as the _<<_trust_list,trust lists>>_ used to validate claim generator signatures as described in link:++https://c2pa.org/specifications/specifications/2.1/specs/C2PA_Specification.html#_c2pa_signers++[Section 14.4.1, “C2PA Signers.”]
-* The validator SHALL consider any v1 time-stamp as defined in link:++https://c2pa.org/specifications/specifications/2.1/specs/C2PA_Specification.html#_choosing_the_payload++[Section 10.3.2.5.2, “Choosing the payload”] to be invalid.
+* The validator SHALL maintain one or more _<<_trust_list,trust lists>>_ which do not need to be the same as the _<<_trust_list,trust lists>>_ used to validate claim generator signatures as described in link:++https://spec.c2pa.org/specifications/specifications/2.2/specs/C2PA_Specification.html#_c2pa_signers++[Section 14.4.1, “C2PA Signers.”]
+* The validator SHALL consider any v1 time-stamp as defined in link:++https://spec.c2pa.org/specifications/specifications/2.2/specs/C2PA_Specification.html#_choosing_the_payload++[Section 10.3.2.5.2, “Choosing the payload”] to be invalid.

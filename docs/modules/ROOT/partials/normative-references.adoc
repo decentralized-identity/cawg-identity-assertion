@@ -1,6 +1,6 @@
 == Normative references
 
-* https://c2pa.org/specifications/specifications/2.1/specs/C2PA_Specification.html[C2PA technical specification, version 2.1]
+* https://spec.c2pa.org/specifications/specifications/2.2/specs/C2PA_Specification.html[C2PA technical specification, version 2.2]
 * https://www.w3.org/TR/vc-data-model/[Verifiable credentials data model, version 1.1]
 * https://www.w3.org/TR/vc-data-model-2.0/[Verifiable credentials data model, version 2.0]
 * https://www.w3.org/TR/did-core/[W3C decentralized identifiers (DIDs), version 1.0]
