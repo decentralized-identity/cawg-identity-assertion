@@ -47,7 +47,7 @@ In each of the above sections, the following changes MUST be applied:
 
 ==== Trust model for X.509 certificates
 
-A validator shall maintain the following information for evaluating CAWG X.509 signers, known as the *CAWG trust list*:
+A validator shall maintain the following information for evaluating CAWG X.509 signers, known as the *CAWG trust configuration*:
 
 * A list of accepted Extended Key Usage (EKU) values. For each accepted EKU value,
 ** A list of accepted Certificate Policy (CP) values.
@@ -66,24 +66,17 @@ An implementation MAY share the implementation for these two trust lists between
 .Time restrictions for this section
 ====
 The configuration options described in this section are valid only for *identity assertions* generated on or before 31 March 2027.
-
-An *identity assertion* generator MUST include a valid time stamp in the <<C2PA Manifest>> or CAWG identity assertion as described in xref:_generating_the_cose_signature[xrefstyle=full] to ensure validity under this section.
-
-If an *identity assertion* validator establishes that either ...
-
-1. the time of validation is on or before 31 March 2027, or
-2. a trusted time stamp establishes that the *identity assertion* was issued on or before 31 March 2027,
-
-\... then the validator MUST evaluate the following conditions, regardless of time of validation.
 ====
 
-The *CAWG trust list* is extended to include support for S/MIME certificates and specific trust anchor lists able to issue them.
-The requirements for such certificates, stated below, are adapted from requirements specified by the CA/Browser Forum in https://cabforum.org/uploads/CA-Browser-Forum-SMIMEBR-1.0.11.pdf[Baseline Requirements for the Issuance and Management of Publicly‐Trusted S/MIME Certificates, version 1.0.11].
+An *identity assertion* generator MUST include a valid time stamp in the <<C2PA Manifest>> or the **identity assertion** as described in xref:_generating_the_cose_signature[xrefstyle=full] to ensure validity under this section.
 
-The *CAWG trust list* MUST be configured to accept any certificate that meets *all* of the following requirements when used to sign an *identity assertion* issued during the validity window described above.
+An *identity assertion* validator MUST evaluate the following conditions, regardless of time of validation.
 
-1. The EKU `id-kp-emailProtection` (1.3.6.1.5.5.7.3.4) is used.
-2. One of the following certificate policy IDs is used:
+An *identity assertion* validator MUST be configured to accept an _X.509 certificate_ as trusted when *all* of the following requirements are met:
+
+1. The time of validation is on or before 31 March 2027 _or_ a trusted time stamp establishes that the *identity assertion* was issued on or before 31 March 2027.
+2. The EKU `id-kp-emailProtection` (1.3.6.1.5.5.7.3.4) is used.
+3. One of the following certificate policy IDs is used:
 +
 ** Organization-validated Multipurpose (2.23.140.1.5.2.2)
 ** Organization-validated Strict (2.23.140.1.5.2.3)
@@ -93,9 +86,11 @@ The *CAWG trust list* MUST be configured to accept any certificate that meets *a
 ** Individual-validated Strict (2.23.140.1.5.4.3)
 +
 IMPORTANT: This list does not include Mailbox-validated or “legacy” certificate purpose OIDs.
-3. The certificate chains up to one of the following roots of trust:
 +
-** The https://wiki.mozilla.org/CA[Mozilla Root Store with the Email (S/MIME) Trust Bit Enabled].
+NOTE: The issuance criteria for such certificates are specified by the CA/Browser Forum in https://cabforum.org/uploads/CA-Browser-Forum-SMIMEBR-1.0.11.pdf[Baseline Requirements for the Issuance and Management of Publicly‐Trusted S/MIME Certificates, version 1.0.11] and may be updated in subsequent versions.
+4. The certificate chains up to one of the following roots of trust:
++
+** The *https://wiki.mozilla.org/CA[Mozilla Root Store with the Email (S/MIME) Trust Bit Enabled].*
 A PEM-encoded version of this list is available at https://ccadb.my.salesforce-sites.com/mozilla/IncludedRootsPEMTxt?TrustBitsInclude=Email.
-** The https://iptc.org/verified-news-publishers-list/[IPTC Origin Verified News Publishers List].
+** The *https://iptc.org/verified-news-publishers-list/[IPTC Origin Verified News Publishers List].*
 A PEM-encoded version of this list is available at https://iptc.org/verified-news-publishers-list/verified-news-publishers-list.pem.
