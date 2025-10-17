@@ -67,7 +67,7 @@ An implementation MAY share the implementation for these two trust lists between
 ====
 The configuration options described in this section are valid only for *identity assertions* generated on or before 31 March 2027.
 
-An *identity assertion* generator MUST include a valid time stamp in the <<C2PA Manifest>> or CAWG identity assertion as described in link:++https://spec.c2pa.org/specifications/specifications/2.2/specs/C2PA_Specification.html#_time_stamps++[Section 10.3.2.5, “Time-stamps”], except that a v1 time stamp as defined in link:++https://spec.c2pa.org/specifications/specifications/2.2/specs/C2PA_Specification.html#_choosing_the_payload++[Section 10.3.2.5.2, “Choosing the payload,”] MUST NOT be used.
+An *identity assertion* generator MUST include a valid time stamp in the <<C2PA Manifest>> or CAWG identity assertion as described in xref:_generating_the_cose_signature[xrefstyle=full] to ensure validity under this section.
 
 If an *identity assertion* validator establishes that either ...
 
@@ -99,5 +99,3 @@ IMPORTANT: This list does not include Mailbox-validated or “legacy” certific
 A PEM-encoded version of this list is available at https://ccadb.my.salesforce-sites.com/mozilla/IncludedRootsPEMTxt?TrustBitsInclude=Email.
 ** The https://iptc.org/verified-news-publishers-list/[IPTC Origin Verified News Publishers List].
 A PEM-encoded version of this list is available at https://iptc.org/verified-news-publishers-list/verified-news-publishers-list.pem.
-** _TO DO: Are there other publicly-available roots to consider?_
-4. The certificate was valid and not revoked at time of signature.
