@@ -8,6 +8,12 @@ A validator SHALL NOT consider any extra fields not documented in the `identity`
 
 NOTE: Extra fields can be read and processed in non-validation scenarios.
 
+:note-caption: Andrew
+NOTE: We'll need to include a validation method for signatures that include no C2PAAssetBinding.
+This process should also ensure that any such signatures are enclosed by a VP (which then has to include a C2PAAssetBinding by definition).
+
+:note-caption: Note
+
 For each entry in `signer_payload.referenced_assertions`, the validator MUST verify that the same entry exists in either the `created_assertions` or `gathered_assertions` entry of the _<<C2PA claim>>._
 (For version 1 claims, the entry must appear in the `assertions` entry.)
 The `cawg.identity.assertion.mismatch` error code SHALL be used to report violations of this rule.

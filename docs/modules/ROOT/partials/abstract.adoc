@@ -1,3 +1,12 @@
+:note-caption: Andrew
+NOTE: There are a lot of changes & notes in this doc. Many of these should be treated as rough (and often outdated) working notes, with the real meat of the changes showing up in the new Verifiable Credential Binding credential type - this should be the focal point of any readthrough. 
+There is still plenty of work to be done, with callouts in that section for some of the key open questions, but this draft should give an idea of how these changes will take shape.
+Of the changes I proposed, this section implements items 1 & 2: the reorganization of verifiable credentials and addition of support for verifiable presentations.
+Items 3 on persistent IDs and delegation (identity hooks) and 5 on support for widely adopted standards like mDL are purely additive to the work here, while item 4 clarifies the interpretation of credentials in a way that imposes new restrictions on implementers.
+As such, we should think carefully about item 4 before approving any version of this spec, while items 3 & 5 can be more comfortably arranged in sequence.
+
+:note-caption: Note
+
 The link:https://c2pa.org/specifications/specifications/2.1/specs/C2PA_Specification.html[*C2PA technical specification*] allows _<<_actor,actors>>_ in a workflow to make cryptographically signed _<<_c2pa_assertion,assertions>>_ about the produced _<<C2PA asset>>._
 This signature is issued by the vendor whose software or hardware was used to create the _<<_c2pa_assertion,C2PA assertions>>_ and the _<<C2PA claim>>,_ which is why it is called the _<<C2PA claim generator>>._
 

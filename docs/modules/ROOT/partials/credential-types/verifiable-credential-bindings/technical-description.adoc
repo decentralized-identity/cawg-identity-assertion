@@ -1,0 +1,425 @@
+==== Verifiable credential binding technical description
+
+A _<<_credential_holder,credential holder>>_ will produce specific data structures enlcosed in a _<<_w3c_verifiable_credential,W3C verifiable credentials>>_ to bind identity attestation cliams to the _<<C2PA asset>>._
+This credential, once signed by the _<<_credential_holder,credential holder's>>_ private key, is the `signature` value for the *<<_identity_assertion,identity assertion>>.*
+The signature value is further described in xref:_verifiable_credential_proof_mechanism[xrefstyle=full].
+
+The `signer_payload.sig_type` value for such an assertion MUST be `cawg.verifiable_credential_binding`.
+
+:note-caption: Andrew
+NOTE: We may need to rework the trust model to better capture the scenarios of verifiable credential binding.
+
+:note-caption: Note
+
+The trust model in this scenario is as described in xref:_named_actor_without_signature_authority[xrefstyle=full].
+
+:note-caption: Andrew
+NOTE: I've introduced a new term - the "outermost credential" - to capture the requirements of an isolated VC as well as a VP, but without imposing those requirements on VCs enveloped by a VP.
+
+:note-caption: Note
+
+A *verifiable credential binding* consists of exactly one _<<_outermost_credential,outermost credential>>_, which may take the form of either a verifiable credential or a verifiable presentation envoloping one or more verifiable credentials.
+
+Each verifiable credential and verifiable presentation in a *verifiable credential binding* MUST meet all requirements described in the W3C Verifiable credentials data model (either https://www.w3.org/TR/vc-data-model/[version 1.1] or https://www.w3.org/TR/vc-data-model-2.0/[version 2.0]) as well as the additional requirements as stated in the remainder of this section.
+
+[#vc-property-context]
+===== Context
+
+The `@context` property MUST be present on each verifiable credential and verfiable presentation and MUST contain either the entry `https://www.w3.org/2018/credentials/v1` _or_ `https://www.w3.org/ns/credentials/v2`, depending on which version of the W3C verifiable credentials data model is being used.
+
+Additionally, the `@context` property of the _<<_outermost_credential,outermost credential>>_ MUST contain the entry `https://cawg.io/identity/1.2/vcb/context/`
+
+:note-caption: Andrew
+NOTE: The abbreviation "vcb" is proposed for use in links to mean a "verifiable credential binding".
+
+:note-caption: Note
+
+[#vc-property-type]
+===== Type
+
+The `type` property MUST be present on each verifiable credential and verfiable presentation and MUST contain at least the following entries depending on the type of credential:
+
+A verifiable presentation's `type` property MUST contain the two entries:
+
+* `VerifiableCredential`
+* `C2PABindingPresentation`
+
+A verifiable credential's `type` property MUST contain the entry `VerifiableCredential`.
+If that verifiable credential contains a `termsOfUse` property of `type` `C2PAAssetBinding`, then the credential's `type` property MUST also contain the entry `C2PABindingCredential`.
+If that verifiable credential contains a verified entity type described in the list xref:vc-credentialsubject-verifiedidentity-type[xrefstyle=full], then the credential's `type` property MUST also contain the entry `CAWGVerifiedIdentities`.
+
+[#vc-property-issuer]
+===== Issuer
+
+:note-caption: Andrew
+NOTE: This link annotation can lead to problems. It's already changed from 4.5 to 4.7 in the spec, so we should ideally avoid numbering.
+In this case, it's because the 2.0 link became the main link, but in general, we should not expect a guarantee as to the consistency of section numbering.
+
+:note-caption: Note
+
+The `issuer` property MUST be present in each verifiable credential and MUST follow the format as specified in link:++https://www.w3.org/TR/vc-data-model/#issuer++[Section 4.5, “Issuer,”] of the Verifiable credentials data model.
+
+[#vp-property-holder]
+===== Holder
+
+The `holder` property MUST be present in any verifiable presentation, it MUST follow the format as specified in the link:++https://www.w3.org/TR/vc-data-model/#verifiable-presentations++[Verifiable Presentation section] of the Verifiable credentials data model, and it MUST match each `credentialSubject.id` field of each verifiable credential enveloped by that verifiable presentation.
+
+[#vp-property-verifiablecredential]
+===== Verifiable Credentials
+
+The `verifiableCredential` property MUST be present in any verifiable presentation, it MUST be a non-empty array, and each entry in the array MUST follow the format as specified in the link:++https://www.w3.org/TR/vc-data-model/#enveloped-verifiable-credentials++[Enveloped Verifiable Credentials] of the Verifiable credentials data model.
+
+[#vc-property-validFrom]
+===== Validity
+
+If using https://www.w3.org/TR/vc-data-model/[Verifiable credentials data model, version 1.1], the `issuanceDate` field MUST exist in each verifiable credential and it MUST express the date and time when the credential becomes valid, as specified in link:++https://www.w3.org/TR/vc-data-model/#issuance-date++[Section 4.6, “Issuance date,”] of the Verifiable credentials data model.
+
+If using https://www.w3.org/TR/vc-data-model-2.0/[Verifiable credentials data model, version 2.0], the `validFrom` field MUST exist in each verifiable credential and it MUST express the date and time when the credential becomes valid, as specified in link:++https://www.w3.org/TR/vc-data-model-2.0/#validity-period++[Section 4.8, “Validity period,”] of the Verifiable credentials data model.
+
+[#vc-property-id]
+===== Credential subject ID
+
+Each object in the `credentialSubject` field may contain an `id` property which, if present, MUST follow the format as specified in the link:++https://www.w3.org/TR/vc-data-model/#identifiers++[Identifiers section] of the Verifiable credentials data model.
+
+IMPORTANT: Due to the requirement in this section that any verifiable presentation enclosing a verifiable credential contain a `holder` property matching each `credentialSubject.id` field of each verifiable credential it encloses, it is only possible to enclose multiple credential subjects within the verifiable presentation when all such credential subjects share the same `id` value.
+
+:note-caption: Andrew
+NOTE: This callout above is a good place to mention the purpose of delegation, which can be used to bind credential subjects of different `id`s to a common assertion.
+
+:note-caption: Note
+
+[#vc-credentialsubject-verifiedidentity-type]
+====== Verified identity type
+
+:note-caption: Andrew
+NOTE: I'd like to still support this structure of verified identities (though flattened into the credential subject), but also not to require credential subject information in this format.
+
+:note-caption: Note
+
+The `credentialSubject` property MUST be either a single object or a non-empty array of such objects.
+
+If a verifiable credential includes the entry `CAWGVerifiedIdentities` in its `type` property, then every entry in the `credentialSubject` property MUST meet all of the requirements in the remainder of this subsection. 
+
+IMPORTANT: Verifiable credentials without the entry `CAWGVerifiedIdentities` in their `type` property can still be included in a *verifiable credential binding*, and do not need to meet the requirements of this subsection relating to the `CAWGVerifiedIdentities` type.
+
+.Example:
+[source,json]
+----
+"credentialSubject": [
+    {
+        "name": "First-Name Last-Name",
+        "type": "cawg.document_verification",
+        "provider": {
+        "id": "https://example-id-verifier.com",
+        "name": "Example ID Verifier",
+        },
+        "verifiedAt": "2024-07-26T22:30:15Z"
+    },
+    {
+        "type": "cawg.web_site",
+        "uri": "named-actor-site.example",
+        "verifiedAt": "2024-09-25T22:13:35Z"
+    },
+    {
+        "type": "cawg.affiliation",
+        "provider": {
+        "id": "https://example-affiliated-organization.com",
+        "name": "Example Affiliated Organization",
+        },
+        "verifiedAt": "2024-07-26T22:29:57Z"
+    },
+    {
+        "type": "cawg.social_media",
+        "name": "Silly Cats 929",
+        "username": "username",
+        "uri": "https://example-social-network.com/username",
+        "provider": {
+        "id": "https://example-social-network.com",
+        "name": "Example Social Network"
+        },
+        "verifiedAt": "2024-05-27T08:40:39.569856Z"
+    },
+    {
+        "type": "cawg.crypto_wallet",
+        "address": "fa64ef445f994138bdeb9baac6ce1e16",
+        "uri": "https://example-crypto-wallet.com/fa64ef445f994138bdeb9baac6ce1e16",
+        "provider": {
+        "id": "https://example-crypto-wallet.com",
+        "name": "Example Crypto Wallet"
+        },
+        "verifiedAt": "2024-05-27T08:40:39.569856Z"
+    }
+]
+----
+
+[#vc-credentialsubject-verifiedidentity-type]
+====== Verified identity type
+
+The `credentialSubject.type` property MUST be present and MUST be a non-empty string that defines the type of verification that was performed by the _<<_identity_provider,identity provider>>._
+This specification defines the following values which _<<_identity_assertion_consumer,identity assertion consumers>>_ SHOULD be prepared to accept:
+
+[width="100%",cols="4,10",options="header"]
+|=======================
+| Value
+| Meaning
+
+| `cawg.document_verification`
+| The _<<_identity_provider,identity provider>>_ has verified one or more government-issued identity documents presented by the _<<_named_actor,named actor>>._
+
+| `cawg.web_site`
+| The _<<_named_actor,named actor>>_ has proven control over a specific domain to the _<<_identity_claims_aggregator,identity claims aggregator>>._
+
+| `cawg.affiliation`
+| The _<<_identity_provider,identity provider>>_ is attesting to the _<<_named_actor,named actor’s>>_ membership in an organization.
+This could be a professional organization or an employment relationship.
+
+| `cawg.social_media`
+| The _<<_named_actor,named actor>>_ has demonstrated control over an account (typically a social media account) hosted by the _<<_identity_provider,identity provider>>._
+
+| `cawg.crypto_wallet`
+| The _<<_named_actor,named actor>>_ has demonstrated control over an account (typically a crypto-wallet) hosted by the _<<_identity_provider,identity provider>>._
+
+|=======================
+
+Other string values MAY be used in `credentialSubject.type`, subject to restrictions described in xref:_labels[xrefstyle=full].
+
+[#vc-credentialsubject-verifiedidentity-name]
+====== Display name
+
+The `credentialSubject.name` property MAY be present.
+If present, it MUST NOT be empty and must be a string defining the _<<_named_actor,named actor’s>>_ name as understood by the _<<_identity_provider,identity provider>>._
+
+If the `type` of this verified identity is `cawg.document_verification`, the `credentialSubject.name` property MUST be present and MUST exactly match the name found on the identity documents.
+
+[#vc-credentialsubject-verifiedidentity-username]
+====== User name
+
+The `credentialSubject.username` property MAY be present.
+If present, it MUST be a non-empty text string representing the _<<_named_actor,named actor’s>>_ user name as assigned by the _<<_identity_provider,identity provider>>._
+
+If the `type` of this verified identity is `cawg.social_media`, the `credentialSubject.username` property MUST be present and MUST be the unique alphanumeric string that can be used to identity the _<<_named_actor,named actor>>_ within this service.
+
+[#vc-credentialsubject-verifiedidentity-address]
+====== Address
+
+The `credentialSubject.address` property MAY be present.
+If present, it MUST be a non-empty text string representing the _<<_named_actor,named actor’s>>_ cryptographic address as assigned by the _<<_identity_provider,identity provider>>._
+
+If the `type` of this verified identity is `cawg.crypto_wallet`, the `credentialSubject.address` property MUST be present and MUST be the unique alphanumeric string that can be used to identity the _<<_named_actor,named actor>>_ within this service.
+
+[#vc-credentialsubject-verifiedidentity-uri]
+====== URI
+
+The `credentialSubject.uri` property MAY be present.
+If present, it must be a valid URI which is the primary point of contact for the _<<_named_actor,named actor>>_ as assigned by the _<<_identity_provider,identity provider>>._
+
+If the `type` of this verified identity is `cawg.web_site`, the `credentialSubject.uri` property MUST be present and must be the primary web URI for the _<<_named_actor,named actor’s>>_ web site as validated by the _<<_identity_claims_aggregator,identity claims aggregator>>._
+
+If the `type` of this verified identity is `cawg.social_media`, it is RECOMMENDED that the `credentialSubject.uri` be the primary web URI for the _<<_named_actor,named actor’s>>_ social media account.
+
+IMPORTANT: The presence of the `credentialSubject.uri` property SHOULD NOT be construed as a representation that the entirety of content available at any future time at that URI is attested to by the _<<_named_actor,named actor>>,_ but rather that there was a demonstrable relationship between the _<<_named_actor,named actor>>_ and the URI at the stated time of verification.
+(See xref:vc-credentialsubject-verifiedidentity-verifiedat[].)
+
+[#vc-credentialsubject-verifiedidentity-method]
+====== Identity verification method
+
+The `credentialSubject.method` property is OPTIONAL.
+If present, it MUST be a non-empty string that defines the method by which the _<<_identity_assertion_generator,identity assertion generator>>_ contacted the _<<_identity_provider,identity provider>>_ to obtain the verification.
+This specification defines the following values which _<<_identity_assertion_consumer,identity assertion consumers>>_ SHOULD be prepared to accept:
+
+[width="100%",cols="3,10,4",options="header",stripes=even]
+|=======================
+| Value
+| Meaning
+| Trust anchor
+
+| `cawg.dns_record`
+| The _<<_identity_claims_aggregator,identity claims aggregator>>_ provided unique content to the _<<_named_actor,named actor>>_ to place in a DNS record.
+This content was subsequently verified by the _<<_identity_claims_aggregator,identity claims aggregator>>_.
+
+*Example:* link:https://www.ietf.org/archive/id/draft-ietf-dnsop-domain-verification-techniques-03.html[Domain Control Validation using DNS (IETF Draft)]
+| Self-asserted
+
+| `cawg.uri_file_verification`
+| The _<<_identity_claims_aggregator,identity claims aggregator>>_ provided unique file content to the _<<_named_actor,named actor>>_ to place at the claimed URI.
+This content was subsequently verified by the _<<_identity_claims_aggregator,identity claims aggregator>>_.
+
+*Example:* link:https://docs.digicert.com/en/certcentral/manage-certificates/supported-dcv-methods-for-validating-the-domains-on-ov-ev-tls-ssl-certificate-orders/use-the-http-practical-demonstration-validation-method-to-verify-domain-control.html[Use the HTTP Practical Demonstration DCV method to verify domain control (Digicert)]
+| Self-asserted
+
+| `cawg.email`
+| The _<<_identity_claims_aggregator,identity claims aggregator>>_ sent an e-mail to the claimed domain’s administrative contacts and received an appropriate response to prove control over the domain.
+
+*Example:* link:++https://docs.digicert.com/en/certcentral/manage-certificates/supported-dcv-methods-for-validating-the-domains-on-ov-ev-tls-ssl-certificate-orders/use-the-email-dcv-method-to-verify-domain-control.html++[Use Email verification to verify domain control on an OV or EV TLS certificate (Digicert)]
+| Domain registrar and e-mail provider
+
+| `cawg.uri_meta_tag_verification`
+| The _<<_identity_claims_aggregator,identity claims aggregator>>_ provided unique content to the _<<_named_actor,named actor>>_ to be placed in an HTML `<meta>` tag at the claimed URI.
+This content was subsequently verified by the _<<_identity_claims_aggregator,identity claims aggregator>>_.
+
+*Example:* link:https://support.google.com/webmasters/answer/9008080?visit_id=638690062950474628-2219554616&rd=1#meta_tag_verification&zippy=%2Chtml-tag[Verification method details: HTML tag (Google Support)]
+| Self-asserted
+
+| `cawg.federated_login`
+| The _<<_identity_claims_aggregator,identity claims aggregator>>_ initiated, at the _<<_named_actor,named actor’s>>_ request, a federated log-in to a service operated by an _<<_identity_provider,identity provider>>._
+The _<<_identity_claims_aggregator,identity claims aggregator>>_ received and recorded information about the _<<_named_actor,named actor>>._
+
+*Example:* link:https://datatracker.ietf.org/doc/html/rfc6749[OAuth2]
+| _<<_identity_provider,Identity provider>>_
+
+|=======================
+
+Other string values MAY be used in `credentialSubject.method`, subject to restrictions described in xref:_labels[xrefstyle=full].
+
+The examples provided here are non-normative, but are intended to demonstrate the kind of procedures described by each method type.
+
+[#vc-credentialsubject-verifiedidentity-verifiedat]
+====== Identity verification date
+
+The `credentialSubject.verifiedAt` MUST be present and MUST be a valid date-time as specified by link:https://datatracker.ietf.org/doc/html/rfc3339[RFC 3339].
+It represents the earlier of the following:
+
+* The date and time when the relationship between the _<<_named_actor,named actor>>_ and the _<<_identity_provider,identity provider>>_ was verified by the _<<_identity_assertion_generator,identity assertion generator>>._
+* In the case where the _<<_named_actor,named actor’s>>_ identity was verified by a third party (for example, for document verification), the date and time at which the _<<_named_actor,named actor’s>>_ identity was verified by the third party.
+
+[#vc-credentialsubject-verifiedidentity-provider]
+====== Identity provider details
+
+The `credentialSubject.provider` property MUST be an object and MUST be present.
+It contains details about the _<<_identity_provider,identity provider>>_ and the identity verification process.
+This specification mentions at least two properties that MAY be used to represent the _<<_named_actor,named actor’s>>_ verification details: `id` and `name`.
+
+[#vc-credentialsubject-verifiedidentity-provider-id]
+Identity provider ID::
+The `credentialSubject.provider.id` SHOULD be present.
+If present, it MUST be a valid URI that contains information about the _<<_identity_provider,identity provider>>._
+This SHOULD NOT be confused with any information about the _<<_named_actor,named actor>>_ itself.
+It is RECOMMENDED that this resolve to a xref:_w3c_decentralized_identifier_document[xrefstyle=full] if one is available.
+
+[#vc-credentialsubject-verifiedidentity-provider-name]
+Identity provider name::
+The `credentialSubject.provider.name` MUST be present and MUST be a _<<_natural_language_string,natural language string>>._
+The `credentialSubject.provider.name` property is the name of the _<<_identity_provider,identity provider>>._
+
+===== Binding to C2PA asset
+
+:note-caption: Andrew
+NOTE: This will obviously need to change to be placed in the `termsOfUse` with `C2PAAssetBinding` type.
+There's already a translation process being defined in the serialization here. We should be able to go further:
+- Using the type (e.g. `C2PABindingCredential` or `C2PABindingPresentation`) to signal the appropriate sig_type
+- Translating snake_case to camelCase in an appropriate and predefined way
+- Allowing for delegatedTo to exist & be interpreted
+
+:note-caption: Note
+
+The `termsOfUse` property MUST be present on the _<<_outermost_credential,outermost credential>>_ and it MAY be present on the verifiable credentials envoloped within the _<<_outermost_credential,outermost credential>>_.
+
+Any property within the `termsOfUse` object of a verifiable credential envoloped within the _<<_outermost_credential,outermost credential>>_ MUST meet the following requirements:
+
+* If the value of the property is an array, then each entry in the array MUST either be present in the matching property name within the _<<_outermost_credential,outermost credential>>_ or be present in each enveloped verifiable credential.
+* If the value of the property is not an array, then that value MUST either be present in the matching property name within the _<<_outermost_credential,outermost credential>>_ or be present in each enveloped verifiable credential.
+
+[#binding-termsofuse-type]
+====== Credential binding type
+
+The `termsOfUse.type` property of the _<<_outermost_credential,outermost credential>>_ MUST be `C2PAAssetBinding`. 
+
+Each credential envoloped within the _<<_outermost_credential,outermost credential>>_ that also contains a `termsOfUse` with a `termsOfUse.type` property of `C2PAAssetBinding` MAY be used to create consistency with the `signer_payload` as described below, subject to the following procedures for data aggregation.
+
+[#binding-termsofuse-dataaggregation]
+====== Credential binding data aggregation
+
+When multiple `termsOfUse` properties with `termsOfUse.type` of `C2PAAssetBinding` are present, consider the data from the _<<_outermost_credential,outermost credential>>_ as the first object, and itemize the data from each of the enclosed credentials as the subsequent objects in the order in which they appear.
+
+The following steps SHALL be performed on each property present in any of the `termsOfUse` objects to construct the aggregated `termsOfUse` object:
+
+* If the property name is `termsOfUse.type`, discard the property from the aggregated data.
+* If the property is of array type, begin with the entries from the first object in which it is present, and append entries from subsequent objects, in order, that do not already appear in the aggregated data.
+* In for all other properties, begin with the value from the first object in which it is present, and ensure that all values with that property are identical. The error code `cawg.vcb.binding.mismatch` SHALL be used to report conflicting values under the same property name.
+
+[#binding-termsofuse-payloadconstruction]
+====== Credential binding payload construction
+
+The data object obtained by following the steps from the `termsOfUse` data aggregation MUST match the JSON serialization of the `signer_payload` data structure presented for signature with the following adaptations:
+
+* The `signer_payload.sig_type` property MUST be discarded from the serialization.
+* All CBOR bytestring values in `signer_payload` data structure (for example, `hash` entries in the hashlink data structure) MUST be converted to the corresponding base 64 encoding as specified in link:++https://datatracker.ietf.org/doc/html/rfc4648#section-4++[Section 4, “Base 64 Encoding,”] of RFC 4648.
+The base 64 encoding MUST NOT use the URL-safe variation of base 64.
+The encoding MUST NOT include line feeds or additional annotations not directly required by the core base 64 specification.
+* The JSON encoding MUST convert property names in the `signer_payload` from snake_case to lowerCamelCase by removing underscores and capitalizing the following ASCII letter. The first character MUST remain lowercase, leading/trailing or repeated underscores MUST be discarded, and non-alphabet characters are preserved.
+
+[#example-termsofuse-section]
+.`termsOfUse` entry for a verifiable credential
+[example]
+====
+[source,json]
+----
+"termsOfUse": {
+  ...
+  "type": "C2PABindingCredential",
+  "referenced_assertions": [
+    {
+      "url": "self#jumbf=c2pa/urn:uuid:F9168C5E-CEB2-4faa-B6BF-329BF39FA1E4/c2pa.assertions/c2pa.hash.data",
+      "hash": "U9Gyz05tmpftkoEYP6XYNsMnUbnS/KcktAg2vv7n1n8="
+    },
+    {
+      "url": "self#jumbf=c2pa/urn:uuid:F9168C5E-CEB2-4faa-B6BF-329BF39FA1E4/c2pa.assertions/c2pa.thumbnail.claim.jpeg",
+      "hash": "G5hfJwYeWTlflxOhmfCO9xDAK52aKQ+YbKNhRZeq92c="
+    },
+    {
+      "url": "self#jumbf=c2pa/urn:uuid:F9168C5E-CEB2-4faa-B6BF-329BF39FA1E4/c2pa.assertions/c2pa.ingredient.v2",
+      "hash": "Yzag4o5jO4xPyfANVtw7ETlbFSWZNfeM78qbSi8Abkk="
+    }
+  ],
+  "role": ["cawg.creator"]
+  ...
+}
+----
+====
+
+===== Credential status (revocation)
+
+Each verifiable credential SHOULD allow for revocation by adding a `credentialStatus` section to the credential as described in link:++https://www.w3.org/TR/vc-data-model/#status++[§4.9, Status], of the Verifiable credentials data model, and subject to the following recommendations:
+
+* At least one entry SHOULD have its `statusPurpose` field set to `revocation`.
+* Status list credentials SHOULD be expressed using a link:https://www.w3.org/TR/vc-bitstring-status-list/[W3C bitstring status list], version 1.0 or later.
+Other mechanisms SHOULD NOT be used because _<<_identity_assertion_consumer,identity assertion consumers>>_ may not be prepared to correctly interpret such status lists.
+
+[#vc-schema]
+===== Schema
+
+:note-caption: Andrew
+NOTE: json-ld to be supplied separately and this section to then be updated. We'll want to cover the following situations (not including the possibility of using the CAWGVerifiedIdentities type or not):
+* VC under verifiable credentials data model 1.1
+* VC under verifiable credentials data model 2.0
+* VC under verifiable credentials data model 1.1 when used as an outermost credential
+* VC under verifiable credentials data model 2.0 when used as an outermost credential
+* VP under verifiable credentials data model 1.1
+* VP under verifiable credentials data model 2.0
+
+:note-caption: Note
+
+The requirements for verifiable credential bindings are summarized in a link:https://www.w3.org/TR/vc-json-schema/[verifiable credentials JSON schema] available at:
+
+* `https://cawg.io/identity/1.1/ica/schema/vc1.1/` (when using Verifiable credentials data model 1.1), or
+* `https://cawg.io/identity/1.1/ica/schema/vc2.0/` (when using Verifiable credentials data model 2.0).
+
+The inclusion of the `credentialSchema` property is RECOMMENDED (as shown in the example below) to specify the structure and constraints of the credential’s data.
+
+.Inclusion of credential schema
+[#example-with-schema]
+[example]
+====
+[source,json]
+----
+{
+  ...
+  "credentialSchema": [
+    {
+      "id": "https://cawg.io/identity/1.1/vcb/schema/vc2.0/",
+      "type": "JSONSchema"
+    }
+  ]  
+}
+----
+====

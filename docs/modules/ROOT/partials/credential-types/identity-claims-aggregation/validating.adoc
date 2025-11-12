@@ -145,6 +145,11 @@ If used, the JSON Schema processor must enable the `format` usage.
 
 ===== Verify binding to C2PA asset
 
+:note-caption: Andrew
+NOTE: We may want to perform this validation the other way, since multiple forms of credential (VC, VP, consolidating referenced_assertions) could map to a single signer_payload, but not vice versa.
+
+:note-caption: Note
+
 The validator SHALL take the content of `signer_payload` in the *<<_identity_assertion,identity assertion>>* and perform the transformations from CBOR to JSON as described in xref:_binding_to_c2pa_asset[xrefstyle=full].
 The validator SHALL then compare the transformed `signer_payload` data structure to the `c2paAsset` field contained within the verifiable credential’s `credentialSubject` field.
 If the data structures do not match, the validator MUST issue the failure code `cawg.ica.signer_payload.mismatch` but MAY continue validation.

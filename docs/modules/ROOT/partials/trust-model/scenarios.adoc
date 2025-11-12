@@ -54,6 +54,12 @@ In this scenario, the _<<_credential_holder,credential holder>>_ possesses a cre
 
 In this scenario, the hardware or software implementation that is generating the *<<_identity_assertion,identity assertion>>* MAY request a summary of the _<<_named_actor,named actor’s>>_ credential from the _<<_credential_holder,credential holder>>,_ and gather that information into the *<<_identity_assertion,identity assertion>>,* which it will then sign using its own credentials.
 
+:note-caption: Andrew
+NOTE: Is this scenario actually possible as written? It describes using a VP, which would generally rely on multiple signatures - this is not supported by the current spec. 
+I suppose you could generate this VP without a signed VC, but it's an odd structure.
+
+:note-caption: Note
+
 .Example using W3C verifiable credentials
 [sidebar]
 ****

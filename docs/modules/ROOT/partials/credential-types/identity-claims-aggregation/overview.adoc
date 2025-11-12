@@ -21,10 +21,24 @@ Some of the challenges associated with these identity signals include:
 To facilitate the use of such identity signals, the _<<_named_actor,named actor>>_ may use the services of a third-party intermediary that they trust to gather these signals and to restate them on their behalf.
 
 We call this intermediary an *<<_identity_claims_aggregator,identity claims aggregator>>.*
+
+:note-caption: Andrew
+NOTE: Up to here, everything still holds true about the identity claims aggregators. 
+"It provides a mechanism to create unique, asset-specific credentials binding the collected identity attestation claims to the specific _<<C2PA asset>>_ being described."
+That rewrite is true for both the existing and new role of identity claims aggregators.
+These notes should probably also describe how the identity claims agggregator brings trust to the process through their role as a neutral but trusted third-party.
+
+:note-caption: Note
+
 It performs two important roles:
 
 1. It collects and verifies identity attestation claims from various _<<_identity_provider,identity providers>>_ such as social media sites and ID verification vendors.
 2. When the _<<_named_actor,named actor>>_ creates content, it creates a unique asset-specific credential binding the identity attestation claims collected earlier to the specific _<<C2PA asset>>_ being described.
+
+:note-caption: Andrew
+NOTE: This would now be supported.
+
+:note-caption: Note
 
 IMPORTANT: An *identity claims aggregation* claim does not support a _<<_named_actor,named actor>>_ using their own credential to directly issue their own signature for an *<<_identity assertion,identity assertion>>.*
 This may be added in a future version of this specification.
@@ -32,6 +46,12 @@ This may be added in a future version of this specification.
 The two workflows performed by the _<<_identity_claims_aggregator,identity claims aggregator>>_ are described in the sections below:
 
 ===== Providing identity claims to identity claims aggregator
+
+:note-caption: Andrew
+NOTE: This is still generally accurate, but the aggregator could now provision a credential to the named actor and either keep it in the aggregator's own custody or give it to the user as well.
+I would say we're not really following the identity claims aggregation model anymore. Rather, we're working with identity providers to provision enduring credentials, which may or may not be scoped to a unique C2PA asset, and then we're optionally providing a mechanism to bind and append binding details to existing credentials.
+
+:note-caption: Note
 
 In the first workflow, the _<<_named_actor,named actor>>_ asks the _<<_identity_claims_aggregator,identity claims aggregator>>_ to verify an identity claim.
 The _<<_identity_claims_aggregator,identity claims aggregator>>_ contacts the _<<_identity_provider,identity provider>>_ to verify the identity claim.
@@ -60,6 +80,11 @@ image::identity-claims-aggregation/creating-content.drawio.svg[Creating content 
 This workflow can be repeated any number of times to create new content on behalf of the _<<_named_actor,named actor>>._
 
 ===== Interpreting an identity assertion using identity claims aggregation
+
+:note-caption: Andrew
+NOTE: "from a trustworthy source" is now a bit of a misleading statement, because the anonymous holder's signature is not necessarily a trustworthy source, but still adds value to certain statements. There's also a lot more power (but also complexity) in the interpretation of the credentials. 
+
+:note-caption: Note
 
 At some later time, an _<<_identity_assertion_consumer,identity assertion consumer>>_ will interpret this *<<_identity assertion,identity assertion>>.*
 Assuming that the _<<_identity_assertion,identity assertion>>_ is deemed valid and from a trustworthy source, the content of the assertion should be interpreted as follows:

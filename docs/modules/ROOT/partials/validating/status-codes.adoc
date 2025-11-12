@@ -6,6 +6,13 @@ These follow the format defined by the section titled link:++https://c2pa.org/sp
 The `url` field for a status code MUST always be the label of the *<<_identity_assertion,identity assertion>>.*
 It is omitted from the tables below.
 
+:note-caption: Andrew
+NOTE: We'll need new failure codes to capture the case where a credential without a C2PAAssetBinding fails validation.
+e.g. something like cawg.identity.binding_enclosure_missing.
+Perhaps this will live in the definition of the new assertion types instead though (as mentioned in the Note at the end of this section)
+
+:note-caption: Note
+
 ==== Success codes
 
 [width="100%",cols="4,10",options="header"]

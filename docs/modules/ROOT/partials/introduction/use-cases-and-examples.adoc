@@ -1,8 +1,18 @@
 === Use cases and examples
 
+:note-caption: Andrew
+NOTE: It would be nice to add in some examples where creators can preserve their privacy/anonymity while still benefitting from the assertion, which becomes possible with PR3/4.
+
+:note-caption: Note
+
 The following is a non-exhaustive list of potential and general use cases for the *<<_identity_assertion,identity assertion>>.*
 Some of these are taken from, or built upon, the use cases developed within the link:https://www.originproject.info/[Project Origin Alliance], the link:https://contentauthenticity.org/[Content Authenticity Initiative (CAI)], and the link:https://jpeg.org/jpegtrust/[JPEG Trust] frameworks.
 Each use case will be described using some generic personas to help make the flow clear.
+
+:note-caption: Andrew
+NOTE: I don't understand why it "SHOULD NOT be construed to convey... _attribution_". That seems to be one of the primary purposes of the assertion! There's even discussion of renaming the assertion around attribution. Example 5 is actually called "Attribution for digital creators".
+
+:note-caption: Note
 
 IMPORTANT: The identity assertion SHOULD NOT be construed to convey either _attribution_ or _ownership_ of a _<<C2PA asset>>._
 Attribution, ownership, and rights transfers often take place outside of the digital realm.
@@ -10,6 +20,11 @@ It is outside the scope of this specification to describe such transfers.
 It is possible that some other assertion could convey such information; such an assertion could be included in the set of _<<_referenced_assertions,referenced assertions.>>_
 
 ==== Enhancing clarity around provenance and edits for journalistic work
+
+:note-caption: Andrew
+NOTE: Even this first example doesn't really work well without PR3 on Persistent IDs. As the spec sits today "Anyone viewing these assets can see the identity of the multiple, potentially distinct Alices" because there isn't a good way to prove it's the same Alice all along
+
+:note-caption: Note
 
 A photojournalist Alice uses a Content Credentials-enabled capture device during a newsworthy event she is covering.
 Her capture device is linked to a digital wallet containing her professional credentials and records her identity in each captured asset.

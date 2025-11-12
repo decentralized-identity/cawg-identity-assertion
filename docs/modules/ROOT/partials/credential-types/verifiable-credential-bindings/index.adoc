@@ -1,0 +1,11 @@
+=== Verifiable credential binding
+
+include::overview.adoc[]
+
+include::technical-description.adoc[]
+
+include::example.adoc[]
+
+include::proof-mechanism.adoc[]
+
+include::validating.adoc[]

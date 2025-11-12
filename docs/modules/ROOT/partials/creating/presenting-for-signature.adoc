@@ -3,6 +3,14 @@
 Prior to presenting the _<<_credential_holder,credential holder>>_ with the `signer_payload` data structure for signature, the _<<_referenced_assertions,referenced assertions>>_ MUST themselves be created.
 This process is described in link:++https://c2pa.org/specifications/specifications/2.1/specs/C2PA_Specification.html#_creating_assertions++[Section 10.3.1, “Creating assertions,”] of the C2PA technical specification.
 
+:note-caption: Andrew
+NOTE: I'm not convinced that we've provided enough infrastructure for someone to "attest that the _<<_actor,actor>>_ performed those specific actions". 
+Instead, I would think that the default assumption would be that the actor is attesting to the accuracy of the assertion that the action was performed.
+This is more evidence that we lack specificity in the `role`, which would be a helpful way to differentiate the statment "I took this action" vs. "I attest to the accuracy of this action".
+That's a bit of a weird statement when it comes to actions, but for things like metadata assertions, it becomes an important distinction.
+
+:note-caption: Note
+
 The list of _<<_referenced_assertions,referenced assertions>>_ MUST include the same _<<_hard_binding,hard binding>>_ assertion that is present in the _<<C2PA claim>>_ itself.
 The list of _<<_referenced_assertions,referenced assertions>>_ SHOULD include any _<<_c2pa_assertion,assertions>>_ necessary to allow the _<<_actor,actor>>_ to accurately describe their relationship to the content.
 For example, a `c2pa.actions` assertion could be referenced to attest that the _<<_actor,actor>>_ performed those specific actions.

@@ -2,10 +2,24 @@
 
 The schema for this type is defined by the `identity` rule in the following https://datatracker.ietf.org/doc/html/rfc8610[CDDL definition]:
 
+:note-caption: Andrew
+NOTE: It's conceivable that we could implement all the changes without ever requiring multiple signatures in a single identity assertion. 
+You can always translate the enclosing credential into a valid signer_payload, so what if that's all we articulated, and the rest was in the signautre?
+i.e. if you have a VC and a VP, you aggregate all the info from the VP and place the aggregate object in the credential.
+If you have just a VC, you similarly aggregate all the info. 
+Then it's just a matter of how we validate the signature and interpret the trust signals based on who has enclosed which information in their signature and to what degree you trust that person, which seems fine.
+
+:note-caption: Note
+
 [source,cddl]
 ----
 include::schema.cddl[]
 ----
+
+:note-caption: Andrew
+NOTE: 1.1 is no longer a future minor version.
+
+:note-caption: Note
 
 IMPORTANT: Future minor version updates (1.1, 1.2, etc.) to this specification MAY add new fields to the `signer-payload-map` description, provided that such new data members are optional and there is a well-specified default meaning that is compatible with the 1.0 version of this specification.
 Such updates to the specification SHOULD continue to use the `cawg.identity` assertion label.
