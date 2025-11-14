@@ -88,9 +88,11 @@ An *identity assertion* validator MUST be configured to accept an _X.509 certifi
 IMPORTANT: This list does not include Mailbox-validated or “legacy” certificate purpose OIDs.
 +
 NOTE: The issuance criteria for such certificates are specified by the CA/Browser Forum in https://cabforum.org/uploads/CA-Browser-Forum-SMIMEBR-1.0.11.pdf[Baseline Requirements for the Issuance and Management of Publicly‐Trusted S/MIME Certificates, version 1.0.11] and may be updated in subsequent versions.
-4. The lists below may include both CA and end-entity certificates. The certificate under validation MUST either be directly included in one of these lists, or have a valid chain of trust to a certificate present in one of these lists.
+4. The lists below MAY include both CA and end-entity certificates. The certificate under validation MUST either be directly included in one of these lists, or have a valid chain of trust to a certificate present in one of these lists.
 +
 ** The *https://wiki.mozilla.org/CA[Mozilla Root Store with the Email (S/MIME) Trust Bit Enabled].*
 A PEM-encoded version of this list is available at https://ccadb.my.salesforce-sites.com/mozilla/IncludedRootsPEMTxt?TrustBitsInclude=Email.
 ** The *https://iptc.org/verified-news-publishers-list/[IPTC Origin Verified News Publishers List].*
-A PEM-encoded version of this list is available at https://iptc.org/verified-news-publishers-list/verified-news-publishers-list.pem.
+IPTC publishes separate lists for end-entity certificates and approved trust anchors.
+A PEM-encoded version of the end-entity certificate list is available at https://trust.iptc.org/end-entity-list.pem.
+A PEM-encoded version of the trust anchor list is available at https://trust.iptc.org/anchor-list.pem.
