@@ -44,7 +44,7 @@ In each of the above sections, the following changes MUST be applied:
 * To determine the validity of an _X.509 certificate_ in an *<<_identity_assertion,identity assertion>>* signature, the validator MUST first consider any time stamp contained within the *<<_identity_assertion,identity assertion>>.* If no such time stamp exists, the validator MUST then evaluate the C2PA claim signature’s link:++https://spec.c2pa.org/specifications/specifications/2.2/specs/C2PA_Specification.html#_time_stamps++[time stamp] or a subsequent link:++https://spec.c2pa.org/specifications/specifications/2.2/specs/C2PA_Specification.html#time_stamp_manifests++[time stamp manifest] or link:++https://spec.c2pa.org/specifications/specifications/2.2/specs/C2PA_Specification.html#timestamp_assertion++[time stamp assertion] to determine the time of signing.
 * A validator SHALL consider any v1 time stamp as defined in link:++https://spec.c2pa.org/specifications/specifications/2.2/specs/C2PA_Specification.html#_choosing_the_payload++[Section 10.3.2.5.2, “Choosing the payload”] to be invalid.
 
-=== Display of named actor logo
+==== Display of named actor logo
 
 A *CAWG identity assertion consumer* MAY wish to display an icon or logo for the _<<_named_actor,named actor>>._
 To locate such a graphic, the *CAWG identity assertion consumer* SHALL look inside the embedded end-entity certificate for a logotype as defined in https://datatracker.ietf.org/doc/rfc9399/[RFC 9399].
