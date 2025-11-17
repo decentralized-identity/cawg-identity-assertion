@@ -18,3 +18,7 @@ _This section is non-normative._
 *16 October 2025*
 
 * Updated links to point to version 2.2 of C2PA Content Credentials specification.
+
+*27 November 2025*
+
+* Add trust model guidance for X.509 version of identity assertion.
