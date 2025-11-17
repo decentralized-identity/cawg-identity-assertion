@@ -23,3 +23,4 @@ _This section is non-normative._
 
 * Add trust model guidance for X.509 version of identity assertion.
 * Add guidance for display of named actor logo.
+* Working group approved as 1.2 final.
