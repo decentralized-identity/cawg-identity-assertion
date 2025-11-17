@@ -22,3 +22,4 @@ _This section is non-normative._
 *27 November 2025*
 
 * Add trust model guidance for X.509 version of identity assertion.
+* Add guidance for display of named actor logo.
