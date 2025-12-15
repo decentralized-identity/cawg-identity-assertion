@@ -28,3 +28,4 @@ _This section is non-normative._
 *15 December 2025*
 
 * Rework definition of verifiable identifier.
+* Ratified by DIF Steering Committee.
