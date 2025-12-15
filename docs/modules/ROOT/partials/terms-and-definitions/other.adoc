@@ -2,7 +2,7 @@
 
 ==== Credential holder
 
-The _<<_actor,actor>>_ that has control (specifically signature authority) over a _<<ToIP verifiable identifier>>_ that describes a specific _<<_named_actor,named actor>>._
+The _<<_actor,actor>>_ that has control (specifically signature authority) over a _<<_verifiable_identifier,verifiable identifier>>_ that describes a specific _<<_named_actor,named actor>>._
 
 ==== Credential revocation
 
@@ -39,7 +39,7 @@ This _<<actor,actor>>_ MAY be the _<<identity_assertion_generator,identity asser
 ==== Named actor
 
 The _<<_actor,actor>>_ whose relationship to a _<<C2PA asset>>_ is documented by an *<<_identity_assertion,identity assertion>>.*
-This may also be referred to as a _credential subject_ when identified by the *subject* field of a _<<ToIP verifiable identifier>>._
+This may also be referred to as a _credential subject_ when identified by the *subject* field of a _<<_verifiable_identifier,verifiable identifier>>._
 
 IMPORTANT: A _named actor_ may be any form of _<<_actor,actor>>,_ including an individual human, an organization of humans, or a non-human (software or hardware device).
 
@@ -64,13 +64,6 @@ A placeholder assertion MUST be used when the final file layout of the _<<C2PA a
 
 The set of _<<_c2pa_assertion,C2PA assertions>>_ that are referenced by an *<<_identity_assertion,identity assertion>>* and thus bound to (i.e. authorized by or created by) the _<<_credential_holder,credential holder>>_ named in the *<<_identity_assertion,identity assertion>>.*
 
-==== ToIP verifiable identifier
-
-Any identifier for which an endpoint system is “able to associate, discover and verify the cryptographic keys associated with a ToIP identifier.”
-This satisfies the ToIP design principle that “messages and data structures exchanged between parties should be verifiable as authentic using standard cryptographic algorithms and protocols.”
-
-See link:https://trustoverip.org/permalink/Design-Principles-for-the-ToIP-Stack-V1.0-2022-11-17.pdf[the ToIP technology architecture specification].
-
 ==== Trust
 
 In the context of an *<<_identity_assertion,identity assertion>>,* we define _trust_ as meeting or exceeding the minimum level of confidence an _<<_identity_assertion_consumer,identity assertion consumer>>_ requires over assertions made about the identity of the _<<_named_actor,named actor>>_ and the _<<_named_actor,named actor’s>>_ true intention regarding their attestations via content included in and referenced by the *<<_identity_assertion,identity assertion>>.*
@@ -82,3 +75,7 @@ A list of _<<_actor,actors>>,_ published by an authoritative source that are tru
 Adapted from link:++https://trustoverip.github.io/ctwg-main-glossary/#term:trust-list++[Trust Over IP’s definition of trust list].
 
 A _trust list_ can be considered a simplified form of a link:++https://trustoverip.github.io/ctwg-main-glossary/#term:trust-registry++[trust registry].
+
+==== Verifiable identifier
+
+Any credential for which an independent system is able to associate, discover, and verify the cryptographic keys associated with that credential.
