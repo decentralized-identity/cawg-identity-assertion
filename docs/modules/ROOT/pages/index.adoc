@@ -9,6 +9,12 @@ include::partial$abstract.adoc[]
 
 *Version 1.3 Draft 08 January 2026* · xref:_version_history[]
 
+[IMPORTANT]
+=====
+This is a working draft of an upcoming version of this specification and may be changed without warning.
+Implementors needing a stable specification should instead refer to the xref:1.2@ROOT:index.adoc[1.2 version of this specification].
+=====
+
 include::partial$common/license.adoc[]
 
 include::partial$common/contributing.adoc[]
