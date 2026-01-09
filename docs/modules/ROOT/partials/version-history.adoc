@@ -3,29 +3,6 @@
 
 _This section is non-normative._
 
-*31 July 2025*
+*08 January 2026*
 
-* Started 1.2-draft version of this specification, derived from the xref:1.1@ROOT:index.adoc[1.1 version of this specification]. (xref:1.1@ROOT:index.adoc#_version_history[Version history])
-
-*13 August 2025*
-
-* Fix an incorrect CDDL definition. Add lint tools to prevent further such errors.
-
-*27 August 2025*
-
-* Allow referenced assertions to refer to assertions in ingredient manifests. This makes the identity assertion compatible with C2PA update manifests.
-
-*16 October 2025*
-
-* Updated links to point to version 2.2 of C2PA Content Credentials specification.
-
-*27 November 2025*
-
-* Add trust model guidance for X.509 version of identity assertion.
-* Add guidance for display of named actor logo.
-* Working group approved as 1.2 final.
-
-*15 December 2025*
-
-* Rework definition of verifiable identifier.
-* Ratified by DIF Steering Committee.
+* Started 1.3-draft version of this specification, derived from the xref:1.2@ROOT:index.adoc[1.2 version of this specification]. (xref:1.2@ROOT:index.adoc#_version_history[Version history])
