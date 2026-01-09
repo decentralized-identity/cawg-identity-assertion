@@ -9,8 +9,6 @@ include::partial$abstract.adoc[]
 
 *Version 1.3 Draft 08 January 2026* · xref:_version_history[]
 
-IMPORTANT: This specification differs from the link:https://cawg.io/identity/1.1/[1.1 version] primarily in the addition of xref:_trust_model_for_x_509_certificates[xrefstyle=full].
-
 include::partial$common/license.adoc[]
 
 include::partial$common/contributing.adoc[]
