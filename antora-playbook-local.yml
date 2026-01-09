@@ -10,7 +10,7 @@ content:
     tags:
     - v1.0
     - v1.1-final
-    - v1.2
+    - "1.2"
     start_path: docs
 
 ui:
