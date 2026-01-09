@@ -1,6 +1,6 @@
 === Concepts adapted from C2PA technical specification
 
-The following definitions are adapted from the link:++https://spec.c2pa.org/specifications/specifications/2.2/specs/C2PA_Specification.html#_glossary++[glossary] provided in the C2PA technical specification.
+The following definitions are adapted from the link:++https://spec.c2pa.org/specifications/specifications/2.3/specs/C2PA_Specification.html#_glossary++[glossary] provided in the C2PA technical specification.
 This specification uses the prefix “C2PA” to denote data structures incorporated from that specification.
 
 ==== Actor
@@ -25,7 +25,7 @@ A digitally signed and tamper-evident data structure that references a set of _<
 If any _<<_c2pa_assertion,C2PA assertions>>_ were redacted, then a declaration to that effect is included.
 This data is a part of the _<<C2PA Manifest>>._
 
-See link:++https://spec.c2pa.org/specifications/specifications/2.2/specs/C2PA_Specification.html#_claims++[Section 10, “Claims,”] of the C2PA technical specification.
+See link:++https://spec.c2pa.org/specifications/specifications/2.3/specs/C2PA_Specification.html#_claims++[Section 10, “Claims,”] of the C2PA technical specification.
 
 ==== C2PA claim generator
 
@@ -36,7 +36,7 @@ The non-human (hardware or software) _<<_actor,actor>>_ that generates the _<<C2
 A data structure which represents a statement asserted by an _<<_actor,actor>>_ concerning the _<<C2PA asset>>._
 This data is a part of the _<<C2PA Manifest>>._
 
-See link:++https://spec.c2pa.org/specifications/specifications/2.2/specs/C2PA_Specification.html#_assertions++[Section 6, “Assertions,”] of the C2PA technical specification.
+See link:++https://spec.c2pa.org/specifications/specifications/2.3/specs/C2PA_Specification.html#_assertions++[Section 6, “Assertions,”] of the C2PA technical specification.
 
 ==== C2PA Manifest
 
@@ -45,7 +45,7 @@ A _C2PA Manifest_ is part of a _C2PA Manifest Store._
 
 NOTE: A _C2PA Manifest_ can reference other _C2PA Manifests._
 
-See link:++https://spec.c2pa.org/specifications/specifications/2.2/specs/C2PA_Specification.html#_manifests++[Section 11, “Manifests,”] of the C2PA technical specification.
+See link:++https://spec.c2pa.org/specifications/specifications/2.3/specs/C2PA_Specification.html#_manifests++[Section 11, “Manifests,”] of the C2PA technical specification.
 
 ==== C2PA Manifest Consumer
 
@@ -55,16 +55,16 @@ An _<<_actor,actor>>_ who consumes a _<<_c2pa_asset,C2PA asset>>_ with an associ
 
 A collection of _<<_c2pa_manifest,C2PA Manifests>>,_ which collectively describe the provenance history of a single _<<C2PA asset>>._
 
-See link:++https://spec.c2pa.org/specifications/specifications/2.2/specs/C2PA_Specification.html#_manifest_store++[Section 11.1.4.2, “Manifest Store,”] of the C2PA technical specification.
+See link:++https://spec.c2pa.org/specifications/specifications/2.3/specs/C2PA_Specification.html#_manifest_store++[Section 11.1.4.2, “Manifest Store,”] of the C2PA technical specification.
 
 ==== Content binding
 
 Information that associates digital content to a specific _<<C2PA Manifest>>_ associated with a specific _<<C2PA asset>>,_ either as a _hard binding_ or a _soft binding._
 
-Content bindings are described in link:++https://spec.c2pa.org/specifications/specifications/2.2/specs/C2PA_Specification.html#_binding_to_content++[Section 9, “Binding to content,”] of the C2PA technical specification.
+Content bindings are described in link:++https://spec.c2pa.org/specifications/specifications/2.3/specs/C2PA_Specification.html#_binding_to_content++[Section 9, “Binding to content,”] of the C2PA technical specification.
 
 ==== Hard binding
 
 One or more cryptographic hashes that uniquely identifies either the entire _<<C2PA asset>>_ or a portion thereof.
 
-Hard bindings are described in link:++https://spec.c2pa.org/specifications/specifications/2.2/specs/C2PA_Specification.html#_hard_bindings++[Section 9.2, “Hard bindings,”] of the C2PA technical specification.
+Hard bindings are described in link:++https://spec.c2pa.org/specifications/specifications/2.3/specs/C2PA_Specification.html#_hard_bindings++[Section 9.2, “Hard bindings,”] of the C2PA technical specification.

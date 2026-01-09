@@ -1,7 +1,7 @@
 === Status codes
 
 The set of standard success and failure codes for *<<_identity_assertion,identity assertion>>* validations are defined below.
-These follow the format defined by the section titled link:++https://spec.c2pa.org/specifications/specifications/2.2/specs/C2PA_Specification.html#_returning_validation_results++[Section 15.2, Returning validation results,”] of the C2PA technical specification.
+These follow the format defined by the section titled link:++https://spec.c2pa.org/specifications/specifications/2.3/specs/C2PA_Specification.html#_returning_validation_results++[Section 15.2, Returning validation results,”] of the C2PA technical specification.
 
 The `url` field for a status code MUST always be the label of the *<<_identity_assertion,identity assertion>>.*
 It is omitted from the tables below.
