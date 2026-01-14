@@ -6,3 +6,7 @@ _This section is non-normative._
 *08 January 2026*
 
 * Started 1.3-draft version of this specification, derived from the xref:1.2@ROOT:index.adoc[1.2 version of this specification]. (xref:1.2@ROOT:index.adoc#_version_history[Version history])
+
+*14 January 2026*
+
+* Updated links to point to version 2.3 of C2PA Content Credentials specification.
