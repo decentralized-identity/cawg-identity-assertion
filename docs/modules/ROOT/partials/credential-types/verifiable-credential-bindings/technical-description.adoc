@@ -152,8 +152,10 @@ IMPORTANT: Verifiable credentials without the entry `CAWGVerifiedIdentities` in 
 ]
 ----
 
-[#vc-credentialsubject-verifiedidentity-type]
+[#vc-credentialsubject-verifiedidentity-type2]
 ====== Verified identity type
+
+IMPORTANT: Resolve duplicate section ID.
 
 The `credentialSubject.type` property MUST be present and MUST be a non-empty string that defines the type of verification that was performed by the _<<_identity_provider,identity provider>>._
 This specification defines the following values which _<<_identity_assertion_consumer,identity assertion consumers>>_ SHOULD be prepared to accept:

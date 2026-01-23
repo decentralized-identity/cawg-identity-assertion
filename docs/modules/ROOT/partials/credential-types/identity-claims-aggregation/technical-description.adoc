@@ -10,7 +10,7 @@ The trust model in this scenario is as described in xref:_named_actor_without_si
 
 An *identity claims aggregation* MUST meet all requirements for a verifiable credential as described in the W3C Verifiable credentials data model (either https://www.w3.org/TR/vc-data-model/[version 1.1] or https://www.w3.org/TR/vc-data-model-2.0/[version 2.0]) and additional requirements as stated in the remainder of this section.
 
-[#vc-property-context]
+[#ica-vc-property-context]
 ===== Context
 
 The `@context` property MUST be present and MUST contain at least the following two entries:
@@ -18,7 +18,7 @@ The `@context` property MUST be present and MUST contain at least the following 
 * `https://www.w3.org/2018/credentials/v1` _or_ `https://www.w3.org/ns/credentials/v2`, depending on which version of the W3C verifiable credentials data model is being used
 * `https://cawg.io/identity/1.1/ica/context/`
 
-[#vc-property-type]
+[#ica-vc-property-type]
 ===== Type
 
 The `type` property MUST be present and MUST contain at least the following two entries:
@@ -33,19 +33,19 @@ Then, we could have a separate type defining the format of the credential subjec
 * `VerifiableCredential`
 * `IdentityClaimsAggregationCredential`
 
-[#vc-property-issuer]
+[#ica-vc-property-issuer]
 ===== Issuer
 
 The `issuer` property MUST be present and MUST follow the format as specified in link:++https://www.w3.org/TR/vc-data-model/#issuer++[Section 4.5, “Issuer,”] of the Verifiable credentials data model.
 
-[#vc-property-validFrom]
+[#ica-vc-property-validFrom]
 ===== Validity
 
 If using https://www.w3.org/TR/vc-data-model/[Verifiable credentials data model, version 1.1], the `issuanceDate` field MUST exist and it MUST express the date and time when the credential becomes valid, as specified in link:++https://www.w3.org/TR/vc-data-model/#issuance-date++[Section 4.6, “Issuance date,”] of the Verifiable credentials data model.
 
 If using https://www.w3.org/TR/vc-data-model-2.0/[Verifiable credentials data model, version 2.0], the `validFrom` field MUST exist and it MUST express the date and time when the credential becomes valid, as specified in link:++https://www.w3.org/TR/vc-data-model-2.0/#validity-period++[Section 4.8, “Validity period,”] of the Verifiable credentials data model.
 
-[#vc-credentialsubject-verifiedIdentities]
+[#ica-vc-credentialsubject-verifiedIdentities]
 ===== Verified identities
 
 :note-caption: Andrew
@@ -110,7 +110,7 @@ Every item in the array MUST contain information about the _<<_named_actor,named
 }
 ----
 
-[#vc-credentialsubject-verifiedidentity-type]
+[#ica-vc-credentialsubject-verifiedidentity-type]
 ====== Verified identity type
 
 The `verifiedIdentities[?].type` property MUST be present and MUST be a non-empty string that defines the type of verification that was performed by the _<<_identity_provider,identity provider>>._
@@ -141,7 +141,7 @@ This could be a professional organization or an employment relationship.
 
 Other string values MAY be used in `verifiedIdentities[?].type`, subject to restrictions described in xref:_labels[xrefstyle=full].
 
-[#vc-credentialsubject-verifiedidentity-name]
+[#ica-vc-credentialsubject-verifiedidentity-name]
 ====== Display name
 
 The `verifiedIdentities[?].name` property MAY be present.
@@ -149,7 +149,7 @@ If present, it MUST NOT be empty and must be a string defining the _<<_named_act
 
 If the `type` of this verified identity is `cawg.document_verification`, the `verifiedIdentities[?].name` property MUST be present and MUST exactly match the name found on the identity documents.
 
-[#vc-credentialsubject-verifiedidentity-username]
+[#ica-vc-credentialsubject-verifiedidentity-username]
 ====== User name
 
 The `verifiedIdentities[?].username` property MAY be present.
@@ -157,7 +157,7 @@ If present, it MUST be a non-empty text string representing the _<<_named_actor,
 
 If the `type` of this verified identity is `cawg.social_media`, the `verifiedIdentities[?].username` property MUST be present and MUST be the unique alphanumeric string that can be used to identity the _<<_named_actor,named actor>>_ within this service.
 
-[#vc-credentialsubject-verifiedidentity-address]
+[#ica-vc-credentialsubject-verifiedidentity-address]
 ====== Address
 
 The `verifiedIdentities[?].address` property MAY be present.
@@ -165,7 +165,7 @@ If present, it MUST be a non-empty text string representing the _<<_named_actor,
 
 If the `type` of this verified identity is `cawg.crypto_wallet`, the `verifiedIdentities[?].address` property MUST be present and MUST be the unique alphanumeric string that can be used to identity the _<<_named_actor,named actor>>_ within this service.
 
-[#vc-credentialsubject-verifiedidentity-uri]
+[#ica-vc-credentialsubject-verifiedidentity-uri]
 ====== URI
 
 The `verifiedIdentities[?].uri` property MAY be present.
@@ -176,9 +176,9 @@ If the `type` of this verified identity is `cawg.web_site`, the `verifiedIdentit
 If the `type` of this verified identity is `cawg.social_media`, it is RECOMMENDED that the `verifiedIdentities[?].uri` be the primary web URI for the _<<_named_actor,named actor’s>>_ social media account.
 
 IMPORTANT: The presence of the `verifiedIdentities[?].uri` property SHOULD NOT be construed as a representation that the entirety of content available at any future time at that URI is attested to by the _<<_named_actor,named actor>>,_ but rather that there was a demonstrable relationship between the _<<_named_actor,named actor>>_ and the URI at the stated time of verification.
-(See xref:vc-credentialsubject-verifiedidentity-verifiedat[].)
+(See xref:ica-vc-credentialsubject-verifiedidentity-verifiedat[].)
 
-[#vc-credentialsubject-verifiedidentity-method]
+[#ica-vc-credentialsubject-verifiedidentity-method]
 ====== Identity verification method
 
 The `verifiedIdentities[?].method` property is OPTIONAL.
@@ -231,7 +231,7 @@ Other string values MAY be used in `verifiedIdentities[?].method`, subject to re
 
 The examples provided here are non-normative, but are intended to demonstrate the kind of procedures described by each method type.
 
-[#vc-credentialsubject-verifiedidentity-verifiedat]
+[#ica-vc-credentialsubject-verifiedidentity-verifiedat]
 ====== Identity verification date
 
 The `verifiedIdentities[?].verifiedAt` MUST be present and MUST be a valid date-time as specified by link:https://datatracker.ietf.org/doc/html/rfc3339[RFC 3339].
@@ -240,21 +240,21 @@ It represents the earlier of the following:
 * The date and time when the relationship between the _<<_named_actor,named actor>>_ and the _<<_identity_provider,identity provider>>_ was verified by the _<<_identity_assertion_generator,identity assertion generator>>._
 * In the case where the _<<_named_actor,named actor’s>>_ identity was verified by a third party (for example, for document verification), the date and time at which the _<<_named_actor,named actor’s>>_ identity was verified by the third party.
 
-[#vc-credentialsubject-verifiedidentity-provider]
+[#ica-vc-credentialsubject-verifiedidentity-provider]
 ====== Identity provider details
 
 The `verifiedIdentities[?].provider` property MUST be an object and MUST be present.
 It contains details about the _<<_identity_provider,identity provider>>_ and the identity verification process.
 This specification mentions at least two properties that MAY be used to represent the _<<_named_actor,named actor’s>>_ verification details: `id` and `name`.
 
-[#vc-credentialsubject-verifiedidentity-provider-id]
+[#ica-vc-credentialsubject-verifiedidentity-provider-id]
 Identity provider ID::
 The `verifiedIdentities[?].provider.id` SHOULD be present.
 If present, it MUST be a valid URI that contains information about the _<<_identity_provider,identity provider>>._
 This SHOULD NOT be confused with any information about the _<<_named_actor,named actor>>_ itself.
 It is RECOMMENDED that this resolve to a xref:_w3c_decentralized_identifier_document[xrefstyle=full] if one is available.
 
-[#vc-credentialsubject-verifiedidentity-provider-name]
+[#ica-vc-credentialsubject-verifiedidentity-provider-name]
 Identity provider name::
 The `verifiedIdentities[?].provider.name` MUST be present and MUST be a _<<_natural_language_string,natural language string>>._
 The `verifiedIdentities[?].provider.name` property is the name of the _<<_identity_provider,identity provider>>._
