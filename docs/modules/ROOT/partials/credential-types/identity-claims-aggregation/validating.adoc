@@ -155,7 +155,7 @@ The validator SHALL inspect the contents of the `verifiedIdentities` field conta
 If this field is missing, if it is not a JSON array, or if it is an empty array, the validator MUST issue the failure code `cawg.ica.verified_identities.missing` but MAY continue validation.
 
 The validator SHALL inspect each entry in the `verifiedIdentities` array.
-For each entry, it SHALL verify each of the conditions stated in xref:#vc-credentialsubject-verifiedIdentities[xrefstyle=full] and issue the failure code `cawg.ica.verified_identities.invalid` if any condition stated there is unmet.
+For each entry, it SHALL verify each of the conditions stated in xref:#ica-vc-credentialsubject-verifiedIdentities[xrefstyle=full] and issue the failure code `cawg.ica.verified_identities.invalid` if any condition stated there is unmet.
 
 The validator MAY annotate entries in the `verifiedIdentities` array according to its own policies regarding trust or validity of each identity.
 
