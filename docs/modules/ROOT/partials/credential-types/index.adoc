@@ -24,7 +24,7 @@ Such updates to the specification SHOULD continue to use the `cawg.identity` ass
 ====
 _This section is non-normative._
 
-This section makes use of various credential specifications that require outbound network traffic in order to complete the signature verification process.
+This specification incorporates by reference credential specifications that require outbound network traffic in order to complete the signature verification process.
 
 An <<_identity_assertion_consumer,identity assertion consumer>> may need to adjust their security posture (e.g. using proxy services when appropriate) to facilitate these requirements.
 
