@@ -2,4 +2,13 @@
 
 This specification describes a _<<C2PA assertion>>_ that allows a _<<_named_actor,named actor>>_ to document their relationship to a _<<C2PA asset>>_ produced by them or on their behalf independently from the _<<C2PA claim generator>>,_ and to allow _<<_identity_assertion_consumer,consumers>>_ of a _<<C2PA asset>>_ to independently verify that the received asset was in fact produced by the _<<_named_actor,named actor>>_ and has not been tampered with.
 
-This specification draws upon and extends existing work from two standards organizations:
+This specification draws upon and extends existing work from the https://c2pa.org[Coalition for Content Provenance and Authenticity (C2PA)], which has developed a link:https://spec.c2pa.org/specifications/specifications/2.3/specs/C2PA_Specification.html[technical specification] for providing content provenance and authenticity.
+It is designed to enable global, opt-in, adoption of digital provenance techniques through the creation of a rich ecosystem of digital provenance enabled applications for a wide range of individuals and organizations while meeting appropriate security requirements.
+
+The C2PA technical specification allows other standards bodies to define additional metadata that can be incorporated into a _<<C2PA Manifest>>._
+These statements come in the form of a _<<_c2pa_assertion,C2PA assertion>>._
+
+This specification describes a _<<C2PA assertion>>_ that can be added to a _<<C2PA Manifest>>_ to let an _<<_actor,actor>>_ bind their digital identity signals to a _<<_c2pa_asset,C2PA asset>>_, while attesting to the accuracy of other _<<_c2pa_assertion,C2PA assertions>>_ or to their role in relation to that asset.
+
+IMPORTANT: This document references link:https://spec.c2pa.org/specifications/specifications/2.3/specs/C2PA_Specification.html[version 2.3 of the C2PA technical specification], but it is compatible with all prior versions of the specification.
+Where there is a meaningful difference between versions of the C2PA specification, those will be described here.

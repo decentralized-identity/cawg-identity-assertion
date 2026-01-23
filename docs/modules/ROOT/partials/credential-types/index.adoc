@@ -5,7 +5,7 @@ NOTE: This will no longer be true with VPs.
 
 :note-caption: Note
 
-The *<<_identity_assertion,identity assertion>>* allows multiple signature types to be represented, although only one _<<ToIP verifiable identifier>>_ and corresponding signature can be used in any single assertion.
+The *<<_identity_assertion,identity assertion>>* allows multiple signature types to be represented, although only one _<<_verifiable_identifier,verifiable identifier>>_ and corresponding signature can be used in any single assertion.
 
 The signature type is represented by the `signer_payload.sig_type` field.
 Some credential types are described in this specification.

@@ -1,6 +1,6 @@
 == Trust model
 
-IMPORTANT: This section augments link:++https://c2pa.org/specifications/specifications/2.1/specs/C2PA_Specification.html#_trust_model++[Section 14, “Trust model,”] of the C2PA technical specification by adding additional trust signals related to the identity of _<<_actor,actors>>_ involved in creation of a _<<C2PA asset>>._
+IMPORTANT: This section augments link:++https://spec.c2pa.org/specifications/specifications/2.3/specs/C2PA_Specification.html#_trust_model++[Section 14, “Trust model,”] of the C2PA technical specification by adding additional trust signals related to the identity of _<<_actor,actors>>_ involved in creation of a _<<C2PA asset>>._
 It does not replace any portion of the C2PA trust model.
 
 include::definition.adoc[]

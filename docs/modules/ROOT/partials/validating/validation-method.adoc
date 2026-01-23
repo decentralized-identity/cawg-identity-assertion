@@ -1,6 +1,6 @@
 === Validation method
 
-IMPORTANT: Validation of the _<<C2PA Manifest>>_ MUST be completed with a finding that the manifest is at least _well-formed_ as per link:++https://c2pa.org/specifications/specifications/2.1/specs/C2PA_Specification.html#_well_formed_manifest++[Section 14.3.2, Well-formed manifest,”] of the C2PA technical specification before a validator attempts to report on the validity of an *<<_identity_assertion,identity assertion>>.*
+IMPORTANT: Validation of the _<<C2PA Manifest>>_ MUST be completed with a finding that the manifest is at least _well-formed_ as per link:++https://spec.c2pa.org/specifications/specifications/2.3/specs/C2PA_Specification.html#_well_formed_manifest++[Section 14.3.2, Well-formed manifest,”] of the C2PA technical specification before a validator attempts to report on the validity of an *<<_identity_assertion,identity assertion>>.*
 
 An *<<_identity_assertion,identity assertion>>* MUST contain a valid CBOR data structure that contains the required fields as documented in the `identity` rule in xref:_cbor_schema[xrefstyle=full].
 The `cawg.identity.cbor.invalid` error code SHALL be used to report assertions that do not follow this rule.
@@ -14,15 +14,18 @@ This process should also ensure that any such signatures are enclosed by a VP (w
 
 :note-caption: Note
 
-For each entry in `signer_payload.referenced_assertions`, the validator MUST verify that the same entry exists in either the `created_assertions` or `gathered_assertions` entry of the _<<C2PA claim>>._
+For each entry in `signer_payload.referenced_assertions`, the validator MUST verify that the same entry exists in either the `created_assertions` or `gathered_assertions` entry of the ** the same _<<C2PA claim>>_ in which the *<<_identity_assertion,identity assertion>>* appears, or any _<<C2PA claim>>_ which can be found by recursively tracing the ingredient manifests (as described by link:++https://spec.c2pa.org/specifications/specifications/2.3/specs/C2PA_Specification.html#ingredient_assertion++[Section 18.15, “Ingredient manifests,”] of the C2PA technical specification) of the _<<C2PA claim>>_ in which the *<<_identity_assertion,identity assertion>>* appears.
 (For version 1 claims, the entry must appear in the `assertions` entry.)
 The `cawg.identity.assertion.mismatch` error code SHALL be used to report violations of this rule.
 
 The validator SHOULD verify that no entry in `signer_payload.referenced_assertions` is duplicated.
 The `cawg.identity.assertion.duplicate` error code SHALL be used to report violations of this rule.
 
-The validator MUST ensure that `signer_payload.referenced_assertions` contains at least one _<<_hard_binding,hard binding>>_ assertion as described in link:++https://c2pa.org/specifications/specifications/2.1/specs/C2PA_Specification.html#_hard_bindings++[Section 9.2, “Hard bindings”] of the C2PA technical specification.
-The `cawg.identity.hard_binding_missing` error code SHALL be used to report a missing _<<_hard_binding,hard binding>>_ assertion.
+The validator MUST ensure that `signer_payload.referenced_assertions` contains a reference to the specific _<<_hard_binding,hard binding>>_ assertion specified using the approach described in the opening paragraph of link:++https://spec.c2pa.org/specifications/specifications/2.3/specs/C2PA_Specification.html#_validate_the_assets_content++[Section 15.12, “Validate the asset’s content,”] of the C2PA technical specification.
+
+The `cawg.identity.hard_binding_missing` error code SHALL be used to report a missing _<<_hard_binding,hard binding>>_ assertion reference.
+
+The `cawg.identity.hard_binding_incorrect` error code SHALL be used to report an incorrect _<<_hard_binding,hard binding>>_ assertion reference.
 
 The validator MUST maintain a list of valid `signer_payload.sig_type` values and corresponding code paths for the `signature` values that it is prepared to accept.
 Validators SHOULD be prepared to accept all signature types described in xref:_credentials_signatures_and_validation_methods[xrefstyle=full].
@@ -52,7 +55,7 @@ The `cawg.identity.expected_partial_claim.mismatch` error code SHALL be used to 
 If the *<<_identity_assertion,identity assertion>>* contains an `expected_claim_generator` field in `signer_payload`, it MUST be validated as follows:
 
 . Locate the end-entity signing certificate that is present in the _<<C2PA claim>>_ signature.
-It can be located as described in link:https://c2pa.org/specifications/specifications/2.1/specs/C2PA_Specification.html#x509_certificates[Section 14.6, “X.509 certificates,”] of the C2PA technical specification.
+It can be located as described in link:https://spec.c2pa.org/specifications/specifications/2.3/specs/C2PA_Specification.html#x509_certificates[Section 14.6, “X.509 certificates,”] of the C2PA technical specification.
 . Identify the CBOR bytes specific to this signing certifcate.
 If necessary, any re-serialization should be performed using link:++https://www.rfc-editor.org/rfc/rfc8949.html#name-core-deterministic-encoding++[Section 4.2.1, “Core deterministic encoding,”] of RFC 8949: Concise binary object representation.
 . Compute a hash of the serialized end-entity certificate using the hash algorithm described by `expected_claim_generator.alg`.

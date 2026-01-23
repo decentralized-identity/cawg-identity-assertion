@@ -5,16 +5,16 @@ The `signature` payload MUST begin with the tagged `COSE_Sign1` structure.
 As described in that standard, the unsecured verifiable credential is the unencoded `COSE_Sign1` payload.
 
 The COSE signature MAY use a link:https://datatracker.ietf.org/doc/html/rfc3161[RFC 3161]-compliant time stamp to provide an additional, independent signal as to when the _<<_identity_claims_aggregator,identity claims aggregator>>_ generated the *<<_identity_assertion,identity assertion>>.*
-If so, this time stamp shall be generated as described by link:++https://c2pa.org/specifications/specifications/2.1/specs/C2PA_Specification.html#_time_stamps++[Section 10.3.2.5, “Time-stamps,”] of the C2PA technical specification.
+If so, this time stamp shall be generated as described by link:++https://spec.c2pa.org/specifications/specifications/2.3/specs/C2PA_Specification.html#_time_stamps++[Section 10.3.2.5, “Time-stamps,”] of the C2PA technical specification.
 
-IMPORTANT: If a timestamp is present, it MUST use a version 2 or later time-stamp as defined in link:++https://c2pa.org/specifications/specifications/2.1/specs/C2PA_Specification.html#_choosing_the_payload++[Section 10.3.2.5.2, “Choosing the payload.”]
+IMPORTANT: If a time stamp is present, it MUST use a version 2 or later time stamp as defined in link:++https://spec.c2pa.org/specifications/specifications/2.3/specs/C2PA_Specification.html#_choosing_the_payload++[Section 10.3.2.5.2, “Choosing the payload.”]
 A version 1 time stamp MUST NOT be used.
 
-If the _<<_identity_claims_aggregator,identity claims aggregator’s>>_ credential supports querying its online credential status, the _<<_identity_claims_aggregator,identity claims aggregator>>_ SHOULD include credential revocation information as described in link:++https://c2pa.org/specifications/specifications/2.1/specs/C2PA_Specification.html#_credential_revocation_information++[Section 10.3.2.6, “Credential revocation information,”] of the C2PA technical specification.
+If the _<<_identity_claims_aggregator,identity claims aggregator’s>>_ credential supports querying its online credential status, the _<<_identity_claims_aggregator,identity claims aggregator>>_ SHOULD include credential revocation information as described in link:++https://spec.c2pa.org/specifications/specifications/2.3/specs/C2PA_Specification.html#_credential_revocation_information++[Section 10.3.2.6, “Credential revocation information,”] of the C2PA technical specification.
 
 ===== Signature algorithms
 
-The COSE signature MUST be secured using one of the signature algorithms defined in link:++https://c2pa.org/specifications/specifications/2.0/specs/C2PA_Specification.html#_digital_signatures++[Section 13.2, “Digital signatures,”] in version 2.1 or any subsequent version of the C2PA technical specification.
+The COSE signature MUST be secured using one of the signature algorithms defined in link:++https://spec.c2pa.org/specifications/specifications/2.3/specs/C2PA_Specification.html#_digital_signatures++[Section 13.2, “Digital signatures,”] in version 2.3 or any subsequent version of the C2PA technical specification.
 
 ===== DID methods
 
