@@ -321,7 +321,7 @@ An _<<_identity_claims_aggregator,identity claims aggregator>>_ SHOULD allow for
 * Status list credentials SHOULD be expressed using a link:https://www.w3.org/TR/vc-bitstring-status-list/[W3C bitstring status list], version 1.0 or later.
 Other mechanisms SHOULD NOT be used because _<<_identity_assertion_consumer,identity assertion consumers>>_ may not be prepared to correctly interpret such status lists.
 
-[#vc-schema]
+[#ica-vc-schema]
 ===== Schema
 
 The requirements for identity claims aggregation credentials are summarized in a link:https://www.w3.org/TR/vc-json-schema/[verifiable credentials JSON schema] available at:
@@ -332,7 +332,7 @@ The requirements for identity claims aggregation credentials are summarized in a
 The inclusion of the `credentialSchema` property is RECOMMENDED (as shown in the example below) to specify the structure and constraints of the credential’s data.
 
 .Inclusion of credential schema
-[#example-with-schema]
+[#example-with-ica-schema]
 [example]
 ====
 [source,json]
