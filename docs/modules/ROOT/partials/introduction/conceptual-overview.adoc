@@ -1,13 +1,13 @@
 === Conceptual overview
 
-:note-caption: Andrew
+:note-caption: To Do
 NOTE: Removed the phrasing about having exactly one credential holder sign the assertion because it's confusing, and removed information about referenced assertions because it's not that helpful in this first sentence.
 
 :note-caption: Note
 
 Each *<<_identity_assertion,identity assertion>>* is placed in a _<<C2PA Manifest>>, using a signature over a data structure known as the `signed_payload` to bind information about exactly one _<<_named_actor,named_actor>>_ to that manifest's _<<C2PA asset,C2PA asset>>_.
 
-:note-caption: Andrew
+:note-caption: To Do
 NOTE: This statement could be more precise, but will take some thinking.
 I want to build in the separation where an issuer can attest to some information on their own (especially in the case that they're a claim generator, see PR4), but then a named actor can also attest to more inforamtion on their own behalf.
 So the resulting statement is something like "The _<<_credential_holder,credential holder’s>>_ signature constitutes an attestation by the _<<_credential_holder,credential holder’s>>_ to the information in the identity assertion as well any _<<_c2pa_assertion,C2PA assertions>>_ that are referenced in the *<<_identity_assertion,identity assertion>>.*"
@@ -20,14 +20,14 @@ The _<<_credential_holder,credential holder’s>>_ signature should generally be
 
 Each *<<_identity_assertion,identity assertion>>* contains a `signer_payload` with hashlink references to one or more other _<<_c2pa_assertion,C2PA assertions>>,_ known here as _<<_referenced_assertions,referenced assertions>>,_ and a signature from the _<<_credential_holder,credential holder>>_ over that payload, thus providing a non-repudiable, tamper-evident binding between the _<<_named_actor,named actor>>_ and the list of _<<_referenced_assertions,referenced assertions>>._
 
-:note-caption: Andrew
+:note-caption: To Do
 NOTE: Here again it would be nice to make a more precise statement. On a first read, this actually seems to conflict somewhat with the other statement about interpreting the credential above.
 
 :note-caption: Note
 
 The `signer_payload` and corresponding signature from the _<<_credential_holder,credential holder>>_ binds this identity assertion to a specific _<<C2PA asset>>_ and allows the _<<_credential_holder,credential holder>>_ to endorse or make additional statements about the _<<_named_actor,named actor’s>>_ relationship to that _<<C2PA asset>>._
 
-:note-caption: Andrew
+:note-caption: To Do
 NOTE: This will no longer be true in PR4 if the claim generator signs the identity assertion (it's no longer independent from, but still in addition to)
 
 :note-caption: Note
@@ -107,7 +107,7 @@ Separately, the _<<C2PA Manifest>>_ uses the _<<_claim_generator,claim generator
 The teal circle demonstrates the limit of the _<<_c2pa_manifest,C2PA Manifest’s>>_ trust signal.
 ====
 
-:note-caption: Andrew
+:note-caption: To Do
 NOTE: This is still true, but after PR3, it can also be used to accept the delegation of a credential. So might be confusing and/or worth a callout, but still accurate
 
 :note-caption: Note

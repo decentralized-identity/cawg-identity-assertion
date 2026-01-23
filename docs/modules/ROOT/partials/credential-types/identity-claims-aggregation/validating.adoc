@@ -145,7 +145,7 @@ If used, the JSON Schema processor must enable the `format` usage.
 
 ===== Verify binding to C2PA asset
 
-:note-caption: Andrew
+:note-caption: To Do
 NOTE: We may want to perform this validation the other way, since multiple forms of credential (VC, VP, consolidating referenced_assertions) could map to a single signer_payload, but not vice versa.
 
 :note-caption: Note

@@ -23,7 +23,7 @@ The `@context` property MUST be present and MUST contain at least the following 
 
 The `type` property MUST be present and MUST contain at least the following two entries:
 
-:note-caption: Andrew
+:note-caption: To Do
 NOTE: Could we introduce 2 new types to capture the presence of C2PA binding information?
 `C2PABindingCredential` and `C2PABindingPresentation` (this isn't meant to imply the C2PA namespace, just that it presents a binding to a C2PA asset)
 Then, we could have a separate type defining the format of the credential subject identity signals, e.g. `CAWGVerifiedIdentities`
@@ -48,7 +48,7 @@ If using https://www.w3.org/TR/vc-data-model-2.0/[Verifiable credentials data mo
 [#ica-vc-credentialsubject-verifiedIdentities]
 ===== Verified identities
 
-:note-caption: Andrew
+:note-caption: To Do
 NOTE: I'd like to still support this structure of verified identities (though flattened into the credential subject), but also not to require credential subject information in this format.
 
 :note-caption: Note
@@ -261,7 +261,7 @@ The `verifiedIdentities[?].provider.name` property is the name of the _<<_identi
 
 ===== Binding to C2PA asset
 
-:note-caption: Andrew
+:note-caption: To Do
 NOTE: This will obviously need to change to be placed in the `termsOfUse` with `C2PAAssetBinding` type.
 There's already a translation process being defined in the serialization here. We should be able to go further:
 - Using the type (e.g. `C2PABindingCredential` or `C2PABindingPresentation`) to signal the appropriate sig_type

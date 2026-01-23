@@ -2,7 +2,7 @@
 
 The schema for this type is defined by the `identity` rule in the following https://datatracker.ietf.org/doc/html/rfc8610[CDDL definition]:
 
-:note-caption: Andrew
+:note-caption: To Do
 NOTE: It's conceivable that we could implement all the changes without ever requiring multiple signatures in a single identity assertion. 
 You can always translate the enclosing credential into a valid signer_payload, so what if that's all we articulated, and the rest was in the signautre?
 i.e. if you have a VC and a VP, you aggregate all the info from the VP and place the aggregate object in the credential.
@@ -16,7 +16,7 @@ Then it's just a matter of how we validate the signature and interpret the trust
 include::schema.cddl[]
 ----
 
-:note-caption: Andrew
+:note-caption: To Do
 NOTE: 1.1 is no longer a future minor version.
 
 :note-caption: Note

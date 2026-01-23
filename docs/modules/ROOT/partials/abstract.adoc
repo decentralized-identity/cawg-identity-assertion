@@ -1,4 +1,4 @@
-:note-caption: Andrew
+:note-caption: To Do
 NOTE: There are a lot of changes & notes in this doc.
 Many of these should be treated as rough (and often outdated) working notes, with the real meat of the changes showing up in the new Verifiable Credential Binding credential type - this should be the focal point of any readthrough. 
 There is still plenty of work to be done, with callouts in that section for some of the key open questions, but this draft should give an idea of how these changes will take shape.

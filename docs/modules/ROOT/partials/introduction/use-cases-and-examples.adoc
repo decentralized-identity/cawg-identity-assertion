@@ -1,6 +1,6 @@
 === Use cases and examples
 
-:note-caption: Andrew
+:note-caption: To Do
 NOTE: It would be nice to add in some examples where creators can preserve their privacy/anonymity while still benefitting from the assertion, which becomes possible with PR3/4.
 
 :note-caption: Note
@@ -9,7 +9,7 @@ The following is a non-exhaustive list of potential and general use cases for th
 Some of these are taken from, or built upon, the use cases developed within the link:https://www.originproject.info/[Project Origin Alliance], the link:https://contentauthenticity.org/[Content Authenticity Initiative (CAI)], and the link:https://jpeg.org/jpegtrust/[JPEG Trust] frameworks.
 Each use case will be described using some generic personas to help make the flow clear.
 
-:note-caption: Andrew
+:note-caption: To Do
 NOTE: I don't understand why it "SHOULD NOT be construed to convey... _attribution_". That seems to be one of the primary purposes of the assertion! There's even discussion of renaming the assertion around attribution. Example 5 is actually called "Attribution for digital creators".
 
 :note-caption: Note
@@ -21,7 +21,7 @@ It is possible that some other assertion could convey such information; such an 
 
 ==== Enhancing clarity around provenance and edits for journalistic work
 
-:note-caption: Andrew
+:note-caption: To Do
 NOTE: Even this first example doesn't really work well without PR3 on Persistent IDs. As the spec sits today "Anyone viewing these assets can see the identity of the multiple, potentially distinct Alices" because there isn't a good way to prove it's the same Alice all along
 
 :note-caption: Note

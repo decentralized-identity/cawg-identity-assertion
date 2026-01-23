@@ -1,6 +1,6 @@
 === Concepts adapted from W3C verifiable credentials specification
 
-:note-caption: Andrew
+:note-caption: To Do
 NOTE: Should we add a definition for a W3C verifiable presentation, or is that covered by W3C verifiable credential?
 
 :note-caption: Note

@@ -1,6 +1,6 @@
 === Overview
 
-:note-caption: Andrew
+:note-caption: To Do
 NOTE: The "MAY" here is a bit confusing, as it seems to imply there are other non-disclosed things an identity assertion can do. Here's how I'd rewrite the section:
 "This specification defines a C2PA assertion, called an identity assertion, that binds a named actor to a C2PA asset. 
 It MAY reference other C2PA assertions and MAY include the named actor’s role in relation to the asset; the credential holder's signature SHALL represent their attestation to the accuracy of the information provided."
@@ -19,7 +19,7 @@ The *<<_identity_assertion,identity assertion>>* contains the following data fie
 The `signer_payload` field is a structure of type `signer-payload-map` which is signed by the _<<_credential_holder,credential holder>>_.
 It contains the following fields:
 
-:note-caption: Andrew
+:note-caption: To Do
 NOTE: `role` might beed to be redefined to be "the _<<_named_actor,named actor’s>>_ relationship(s) to the _<<C2PA Manifest>>_ from the referenced hard binding assertion" as opposed to the _<<C2PA asset>>_.
 The refined description here isn't perfect, but it's a start.
 Separately, `expected_countersigners` might need some refinement to make it clear how it differs from the other reasons identity assertions may reference each other (e.g. delegation)
@@ -44,7 +44,7 @@ The method for calculating this field is described in xref:_calculating_the_expe
 
 The *<<_identity_assertion,identity assertion>>* SHALL have a label of `cawg.identity`.
 
-:note-caption: Andrew
+:note-caption: To Do
 NOTE: This is still true, but now incomplete. Multiple identity assertions can also be used to describe a single named actor as of PR3.
 
 :note-caption: Note
@@ -64,7 +64,7 @@ The list of _<<_referenced_assertions,referenced assertions>>_ contained in `sig
 NOTE: The `assertions` field appears only in version 1.x of the C2PA technical specification.
 It was replaced with `created_assertions` and `gathered_assertions` in version 2.0 of the C2PA technical specification.
 
-:note-caption: Andrew
+:note-caption: To Do
 NOTE: In the VP model, the consolidated list must include a hard binding, but it would be redundant to force the VP C2PAAssetBinding to include a hard binding if the VC C2PAAssetBinding already includes on.
 What we probably want to do here is, in the new credential, define a consolidation of the referenced assertions that must satisfy these requirements.
 If we do that, then it becomes reasonable for every C2PAAssetBinding to require a list of referenced assertions meeting these criteria (while still allowing for VCs that do not bind to a C2PA asset)
@@ -80,7 +80,7 @@ NOTE: The requirement that the `hash` value for a _<<_referenced_assertions,refe
 
 ==== Named actor roles
 
-:note-caption: Andrew
+:note-caption: To Do
 NOTE: Same comment about a role not really binding to the entire C2PA Asset.
 
 :note-caption: Note

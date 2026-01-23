@@ -1,6 +1,6 @@
 == Credentials, signatures, and validation methods
 
-:note-caption: Andrew
+:note-caption: To Do
 NOTE: This will no longer be true with VPs.
 
 :note-caption: Note
@@ -13,7 +13,7 @@ It is strongly recommended that *<<_identity_assertion,identity assertion>>* val
 
 Other specifications MAY define additional `signer_payload.sig_type` values and the corresponding definition of `signature`, subject to restrictions described in xref:_labels[xrefstyle=full].
 
-:note-caption: Andrew
+:note-caption: To Do
 NOTE: 1.1 is no longer a future minor version.
 Separately, we should think about whether the new PRs deprecate the existing identity claims aggregation credential.
 I would suggest that it does as the new credentials present a superset of functionality.

@@ -6,14 +6,14 @@ The signature value is further described in xref:_verifiable_credential_proof_me
 
 The `signer_payload.sig_type` value for such an assertion MUST be `cawg.verifiable_credential_binding`.
 
-:note-caption: Andrew
+:note-caption: To Do
 NOTE: We may need to rework the trust model to better capture the scenarios of verifiable credential binding.
 
 :note-caption: Note
 
 The trust model in this scenario is as described in xref:_named_actor_without_signature_authority[xrefstyle=full].
 
-:note-caption: Andrew
+:note-caption: To Do
 NOTE: I've introduced a new term - the "outermost credential" - to capture the requirements of an isolated VC as well as a VP, but without imposing those requirements on VCs enveloped by a VP.
 
 :note-caption: Note
@@ -29,7 +29,7 @@ The `@context` property MUST be present on each verifiable credential and verfia
 
 Additionally, the `@context` property of the _<<_outermost_credential,outermost credential>>_ MUST contain the entry `https://cawg.io/identity/1.2/vcb/context/`
 
-:note-caption: Andrew
+:note-caption: To Do
 NOTE: The abbreviation "vcb" is proposed for use in links to mean a "verifiable credential binding".
 
 :note-caption: Note
@@ -51,7 +51,7 @@ If that verifiable credential contains a verified entity type described in the l
 [#vc-property-issuer]
 ===== Issuer
 
-:note-caption: Andrew
+:note-caption: To Do
 NOTE: This link annotation can lead to problems. It's already changed from 4.5 to 4.7 in the spec, so we should ideally avoid numbering.
 In this case, it's because the 2.0 link became the main link, but in general, we should not expect a guarantee as to the consistency of section numbering.
 
@@ -83,7 +83,7 @@ Each object in the `credentialSubject` field may contain an `id` property which,
 
 IMPORTANT: Due to the requirement in this section that any verifiable presentation enclosing a verifiable credential contain a `holder` property matching each `credentialSubject.id` field of each verifiable credential it encloses, it is only possible to enclose multiple credential subjects within the verifiable presentation when all such credential subjects share the same `id` value.
 
-:note-caption: Andrew
+:note-caption: To Do
 NOTE: This callout above is a good place to mention the purpose of delegation, which can be used to bind credential subjects of different `id`s to a common assertion.
 
 :note-caption: Note
@@ -91,7 +91,7 @@ NOTE: This callout above is a good place to mention the purpose of delegation, w
 [#vc-credentialsubject-verifiedidentity-type]
 ====== Verified identity type
 
-:note-caption: Andrew
+:note-caption: To Do
 NOTE: I'd like to still support this structure of verified identities (though flattened into the credential subject), but also not to require credential subject information in this format.
 
 :note-caption: Note
@@ -305,7 +305,7 @@ The `credentialSubject.provider.name` property is the name of the _<<_identity_p
 
 ===== Binding to C2PA asset
 
-:note-caption: Andrew
+:note-caption: To Do
 NOTE: This will obviously need to change to be placed in the `termsOfUse` with `C2PAAssetBinding` type.
 There's already a translation process being defined in the serialization here. We should be able to go further:
 - Using the type (e.g. `C2PABindingCredential` or `C2PABindingPresentation`) to signal the appropriate sig_type
@@ -390,7 +390,7 @@ Other mechanisms SHOULD NOT be used because _<<_identity_assertion_consumer,iden
 [#vc-schema]
 ===== Schema
 
-:note-caption: Andrew
+:note-caption: To Do
 NOTE: json-ld to be supplied separately and this section to then be updated. We'll want to cover the following situations (not including the possibility of using the CAWGVerifiedIdentities type or not):
 * VC under verifiable credentials data model 1.1
 * VC under verifiable credentials data model 2.0

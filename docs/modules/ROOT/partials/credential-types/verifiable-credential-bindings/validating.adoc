@@ -8,7 +8,7 @@ A successful validation report SHOULD include the content of any verifiable cred
 
 A validator shall maintain the following lists for verifiable credential issuers:
 
-:note-caption: Andrew
+:note-caption: To Do
 NOTE: The validator now needs to concern themselves with additional types of credential issuers:
 * Issuers they trust/expect to be issuing C2PA Asset Bindings
 * Issuers they trust to issue identity credentials of certain types, but do not expect to isuue C2PA Asset Bindings.
@@ -90,7 +90,7 @@ If the DID document cannot be parsed or the public key material cannot be locate
 The validator SHALL verify that the `type` code for this public key is on the supported list of DID verification methods as described in xref:_did_verification_methods[xrefstyle=full].
 If the type is not supported, the validator MUST issue the failure code `cawg.vcb.invalid_did_document` but MAY continue validation.
 
-:note-caption: Andrew
+:note-caption: To Do
 NOTE: This precludes the self-issuance of verifiable credentials (but not of verifiable presentations).
 This should be changed to accommodate the new workflows like self-issued credentials (e.g. provisional IDs), but not necessary for a first release.
 
@@ -106,7 +106,7 @@ If the signature does not match, the validator MUST issue the failure code `cawg
 
 ====== Verify the time stamp, if present
 
-:note-caption: Andrew
+:note-caption: To Do
 NOTE: What should be done about timestamps in verifiable credentials enclosed by a verifiable presentation? Do we ignore them? Include them? Include them with appropriate disclosures? By default, the text below will ignore them.
 
 :note-caption: Note
@@ -123,7 +123,7 @@ A validator SHOULD ignore any value found in a `sigTst` unprotected header.
 
 ====== Verify each credential’s validity range
 
-:note-caption: Andrew
+:note-caption: To Do
 NOTE: It's now possible to have a verifiable presentation with multiple verifiable credentials, wherein only some of the verifiable credentials are outside their validity periods.
 I believe this section still covers this use case, but it is worth considering additional specifications on the error codes.
 
@@ -155,7 +155,7 @@ If the expiration date is earlier than any of the above values, the validator MU
 
 ====== Verify each credential’s revocation status
 
-:note-caption: Andrew
+:note-caption: To Do
 NOTE: Similarly to the previous section, it's now reasonable to encounter a set of verifiable credentials that have only been partially revoked, and it would be nice to provide guidance on how to indicate that.
 
 :note-caption: Note
@@ -176,7 +176,7 @@ NOTE: This specification recommends that issuers and validators support the `Bit
 
 ====== Verify the credential’s schema
 
-:note-caption: Andrew
+:note-caption: To Do
 NOTE: Similar to the comment in the technical description, these json-ld docs will need to be updated with the current schema, including the additional (6+ total) cases mentioned in that comment.
 We also permit externally sourced credentials under this schema, which is not covered by this text.
 
@@ -208,7 +208,7 @@ The issuance of the failure codes `cawg.vcb.binding.mismatch` or `cawg.vcb.signe
 
 ===== Verify verified identities
 
-:note-caption: Andrew
+:note-caption: To Do
 NOTE: This leaves the door open to identity types from other credential types, but does so by remaining silent, which isn't a great policy.
 The validation spec is also currently silent on interpreting who is attesting to each statement made in the identity assertion - ideally it would differentiate between a trusted issuer and a self-signed credential (which could be either a VC or VP).
 
@@ -230,7 +230,7 @@ If the validator has completed the process without generating any failure codes,
 
 ===== Status codes
 
-:note-caption: Andrew
+:note-caption: To Do
 NOTE: There's a lot of duplication here, and a few new things, so I haven't bothered updating yet. We should think about the right way forward and then consolidate errors as appropriate.
 
 :note-caption: Note

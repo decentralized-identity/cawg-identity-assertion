@@ -2,7 +2,7 @@
 
 ==== Credential holder
 
-:note-caption: Andrew
+:note-caption: To Do
 NOTE: There can now (and I suspect always could) be more than one actor in control of the identifier. So should at least be "an actor" rather than "the actor", but I suspect we need broader changes.
 
 :note-caption: Note
@@ -18,7 +18,7 @@ Adapted from link:++https://trustoverip.github.io/ctwg-main-glossary/#term:revoc
 
 ==== Identity claims aggregator
 
-:note-caption: Andrew
+:note-caption: To Do
 NOTE: As written, this definition still captures someone who transports in credentials from other places. It also covers a named actor self-signing their VP using a credential from a trusted issuer. It's key to note that under the new model, however, we do not need to trust the identity claims aggregator as long as we trust the credentials they're replaying during the binding action.
 
 :note-caption: Note
@@ -28,7 +28,7 @@ This _<<_actor,actor>>_ MAY be the same as the _<<_identity_assertion_generator,
 
 ==== Identity assertion
 
-:note-caption: Andrew
+:note-caption: To Do
 NOTE: Similar problem discussed in the intro - I'm not a big fan of this definition. They don't necessarily need to "prove control" (e.g. document verification), nor do the referenced assertions have to be produced by them or on their behalf (it's more about an attestation of accuracy). Named actor info like role is also not covered.
 
 :note-caption: Note
@@ -48,7 +48,7 @@ This MAY be the same _<<_actor,actor>>_ as the _<<C2PA claim generator>>._
 
 ==== Identity provider
 
-:note-caption: Andrew
+:note-caption: To Do
 NOTE: Interesting that this already covers "the issuer of an identity credential that is used by the _<<identity_assertion_generator,identity assertion generator>>." This shouldn't be possible until VPs are introduced in PR2 due to the lack of C2PA asset binding
 
 :note-caption: Note
@@ -58,7 +58,7 @@ This _<<actor,actor>>_ MAY be the _<<identity_assertion_generator,identity asser
 
 ==== Named actor
 
-:note-caption: Andrew
+:note-caption: To Do
 NOTE: I don't think the aprt about the _credential subject_ is true under the identity aggregation model, because you could then say that a "c2paAsset" is a named actor. But under the new model it's much more accurate.
 
 :note-caption: Note
@@ -87,7 +87,7 @@ A placeholder assertion MUST be used when the final file layout of the _<<C2PA a
 
 ==== Referenced assertions
 
-:note-caption: Andrew
+:note-caption: To Do
 NOTE: This is pretty confusing - if the named actor is not always the credential holder, then aren't there instances where the credential holder is not named? Should this just be the named actor instead?
 I also don't like the "i.e. authorized by or created by" langauge as previously mentioned.
 

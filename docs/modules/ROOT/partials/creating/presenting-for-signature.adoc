@@ -5,7 +5,7 @@ This process is described in link:++https://spec.c2pa.org/specifications/specifi
 
 The list of _<<_referenced_assertions,referenced assertions>>_ MUST include the _<<_hard_binding,hard binding>>_ assertion that describes the active manifest as described in the opening paragraph of link:++https://spec.c2pa.org/specifications/specifications/2.3/specs/C2PA_Specification.html#_validate_the_assets_content++[Section 15.12, “Validate the asset’s content,”] of the C2PA technical specification.
 
-:note-caption: Andrew
+:note-caption: To Do
 NOTE: I'm not convinced that we've provided enough infrastructure for someone to "attest that the _<<_actor,actor>>_ performed those specific actions". 
 Instead, I would think that the default assumption would be that the actor is attesting to the accuracy of the assertion that the action was performed.
 This is more evidence that we lack specificity in the `role`, which would be a helpful way to differentiate the statment "I took this action" vs. "I attest to the accuracy of this action".

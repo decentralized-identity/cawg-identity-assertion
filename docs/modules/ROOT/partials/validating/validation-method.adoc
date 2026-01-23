@@ -8,7 +8,7 @@ A validator SHALL NOT consider any extra fields not documented in the `identity`
 
 NOTE: Extra fields can be read and processed in non-validation scenarios.
 
-:note-caption: Andrew
+:note-caption: To Do
 NOTE: We'll need to include a validation method for signatures that include no C2PAAssetBinding.
 This process should also ensure that any such signatures are enclosed by a VP (which then has to include a C2PAAssetBinding by definition).
 
