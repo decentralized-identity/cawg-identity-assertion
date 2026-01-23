@@ -1,0 +1,58 @@
+==== Verifiable credential binding conceptual overview
+
+_This section is non-normative._
+
+Content creators (_<<_named_actor,named actors>>_) may wish to document their role in creating a _<<C2PA asset>>_ using identity signals that are commonly understood in the mass market.
+Examples of such signals include:
+
+* verified web sites
+* social media accounts
+* official ID documentation
+* professional accreditations
+* organizational affiliations
+
+These common identity signals, though popular, are not well-designed for use as lasting identifiers.
+Some of the challenges associated with these identity signals include:
+
+* The methods for accessing, describing, and presenting these signals are widely disparate.
+* These signals typically do not provide the ability to issue signatures on the _<<_named_actor,named actor’s>>_ behalf.
+* The verification methods associated with these signals are typicially designed for momentary validation; they typically do not provide artifacts that can be independently verified at an arbitrary time (perhaps months or years after issuance).
+
+To facilitate the use of such identity signals, the _<<_named_actor,named actor>>_ may use the services of third-party intermediaries that they trust to gather these signals and package them into persistent, tamper-evident digital credentials.
+
+The resulting credentials perform two important functions:
+
+1. They place identity attestation claims from various _<<_identity_provider,identity providers>>_ such as social media sites and ID verification vendors into a tamper-evident digital container.
+2. They bind those identity attestation claims to the specific _<<C2PA asset>>_ a _<<_named_actor,named actor>>_ creates.
+
+The two workflows performed by the _<<_identity_claims_aggregator,identity claims aggregator>>_ are described in the sections below:
+
+===== Creating identity claims credentials
+
+In the first workflow, the _<<_named_actor,named actor>>_ asks a trusted third-party intermediary to verify an identity claim.
+That intermediary may be an _<<_identity_provider,identity provider>>_ themselves, or they may contact the necessary _<<_identity_provider,identity providers>>_ to verify the identity claim.
+If that verification is successful, that intermediary chooses whether to immediately issue a signed credential attesting to the information, or remembers the provided information for later use on the _<<_named_actor,named actor’s>>_ behalf.
+
+This workflow can be repeated any number of times to provide additional identity signals for the _<<_named_actor,named actor>>._
+
+===== Creating content using the identity claims
+
+Once the _<<_named_actor,named actor's>>_ desired identity signals have been verified, the _<<_named_actor,named actor>>_ can then use an authoring tool to create content.
+This authoring tool collaborates with the _<<_named_actor,named actor>>_ or their chosen intermediaries to bind the identity claims to the _<<C2PA asset>>_ being created.
+
+This workflow can be repeated any number of times to create new content on behalf of the _<<_named_actor,named actor>>_, or for the _<<_named_actor,named actor>>_ to express their involvement at many stages of the content creation process.
+
+===== Interpreting an identity assertion with a verifiable credential binding
+
+At some later time, an _<<_identity_assertion_consumer,identity assertion consumer>>_ will interpret this *<<_identity assertion,identity assertion>>.*
+Assuming that the _<<_identity_assertion,identity assertion>>_ is deemed valid, the content of the assertion should be interpreted as follows:
+
+[quote,Signed by trusted intermediary service]
+____
+The _<<_named_actor,named actor>>_ described by this credential has presented one or more identity signals to this trusted intermediary service.
+Those claims were verified and deemed valid by this service as of the times indicated in the credential, and the credential was provisioned securely to the _<<_named_actor,named actor>>_.
+
+This credential should only be trusted in the context of the _<<C2PA asset>>_ when paired with an appropriate binding to this _<<C2PA Manifest>>_. However, any such information binding this _<<_named_actor,named actor>>_ to their participation in the creation of the _<<C2PA asset>>_ is self-attested by the _<<_named_actor,named actor>>_ and not verified or directly attested to by this service. 
+____
+
+IMPORTANT: Trust in the intermediary identity verification service is essential to ensure that the asserted identities are accurate and controlled by the _<<_named_actor,named actor>>_. As long as that trust has not been compromized, an _<<_identity_assertion_consumer,identity assertion consumer>>_ is able to rely on self-attested information from that _<<_named_actor,named actor>>_ as being authentically produced by that _<<_named_actor,named actor>>_. This includes trusting the mandatory binding of the credential to the _<<C2PA asset>>_.

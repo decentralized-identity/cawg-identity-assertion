@@ -1,0 +1,25 @@
+==== Verifiable credential binding examples
+
+An example of *<<_verifiable_credential_binding,verifiable credential binding>>* using a verifiable credential as the _<<_outermost_credential,outermost credential>>_ is given below:
+
+.Verifiable credential binding with VC
+[#example-vcb-vc]
+[example]
+====
+[source,json]
+----
+include::example-vc.json[]
+----
+====
+
+Another structure that could be used to represent nearly identical credential data is shown in this example below of *<<_verifiable_credential_binding,verifiable credential binding>>* using a verifiable presentation as the _<<_outermost_credential,outermost credential>>_:
+
+.Verifiable credential binding with VP
+[#example-vcb-vp]
+[example]
+====
+[source,json]
+----
+include::example-vp.json[]
+----
+====

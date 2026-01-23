@@ -2,6 +2,11 @@
 
 ==== Credential holder
 
+:note-caption: To Do
+NOTE: There can now (and I suspect always could) be more than one actor in control of the identifier. So should at least be "an actor" rather than "the actor", but I suspect we need broader changes.
+
+:note-caption: Note
+
 The _<<_actor,actor>>_ that has control (specifically signature authority) over a _<<_verifiable_identifier,verifiable identifier>>_ that describes a specific _<<_named_actor,named actor>>._
 
 ==== Credential revocation
@@ -13,12 +18,22 @@ Adapted from link:++https://trustoverip.github.io/ctwg-main-glossary/#term:revoc
 
 ==== Identity claims aggregator
 
+:note-caption: To Do
+NOTE: As written, this definition still captures someone who transports in credentials from other places. It also covers a named actor self-signing their VP using a credential from a trusted issuer. It's key to note that under the new model, however, we do not need to trust the identity claims aggregator as long as we trust the credentials they're replaying during the binding action.
+
+:note-caption: Note
+
 An _<<_actor,actor>>_ that collects identity claims (attestations) regarding a _<<_named actor,named actor>>_ from various _<<_identity_provider,identity providers>>_ and can replay those identity claims into *<<_identity assertion,identity assertions>>* on behalf of the _<<_named_actor,named actor>>._
 This _<<_actor,actor>>_ MAY be the same as the _<<_identity_assertion_generator,identity assertion generator>>._
 
 ==== Identity assertion
 
-A _<<C2PA assertion>>_ that allows a _<<_credential_holder,credential holder>>_ to prove control over an digital identity and bind the identity to a set of _<<_c2pa_assertion,C2PA assertions>>_ produced by them or on their behalf.
+:note-caption: To Do
+NOTE: Similar problem discussed in the intro - I'm not a big fan of this definition. They don't necessarily need to "prove control" (e.g. document verification), nor do the referenced assertions have to be produced by them or on their behalf (it's more about an attestation of accuracy). Named actor info like role is also not covered.
+
+:note-caption: Note
+
+A _<<C2PA assertion>>_ that allows a _<<_credential_holder,credential holder>>_ to prove control over a digital identity and bind the identity to a set of _<<_c2pa_assertion,C2PA assertions>>_ produced by them or on their behalf.
 
 ==== Identity assertion consumer
 
@@ -33,10 +48,20 @@ This MAY be the same _<<_actor,actor>>_ as the _<<C2PA claim generator>>._
 
 ==== Identity provider
 
+:note-caption: To Do
+NOTE: Interesting that this already covers "the issuer of an identity credential that is used by the _<<identity_assertion_generator,identity assertion generator>>." This shouldn't be possible until VPs are introduced in PR2 due to the lack of C2PA asset binding
+
+:note-caption: Note
+
 An _<<_actor,actor>>_ that is attesting to an identity of the _<<_named_actor,named actor>>_ as understood in the context of the _identity provider._
 This _<<actor,actor>>_ MAY be the _<<identity_assertion_generator,identity assertion generator>>,_ a third party contacted by the _<<identity_assertion_generator,identity assertion generator>>,_ or the issuer of an identity credential that is used by the _<<identity_assertion_generator,identity assertion generator>>._
 
 ==== Named actor
+
+:note-caption: To Do
+NOTE: I don't think the aprt about the _credential subject_ is true under the identity aggregation model, because you could then say that a "c2paAsset" is a named actor. But under the new model it's much more accurate.
+
+:note-caption: Note
 
 The _<<_actor,actor>>_ whose relationship to a _<<C2PA asset>>_ is documented by an *<<_identity_assertion,identity assertion>>.*
 This may also be referred to as a _credential subject_ when identified by the *subject* field of a _<<_verifiable_identifier,verifiable identifier>>._
@@ -61,6 +86,12 @@ A temporary _<<C2PA assertion>>_ that is created during _<<C2PA claim>>_ generat
 A placeholder assertion MUST be used when the final file layout of the _<<C2PA asset>>_ is required for the _<<_hard_binding,hard binding>>_ assertion, as described in xref:_interaction_with_data_hash_assertion[xrefstyle=full].
 
 ==== Referenced assertions
+
+:note-caption: To Do
+NOTE: This is pretty confusing - if the named actor is not always the credential holder, then aren't there instances where the credential holder is not named? Should this just be the named actor instead?
+I also don't like the "i.e. authorized by or created by" langauge as previously mentioned.
+
+:note-caption: Note
 
 The set of _<<_c2pa_assertion,C2PA assertions>>_ that are referenced by an *<<_identity_assertion,identity assertion>>* and thus bound to (i.e. authorized by or created by) the _<<_credential_holder,credential holder>>_ named in the *<<_identity_assertion,identity assertion>>.*
 

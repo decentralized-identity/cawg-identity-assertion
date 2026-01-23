@@ -1,12 +1,36 @@
 === Conceptual overview
 
-Each *<<_identity_assertion,identity assertion>>* instance allows exactly one _<<_credential_holder,credential holder>>_ to sign a data structure known as `signer_payload`, which among other things includes a list of _<<_c2pa_assertion,C2PA assertions>>_ which will subsequently be included in a _<<C2PA Manifest>>._
+:note-caption: To Do
+NOTE: Removed the phrasing about having exactly one credential holder sign the assertion because it's confusing, and removed information about referenced assertions because it's not that helpful in this first sentence.
 
-The _<<_credential_holder,credential holder’s>>_ signature should generally be construed as reflective of the _<<_named_actor,named actor’s>>_ authorization of or active participation in the production of the the _<<C2PA asset>>_ in which it appears, as described by the specific _<<_c2pa_assertion,C2PA assertions>>_ that are referenced in the *<<_identity_assertion,identity assertion>>.*
+:note-caption: Note
+
+Each *<<_identity_assertion,identity assertion>>* is placed in a _<<C2PA Manifest>>, using a signature over a data structure known as the `signed_payload` to bind information about exactly one _<<_named_actor,named_actor>>_ to that manifest's _<<C2PA asset,C2PA asset>>_.
+
+:note-caption: To Do
+NOTE: This statement could be more precise, but will take some thinking.
+I want to build in the separation where an issuer can attest to some information on their own (especially in the case that they're a claim generator, see PR4), but then a named actor can also attest to more inforamtion on their own behalf.
+So the resulting statement is something like "The _<<_credential_holder,credential holder’s>>_ signature constitutes an attestation by the _<<_credential_holder,credential holder’s>>_ to the information in the identity assertion as well any _<<_c2pa_assertion,C2PA assertions>>_ that are referenced in the *<<_identity_assertion,identity assertion>>.*"
+But this doesn't hold for the exisitng identity aggregation credential (though I suspect it does hold for the X.509 or anything self-signed).
+It's still not a great statement though because a credential that is not self-custodied could be interpreted as being attested to by the wrong person. So it's really about the role played by the issuer/holder of the credential.
+
+:note-caption: Note
+
+The _<<_credential_holder,credential holder’s>>_ signature should generally be construed as reflective of the _<<_named_actor,named actor’s>>_ authorization of or active participation in the production of the _<<C2PA asset>>_ in which it appears, as described by the specific _<<_c2pa_assertion,C2PA assertions>>_ that are referenced in the *<<_identity_assertion,identity assertion>>.*
 
 Each *<<_identity_assertion,identity assertion>>* contains a `signer_payload` with hashlink references to one or more other _<<_c2pa_assertion,C2PA assertions>>,_ known here as _<<_referenced_assertions,referenced assertions>>,_ and a signature from the _<<_credential_holder,credential holder>>_ over that payload, thus providing a non-repudiable, tamper-evident binding between the _<<_named_actor,named actor>>_ and the list of _<<_referenced_assertions,referenced assertions>>._
 
+:note-caption: To Do
+NOTE: Here again it would be nice to make a more precise statement. On a first read, this actually seems to conflict somewhat with the other statement about interpreting the credential above.
+
+:note-caption: Note
+
 The `signer_payload` and corresponding signature from the _<<_credential_holder,credential holder>>_ binds this identity assertion to a specific _<<C2PA asset>>_ and allows the _<<_credential_holder,credential holder>>_ to endorse or make additional statements about the _<<_named_actor,named actor’s>>_ relationship to that _<<C2PA asset>>._
+
+:note-caption: To Do
+NOTE: This will no longer be true in PR4 if the claim generator signs the identity assertion (it's no longer independent from, but still in addition to)
+
+:note-caption: Note
 
 The *<<_identity_assertion,identity assertion>>* should be thought of as a trust signal that is independent from (and thus, in _addition_ to) the trust signal provided by the _<<C2PA claim generator>>_ itself.
 
@@ -82,6 +106,11 @@ Separately, the _<<C2PA Manifest>>_ uses the _<<_claim_generator,claim generator
 
 The teal circle demonstrates the limit of the _<<_c2pa_manifest,C2PA Manifest’s>>_ trust signal.
 ====
+
+:note-caption: To Do
+NOTE: This is still true, but after PR3, it can also be used to accept the delegation of a credential. So might be confusing and/or worth a callout, but still accurate
+
+:note-caption: Note
 
 An *<<_identity_assertion,identity assertion>>* may reference one or more other *<<_identity_assertion,identity assertions>>.*
 As an example, this might be used to convey an organizational endorsement of an individual creator’s credential.

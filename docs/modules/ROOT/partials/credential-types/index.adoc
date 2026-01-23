@@ -1,5 +1,10 @@
 == Credentials, signatures, and validation methods
 
+:note-caption: To Do
+NOTE: This will no longer be true with VPs.
+
+:note-caption: Note
+
 The *<<_identity_assertion,identity assertion>>* allows multiple signature types to be represented, although only one _<<_verifiable_identifier,verifiable identifier>>_ and corresponding signature can be used in any single assertion.
 
 The signature type is represented by the `signer_payload.sig_type` field.
@@ -7,6 +12,13 @@ Some credential types are described in this specification.
 It is strongly recommended that *<<_identity_assertion,identity assertion>>* validators be prepared to read all of the signature types described in this specification.
 
 Other specifications MAY define additional `signer_payload.sig_type` values and the corresponding definition of `signature`, subject to restrictions described in xref:_labels[xrefstyle=full].
+
+:note-caption: To Do
+NOTE: 1.1 is no longer a future minor version.
+Separately, we should think about whether the new PRs deprecate the existing identity claims aggregation credential.
+I would suggest that it does as the new credentials present a superset of functionality.
+
+:note-caption: Note
 
 [IMPORTANT]
 .Credential types in minor version updates
@@ -18,6 +30,8 @@ Future minor version updates (1.1, 1.2, etc.) to this specification MAY:
 
 Such updates to the specification SHOULD continue to use the `cawg.identity` assertion label.
 ====
+
+include::verifiable-credential-bindings/index.adoc[]
 
 include::identity-claims-aggregation/index.adoc[]
 
