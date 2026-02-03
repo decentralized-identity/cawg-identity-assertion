@@ -1,3 +1,25 @@
+/* Fix anchor link scrolling to account for fixed header. */
+/* Enhanced CSS solution with immediate application and increased values */
+
+/* Apply scroll-padding immediately with higher values and max specificity */
+html.js html,
+html,
+*,
+body {
+  scroll-padding-top: 4.5rem !important;
+  scroll-behavior: auto !important; /* Disable smooth scrolling for immediate positioning */
+}
+
+/* Chrome-specific adjustment with higher value */
+@supports (-webkit-appearance: none) and (not (-webkit-touch-callout: none)) {
+  html.js html,
+  html,
+  *,
+  body {
+    scroll-padding-top: 5rem !important;
+  }
+}
+
 /* CAWG home page customizations */
 body.home .nav-container {
   display: none;
