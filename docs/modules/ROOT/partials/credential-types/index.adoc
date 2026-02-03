@@ -26,7 +26,7 @@ _This section is non-normative._
 
 This specification incorporates by reference credential specifications that require outbound network traffic in order to complete the signature verification process.
 
-An <<_identity_assertion_consumer,identity assertion consumer>> may need to adjust their security posture (e.g. using proxy services when appropriate) to facilitate these requirements.
+An <<_identity_assertion_consumer,identity assertion consumer>> may need to adjust their security posture (e.g. using proxy services when appropriate) to facilitate these requirements. A validator implementation SHOULD use the status code `cawg.identity.network_traffic_required` when it is unable to complete validation due to network traffic policy constraints.
 
 An <<_identity_assertion_generator,identity assertion generator>> may wish to take steps to mitigate the risks associated with “phone home” calls (i.e. bundling with other, unrelated credential materials).
 ====
