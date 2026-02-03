@@ -6,8 +6,11 @@
   </div>
   {{/if}}
   <ul class="components">
+    <li class="ia-heading">
+      Assertion Specifications
+    </li>
     {{#each site.components}}
-    {{#if (and (ne ./title "Creator Assertions Home") (ne ./title "Endorsement Assertion")) }}
+    {{#if (and (ne ./title "Creator Assertions Home") (endsWith ./title "Assertion") (ne ./title "Endorsement Assertion")) }}
     <li class="component{{#if (eq this @root.page.component)}} is-current{{/if}}">
       <div class="title"><a href="{{{relativize ./url}}}">{{{./title}}}</a></div>
       {{#if (or ./versions.[1] ./versions.[0].version (ne ./versions.[0].displayVersion 'default'))}}
@@ -24,7 +27,7 @@
     </li>
     {{/if}}
     {{/each}}
-    {{!-- Now add Endorsement Assertion last --}}
+
     {{#each site.components}}
     {{#if (eq ./title "Endorsement Assertion") }}
     <li class="component{{#if (eq this @root.page.component)}} is-current{{/if}}">
@@ -42,6 +45,28 @@
       {{/if}}
     </li>
     {{/if}}
+    {{/each}}
+
+    <li class="ia-heading">
+      Other Documents
+    </li>
+    {{#each site.components}}
+    {{#unless (or (eq ./title "Creator Assertions Home") (endsWith ./title "Assertion")) }}
+    <li class="component{{#if (eq this @root.page.component)}} is-current{{/if}}">
+      <div class="title"><a href="{{{relativize ./url}}}">{{{./title}}}</a></div>
+      {{#if (or ./versions.[1] ./versions.[0].version (ne ./versions.[0].displayVersion 'default'))}}
+      <ul class="versions">
+        {{#each ./versions}}
+        <li class="version
+          {{~#if (and (eq .. @root.page.component) (eq this @root.page.componentVersion))}} is-current{{/if~}}
+          {{~#if (eq this ../latest)}} is-latest{{/if}}">
+          <a href="{{{relativize ./url}}}">{{./displayVersion}}</a>
+        </li>
+        {{/each}}
+      </ul>
+      {{/if}}
+    </li>
+    {{/unless}}
     {{/each}}
   </ul>
 </div>
