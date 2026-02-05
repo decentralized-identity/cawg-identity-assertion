@@ -1,4 +1,4 @@
-=== Verifiable credential binding
+=== W3C verifiable credentials
 
 include::overview.adoc[]
 
