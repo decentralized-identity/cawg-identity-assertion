@@ -31,8 +31,8 @@ Future minor version updates (1.1, 1.2, etc.) to this specification MAY:
 Such updates to the specification SHOULD continue to use the `cawg.identity` assertion label.
 ====
 
-include::verifiable-credential-bindings/index.adoc[]
-
 include::identity-claims-aggregation/index.adoc[]
 
 include::x509.adoc[]
+
+include::verifiable-credential-bindings/index.adoc[]
