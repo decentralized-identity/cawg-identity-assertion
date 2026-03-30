@@ -14,7 +14,6 @@ While the cryptographic material and associated services linked to a DID may cha
 This property supports durable attribution and verifiable credit for creative works across platforms and over long periods of time.
 
 Unlike _<<_identity_claims_aggregation,identity claims aggregation>>_ credentials, which combine multiple claims into a single issued artifact, Verifiable Credentials are presented directly by the _<<_named_actor,named actor.>>_
-
 This presentation model affords the _<<named_actor,named actor>>_ with the flexibility to select which credentials to disclose, and in what context, when asserting identity in relation to a work.
 Multiple independent issuers may provide credentials about the same _<<_named_actor,named actor,>>_ enabling an *<<_identity_assertion,identity assertion>>* to be supported by attestations from diverse sources without requiring prior coordination among issuers.
 
