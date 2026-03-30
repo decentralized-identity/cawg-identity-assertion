@@ -1,5 +1,10 @@
 === Concepts adapted from W3C verifiable credentials specification
 
+:note-caption: To Do
+NOTE: Should we add a definition for a W3C verifiable presentation, or is that covered by W3C verifiable credential?
+
+:note-caption: Note
+
 The following definitions are adapted from the link:++https://www.w3.org/TR/vc-data-model/#terminology++[W3C verifiable credentials data model] specification, version 1.1.
 This specification uses the prefix “W3C” to denote concepts incorporated from that specification.
 

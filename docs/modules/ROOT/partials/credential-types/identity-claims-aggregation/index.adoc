@@ -1,5 +1,10 @@
 === Identity claims aggregation
 
+:note-caption: To Do
+NOTE: I suspect we'll want to produce a new type of credential that is not Identity claims aggreagtion and use that, rather than modifying this section. Notes past this are for reference about which parts will need the most attention/could be reused.
+
+:note-caption: Note
+
 include::overview.adoc[]
 
 include::technical-description.adoc[]

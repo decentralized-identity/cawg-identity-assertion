@@ -1,0 +1,44 @@
+==== Verifiable credential binding conceptual overview
+
+_This section is non-normative._
+
+https://www.w3.org/TR/vc-data-model-2.0/[W3C Verifiable Credentials] (VCs) and https://www.w3.org/TR/did-1.0/[Decentralized Identifiers] (DIDs) provide a standardized mechanism for expressing identity-related statements about a _<<_named_actor,named actor>>_ in a way that is portable, issuer-independent, and cryptographically verifiable.
+When used in conjunction with an *<<_identity_assertion,identity assertion,>>* these technologies enable a _<<_named_actor,named actor>>_ to associate verifiable identity information with creative work without relying on a single platform, service, or registry.
+
+A Verifiable Credential represents a statement made by an issuer about a subject.
+In the context of an *<<_identity_assertion,identity assertion,>>* such credentials may attest to attributes relevant to authorship or contribution, such as roles, affiliations, professional recognition, or the use of a particular name or pseudonym.
+These credentials are controlled by the _<<named_actor,named actor>>_ and may be selectively presented as supporting evidence when making an *<<_identity_assertion,identity assertion.>>*
+
+When a Decentralized Identifier (DID) is included in a Verifiable Credential, it provides a stable identifier for a _<<_named_actor,named actor>>_ that is not inherently bound to a specific platform or account.
+While the cryptographic material and associated services linked to a DID may change over time, the identifier itself can remain consistent.
+This property supports durable attribution and verifiable credit for creative works across platforms and over long periods of time.
+
+Unlike _<<_identity_claims_aggregation,identity claims aggregation>>_ credentials, which combine multiple claims into a single issued artifact, Verifiable Credentials are presented directly by the _<<_named_actor,named actor.>>_
+This presentation model affords the _<<named_actor,named actor>>_ with the flexibility to select which credentials to disclose, and in what context, when asserting identity in relation to a work.
+Multiple independent issuers may provide credentials about the same _<<_named_actor,named actor,>>_ enabling an *<<_identity_assertion,identity assertion>>* to be supported by attestations from diverse sources without requiring prior coordination among issuers.
+
+Credential ecosystems such as those developed by the https://www.firstperson.network[First Person Project] illustrate how first-person, holder-mediated credentials can support self-authored identity in open creative systems.
+*<<_identity_assertion,Identity assertions>>* may incorporate such credentials alongside other verifiable attestations, enabling flexible and interoperable expressions of identity that align with the goals of creator agency and portability.
+
+By integrating W3C Verifiable Credentials and DIDs, this specification enables identity assertions to reference verifiable identity information that is controlled by the _<<_named_actor,named actor>>_ and verifiable by relying parties using open standards.
+This approach supports decentralized attribution while allowing evaluators of *<<_identity_assertion,identity assertions>>* to apply their own trust frameworks and policies when assessing presented credentials.
+
+===== Interpreting an identity assertion with a verifiable credential binding
+
+:note-caption: To Do
+NOTE: This isn't exactly true for VCs since there isn't a single "trusted intermediary service."
+
+:note-caption: Note
+
+At some later time, an _<<_identity_assertion_consumer,identity assertion consumer>>_ will interpret this *<<_identity assertion,identity assertion.>>*
+Assuming that the *<<_identity_assertion,identity assertion>>* is deemed valid, the content of the assertion should be interpreted as follows:
+
+[quote,Signed by trusted intermediary service]
+____
+The _<<_named_actor,named actor>>_ described by this credential has presented one or more identity signals to this trusted intermediary service.
+Those claims were verified and deemed valid by this service as of the times indicated in the credential, and the credential was provisioned securely to the _<<_named_actor,named actor>>_.
+
+This credential should only be trusted in the context of the _<<C2PA asset>>_ when paired with an appropriate binding to this _<<C2PA Manifest>>_. However, any such information binding this _<<_named_actor,named actor>>_ to their participation in the creation of the _<<C2PA asset>>_ is self-attested by the _<<_named_actor,named actor>>_ and not verified or directly attested to by this service. 
+____
+
+IMPORTANT: Trust in the intermediary identity verification service is essential to ensure that the asserted identities are accurate and controlled by the _<<_named_actor,named actor>>_. As long as that trust has not been compromized, an _<<_identity_assertion_consumer,identity assertion consumer>>_ is able to rely on self-attested information from that _<<_named_actor,named actor>>_ as being authentically produced by that _<<_named_actor,named actor>>_. This includes trusting the mandatory binding of the credential to the _<<C2PA asset>>_.

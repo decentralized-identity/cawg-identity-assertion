@@ -8,7 +8,7 @@ It is designed to enable global, opt-in, adoption of digital provenance techniqu
 The C2PA technical specification allows other standards bodies to define additional metadata that can be incorporated into a _<<C2PA Manifest>>._
 These statements come in the form of a _<<_c2pa_assertion,C2PA assertion>>._
 
-This specification describes a specific _<<C2PA assertion>>_ that can be added to a _<<C2PA Manifest>>_ to allow an _<<_actor,actor>>_ to prove control over an digital identity and to bind that identity to a _<<_c2pa_asset,C2PA asset>>_ (and, at their option, one or more _<<_c2pa_assertion,C2PA assertions>>_) produced by them or on their behalf.
+This specification describes a _<<C2PA assertion>>_ that can be added to a _<<C2PA Manifest>>_ to let an _<<_actor,actor>>_ bind their digital identity signals to a _<<_c2pa_asset,C2PA asset>>_, while attesting to the accuracy of other _<<_c2pa_assertion,C2PA assertions>>_ or to their role in relation to that asset.
 
 IMPORTANT: This document references link:https://spec.c2pa.org/specifications/specifications/2.3/specs/C2PA_Specification.html[version 2.3 of the C2PA technical specification], but it is compatible with all prior versions of the specification.
 Where there is a meaningful difference between versions of the C2PA specification, those will be described here.
