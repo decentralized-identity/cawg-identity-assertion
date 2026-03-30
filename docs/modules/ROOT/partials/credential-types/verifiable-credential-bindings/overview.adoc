@@ -2,50 +2,36 @@
 
 _This section is non-normative._
 
-Content creators (_<<_named_actor,named actors>>_) may wish to document their role in creating a _<<C2PA asset>>_ using identity signals that are commonly understood in the mass market.
-Examples of such signals include:
+https://www.w3.org/TR/vc-data-model-2.0/[W3C Verifiable Credentials] (VCs) and https://www.w3.org/TR/did-1.0/[Decentralized Identifiers] (DIDs) provide a standardized mechanism for expressing identity-related statements about a _<<_named_actor,named actor>>_ in a way that is portable, issuer-independent, and cryptographically verifiable.
+When used in conjunction with an *<<_identity_assertion,identity assertion,>>* these technologies enable a _<<_named_actor,named actor>>_ to associate verifiable identity information with creative work without relying on a single platform, service, or registry.
 
-* verified web sites
-* social media accounts
-* official ID documentation
-* professional accreditations
-* organizational affiliations
+A Verifiable Credential represents a statement made by an issuer about a subject.
+In the context of an *<<_identity_assertion,identity assertion,>>* such credentials may attest to attributes relevant to authorship or contribution, such as roles, affiliations, professional recognition, or the use of a particular name or pseudonym.
+These credentials are controlled by the _<<named_actor,named actor>>_ and may be selectively presented as supporting evidence when making an *<<_identity_assertion,identity assertion.>>*
 
-These common identity signals, though popular, are not well-designed for use as lasting identifiers.
-Some of the challenges associated with these identity signals include:
+When a Decentralized Identifier (DID) is included in a Verifiable Credential, it provides a stable identifier for a _<<_named_actor,named actor>>_ that is not inherently bound to a specific platform or account.
+While the cryptographic material and associated services linked to a DID may change over time, the identifier itself can remain consistent.
+This property supports durable attribution and verifiable credit for creative works across platforms and over long periods of time.
 
-* The methods for accessing, describing, and presenting these signals are widely disparate.
-* These signals typically do not provide the ability to issue signatures on the _<<_named_actor,named actor’s>>_ behalf.
-* The verification methods associated with these signals are typicially designed for momentary validation; they typically do not provide artifacts that can be independently verified at an arbitrary time (perhaps months or years after issuance).
+Unlike _<<_identity_claims_aggregation,identity claims aggregation>>_ credentials, which combine multiple claims into a single issued artifact, Verifiable Credentials are presented directly by the _<<_named_actor,named actor.>>_
+This presentation model affords the _<<named_actor,named actor>>_ with the flexibility to select which credentials to disclose, and in what context, when asserting identity in relation to a work.
+Multiple independent issuers may provide credentials about the same _<<_named_actor,named actor,>>_ enabling an *<<_identity_assertion,identity assertion>>* to be supported by attestations from diverse sources without requiring prior coordination among issuers.
 
-To facilitate the use of such identity signals, the _<<_named_actor,named actor>>_ may use the services of third-party intermediaries that they trust to gather these signals and package them into persistent, tamper-evident digital credentials.
+Credential ecosystems such as those developed by the https://www.firstperson.network[First Person Project] illustrate how first-person, holder-mediated credentials can support self-authored identity in open creative systems.
+*<<_identity_assertion,Identity assertions>>* may incorporate such credentials alongside other verifiable attestations, enabling flexible and interoperable expressions of identity that align with the goals of creator agency and portability.
 
-The resulting credentials perform two important functions:
-
-1. They place identity attestation claims from various _<<_identity_provider,identity providers>>_ such as social media sites and ID verification vendors into a tamper-evident digital container.
-2. They bind those identity attestation claims to the specific _<<C2PA asset>>_ a _<<_named_actor,named actor>>_ creates.
-
-The two workflows performed by the _<<_identity_claims_aggregator,identity claims aggregator>>_ are described in the sections below:
-
-===== Creating identity claims credentials
-
-In the first workflow, the _<<_named_actor,named actor>>_ asks a trusted third-party intermediary to verify an identity claim.
-That intermediary may be an _<<_identity_provider,identity provider>>_ themselves, or they may contact the necessary _<<_identity_provider,identity providers>>_ to verify the identity claim.
-If that verification is successful, that intermediary chooses whether to immediately issue a signed credential attesting to the information, or remembers the provided information for later use on the _<<_named_actor,named actor’s>>_ behalf.
-
-This workflow can be repeated any number of times to provide additional identity signals for the _<<_named_actor,named actor>>._
-
-===== Creating content using the identity claims
-
-Once the _<<_named_actor,named actor's>>_ desired identity signals have been verified, the _<<_named_actor,named actor>>_ can then use an authoring tool to create content.
-This authoring tool collaborates with the _<<_named_actor,named actor>>_ or their chosen intermediaries to bind the identity claims to the _<<C2PA asset>>_ being created.
-
-This workflow can be repeated any number of times to create new content on behalf of the _<<_named_actor,named actor>>_, or for the _<<_named_actor,named actor>>_ to express their involvement at many stages of the content creation process.
+By integrating W3C Verifiable Credentials and DIDs, this specification enables identity assertions to reference verifiable identity information that is controlled by the _<<_named_actor,named actor>>_ and verifiable by relying parties using open standards.
+This approach supports decentralized attribution while allowing evaluators of *<<_identity_assertion,identity assertions>>* to apply their own trust frameworks and policies when assessing presented credentials.
 
 ===== Interpreting an identity assertion with a verifiable credential binding
 
-At some later time, an _<<_identity_assertion_consumer,identity assertion consumer>>_ will interpret this *<<_identity assertion,identity assertion>>.*
-Assuming that the _<<_identity_assertion,identity assertion>>_ is deemed valid, the content of the assertion should be interpreted as follows:
+:note-caption: To Do
+NOTE: This isn't exactly true for VCs since there isn't a single "trusted intermediary service."
+
+:note-caption: Note
+
+At some later time, an _<<_identity_assertion_consumer,identity assertion consumer>>_ will interpret this *<<_identity assertion,identity assertion.>>*
+Assuming that the *<<_identity_assertion,identity assertion>>* is deemed valid, the content of the assertion should be interpreted as follows:
 
 [quote,Signed by trusted intermediary service]
 ____
