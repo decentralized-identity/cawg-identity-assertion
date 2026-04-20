@@ -2,7 +2,7 @@
 
 ==== Archival-quality identifier
 
-Any _<<_verifiable_credential,verifiable credential>>_ for which all relevant information necessary for an independent system to verify the cryptographic keys associated with that credential have been preserved and can reasonably be expected to be available and valid for many years after a signature event.
+Any _<<_verifiable_identifier,verifiable identifier>>_ for which all relevant information necessary for an independent system to verify the cryptographic keys associated with that credential have been preserved and can reasonably be expected to be available and valid for many years after a signature event.
 
 ==== Credential holder
 
