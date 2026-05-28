@@ -21,4 +21,4 @@ Such updates to the specification SHOULD continue to use the `cawg.identity` ass
 
 include::identity-claims-aggregation/index.adoc[]
 
-include::x509.adoc[]
+include::x509/index.adoc[]
