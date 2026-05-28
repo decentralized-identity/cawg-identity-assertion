@@ -13,23 +13,20 @@ To validate the COSE signature for an *<<_identity_assertion,identity assertion>
 
 The validator MUST retrieve the COSE signature from the `signature` field of the *<<_identity_assertion,identity assertion>>.*
 
-The validation of the credential used in the signature MUST be performed according to xref:_trust_model_for_x_509_certificates[xrefstyle=full].
-
-If the credential is not acceptable per the requirements for _X.509 certificates,_ then the *<<_identity_assertion,identity assertion>>* MUST be rejected with a failure code of `signingCredential.invalid`.
-If the signature algorithm is not on the allowed or deprecated list described in link:++https://spec.c2pa.org/specifications/specifications/2.4/specs/C2PA_Specification.html#_digital_signatures++[Section 13.2, “Digital signatures,”] of the C2PA technical specification, then the *<<_identity_assertion,identity assertion>>* MUST be rejected with a failure code of `algorithm.unsupported`.
+If the signature algorithm is not on the allowed or deprecated list described in link:++https://spec.c2pa.org/specifications/specifications/2.4/specs/C2PA_Specification.html#_digital_signatures++[Section 13.2, “Digital signatures,”] of the C2PA technical specification, then the *<<_identity_assertion,identity assertion>>* MUST be rejected with a failure code of `cawg.x509.algorithm.unsupported`.
 
 Before a chain of trust to a trust anchor is established, the validator MUST first determine if a valid time stamp (as described in xref:_x509_validate_the_time_stamp[xrefstyle=full]) is present.
 Then, a chain of trust SHOULD be verified from the credential to a trust anchor configuration in one of the applicable trust anchor lists.
 If a `notBefore` date/time is present in a trust anchor configuration, that configuration MUST NOT validate signatures whose time stamp (or current time, if no time stamp is present) is before that date/time.
 If a `notAfter` date/time is present, that configuration MUST NOT validate signatures whose time stamp (or current time, if no time stamp is present) is after that date/time.
 
-If a chain of trust cannot be verified, the *<<_identity_assertion,identity assertion>>* MUST be rejected with a failure code of `signingCredential.untrusted`; otherwise, the *<<_identity_assertion,identity assertion>>* signature MUST be assigned a success code of `signingCredential.trusted`.
+If a chain of trust cannot be verified, the *<<_identity_assertion,identity assertion>>* MUST be rejected with a failure code of `cawg.x509.credential.untrusted`; otherwise, the *<<_identity_assertion,identity assertion>>* signature MUST be assigned a success code of `cawg.x509.credential.trusted`.
 
 A validator MUST NOT issue the status `cawg.identity.trusted` for an *<<_identity_assertion,identity assertion>>* unless the _X.509 certificate_ is found to comply with the trust model as described in xref:_trust_model_for_x_509_certificates[xrefstyle=full].
 
 If the *<<_identity_assertion,identity assertion>>* has not yet been rejected, validation MUST proceed according to the procedure described in link:++https://spec.c2pa.org/specifications/specifications/2.4/specs/C2PA_Specification.html#_digital_signatures++[Section 13.2, “Digital signatures,”] of the C2PA technical specification.
-If validation of the signature fails, the *<<_identity_assertion,identity assertion>>* MUST be rejected with a failure code of `claimSignature.mismatch`.
-Otherwise, the *<<_identity_assertion,identity assertion>>* signature MUST be assigned a success code of `claimSignature.validated`.
+If validation of the signature fails, the *<<_identity_assertion,identity assertion>>* MUST be rejected with a failure code of `cawg.x509.signature.mismatch`.
+Otherwise, the *<<_identity_assertion,identity assertion>>* signature MUST be assigned a success code of `cawg.x509.signature.validated`.
 
 For the remainder of this section, _headers_ refers to the union of the set of protected and unprotected header parameters in the COSE signature.
 Unless otherwise specified, a header MAY appear in either bucket.
@@ -48,7 +45,7 @@ Only v2 time stamps, carried in a `sigTst2` header, are acceptable for *<<_ident
 ====== Obtaining the TimeStampToken
 
 If the `sigTst2` header is present in the COSE signature for the *<<_identity_assertion,identity assertion>>,* the `tstTokens` array is expected to contain a single `tstToken`.
-If the header contains more than one `tstToken`, the validator MUST issue a `timestamp.malformed` informational code and ignore the time stamps.
+If the header contains more than one `tstToken`, the validator MUST issue a `cawg.x509.time_stamp.malformed` informational code and ignore the time stamps.
 
 The validator MUST retrieve the `val` property from the `tstToken`, which MUST be an RFC 3161-compliant `timeStampToken` (TimeStampToken, TST).
 
@@ -65,21 +62,21 @@ If the identifier does not appear in the mapping, no error is raised, as it simp
 
 The validator MUST continue the process as follows:
 
-* If the signature algorithm in the `timeStampToken` is not on the allowed or deprecated list described in link:++https://spec.c2pa.org/specifications/specifications/2.4/specs/C2PA_Specification.html#_digital_signatures++[Section 13.2, “Digital signatures,”] of the C2PA technical specification, then the validator MUST issue a `timestamp.untrusted` informational code and ignore the time stamp.
+* If the signature algorithm in the `timeStampToken` is not on the allowed or deprecated list described in link:++https://spec.c2pa.org/specifications/specifications/2.4/specs/C2PA_Specification.html#_digital_signatures++[Section 13.2, “Digital signatures,”] of the C2PA technical specification, then the validator MUST issue a `cawg.x509.time_stamp.untrusted` informational code and ignore the time stamp.
 * Validate the signature in the `timeStampToken`, as described in section 5.6 of https://datatracker.ietf.org/doc/html/rfc2630[RFC 2630].
-If the signature is not valid, the validator MUST issue a `timestamp.mismatch` informational code and ignore the time stamp.
-* If the `timeStampToken` does not contain a `messageImprint` field, the validator MUST issue a `timestamp.malformed` informational code and ignore the time stamp.
-* If the message imprint hash algorithm is not on the allowed or deprecated list described in link:++https://spec.c2pa.org/specifications/specifications/2.4/specs/C2PA_Specification.html#_hashing++[Section 13.1, “Hashing,”] of the C2PA technical specification, then the validator MUST issue a `timestamp.untrusted` informational code and ignore the time stamp.
+If the signature is not valid, the validator MUST issue a `cawg.x509.time_stamp.mismatch` informational code and ignore the time stamp.
+* If the `timeStampToken` does not contain a `messageImprint` field, the validator MUST issue a `cawg.x509.time_stamp.malformed` informational code and ignore the time stamp.
+* If the message imprint hash algorithm is not on the allowed or deprecated list described in link:++https://spec.c2pa.org/specifications/specifications/2.4/specs/C2PA_Specification.html#_hashing++[Section 13.1, “Hashing,”] of the C2PA technical specification, then the validator MUST issue a `cawg.x509.time_stamp.untrusted` informational code and ignore the time stamp.
 * Validate that the value of the `messageImprint` field (in the `timeStampToken`) matches the `signature` field of the `COSE_Sign1_Tagged` structure of the *<<_identity_assertion,identity assertion>>* being validated.
-If the values do not match, the validator MUST issue a `timestamp.mismatch` informational code and ignore the time stamp.
+If the values do not match, the validator MUST issue a `cawg.x509.time_stamp.mismatch` informational code and ignore the time stamp.
 * Validate that the `certificates` field of the `timeStampToken` is present, that the Time Stamping Authority (TSA)’s certificate can be found in the provided set of certificates in this field, and that it is possible to build a trust chain from the TSA’s certificate to an entry in the C2PA TSA Trust List (or other list of trust anchors present in the validator for this purpose).
-If the certificate cannot be located or a trust chain cannot be constructed, the validator MUST issue a `timestamp.untrusted` informational code and ignore the time stamp.
-If the validator determines that a certificate is invalid, it MAY additionally return the informational code `timeStamp.credentialInvalid`.
+If the certificate cannot be located or a trust chain cannot be constructed, the validator MUST issue a `cawg.x509.time_stamp.untrusted` informational code and ignore the time stamp.
+If the validator determines that a certificate is invalid, it MAY additionally return the informational code `cawg.x509.time_stamp.credential_invalid`.
 * Validate that the attested time, as found in the `genTime` field (in the `timeStampToken`), falls within the validity period of the TSA’s signing certificate and all CA certificates up to the trust anchor.
-If it does not, the validator MUST issue a `timestamp.outsideValidity` informational code and ignore the time stamp.
-* If time stamp validation does not stop or fail due to any of the above conditions, then the validator MUST issue the success codes `timeStamp.trusted` and `timeStamp.validated`.
-* If the validator issued both `timeStamp.trusted` and `timeStamp.validated` success codes, then the validator MUST validate that the time attested by the TSA, as found in the `genTime` field (in the `timeStampToken`), falls within the validity period of the *<<_identity_assertion,identity assertion>>* signing certificate and all CA certificates up to the trust anchor.
-If it does not, the validator MUST reject the *<<_identity_assertion,identity assertion>>* with a `claimSignature.outsideValidity` failure code.
+If it does not, the validator MUST issue a `cawg.x509.time_stamp.outside_validity` informational code and ignore the time stamp.
+* If time stamp validation does not stop or fail due to any of the above conditions, then the validator MUST issue the success codes `cawg.x509.time_stamp.trusted` and `cawg.x509.time_stamp.validated`.
+* If the validator issued both `cawg.x509.time_stamp.trusted` and `cawg.x509.time_stamp.validated` success codes, then the validator MUST validate that the time attested by the TSA, as found in the `genTime` field (in the `timeStampToken`), falls within the validity period of the *<<_identity_assertion,identity assertion>>* signing certificate and all CA certificates up to the trust anchor.
+If it does not, the validator MUST reject the *<<_identity_assertion,identity assertion>>* with a `cawg.x509.signature.outside_validity` failure code.
 
 NOTE: Time stamps remain valid even after the signing credential of the Time Stamping Authority expires, so long as the attested time falls within the time stamp authority’s certificate’s validity period. This is a special type of trust extended only to time stamp authorities.
 
@@ -87,27 +84,27 @@ At time of validation, when a time stamp is present, trusted, and validated, the
 
 NOTE: This document does not require that the revocation status of a Time Stamping Authority’s certificate be captured at signing time nor validated at validation time.
 
-If no `sigTst2` header is present in the *<<_identity_assertion,identity assertion>>* and no TimeStampToken can be obtained as described above, or if at least one such time stamp is present but does not satisfy the requirements above, then the *<<_identity_assertion,identity assertion>>* is valid if the current time at validation is within the validity period of the signer’s certificate and all CA certificates up to the trust anchor.
-If it is, the validator MUST return a success code of `claimSignature.insideValidity`.
-If it is not, the *<<_identity_assertion,identity assertion>>* MUST be rejected with a failure code of `claimSignature.outsideValidity`.
+If no `sigTst2` header is present in the *<<_identity_assertion,identity assertion>>* and no TimeStampToken can be obtained as described above, or if at least one such time stamp is present but does not satisfy the requirements above, then the *<<_identity_assertion,identity assertion>>* is valid if the current time at validation is within the validity period of the _<<_named_actor,named actor’s>>_ certificate and all CA certificates up to the trust anchor.
+If it is, the validator MUST return a success code of `cawg.x509.signature.inside_validity`.
+If it is not, the *<<_identity_assertion,identity assertion>>* MUST be rejected with a failure code of `cawg.x509.signature.outside_validity`.
 
 ====== Validating the “claimed time of signing”
 
 A validator MAY choose to validate the “claimed time of signing” as attested by the value present in the `iat` protected header.
-If the `iat` header is present, the validator MAY validate that the attested time falls within the validity period of the signer’s certificate and all CA certificates up to the trust anchor, and not later than the time attested by any associated trusted time stamp.
-If the validator does the validation of this value and it falls inside the validity period, the validator MUST return the `timeOfSigning.insideValidity` informational code; if it falls outside the validity period, the validator MUST return the `timeOfSigning.outsideValidity` informational code.
+If the `iat` header is present, the validator MAY validate that the attested time falls within the validity period of the _<<_named_actor,named actor’s>>_ certificate and all CA certificates up to the trust anchor, and not later than the time attested by any associated trusted time stamp.
+If the validator does the validation of this value and it falls inside the validity period, the validator MUST return the `cawg.x509.time_of_signing.inside_validity` informational code; if it falls outside the validity period, the validator MUST return the `cawg.x509.time_of_signing.outside_validity` informational code.
 
 [#_x509_validate_the_credential_revocation_information]
 ===== Validate the credential revocation information
 
-Discovery of the revocation status of the signer’s certificate and all CA certificates that are part of the trust chain is important to determining whether a given certificate is considered valid and trusted.
+Discovery of the revocation status of the _<<_named_actor,named actor’s>>_ certificate and all CA certificates that are part of the trust chain is important to determining whether a given certificate is considered valid and trusted.
 
 For CA certificates, the validator SHOULD determine revocation status as indicated in the Authority Information Access (AIA) extension as described in section 4.2.2.1 of https://datatracker.ietf.org/doc/html/rfc5280[RFC 5280].
 The validator SHOULD make use of relevant OCSP responses included in the _<<C2PA Manifest>>_ if the AIA extension indicates that OCSP is available.
 
-If the validator determines that a CA certificate was revoked at the time indicated in a trusted time stamp, or at the current time if no trusted time stamp is present, then the *<<_identity_assertion,identity assertion>>* MUST be rejected with a failure status of `signingCredential.untrusted`.
+If the validator determines that a CA certificate was revoked at the time indicated in a trusted time stamp, or at the current time if no trusted time stamp is present, then the *<<_identity_assertion,identity assertion>>* MUST be rejected with a failure status of `cawg.x509.credential.untrusted`.
 
-For the signer’s certificate, the validator MUST use the following process:
+For the _<<_named_actor,named actor’s>>_ certificate, the validator MUST use the following process:
 
 * If a certificate does not support revocation status, or the certificate issuer did not provide a method to query its revocation status, the validator MUST treat the credential as not revoked.
 * If the _<<_actor,actor>>_ stapled OCSP responses in the `rVals` header of the `COSE_Sign1` structure of the *<<_identity_assertion,identity assertion>>* signature, the validator MUST decode and validate the stapled OCSP responses as described in xref:_x509_ocsp_stapled[xrefstyle=full].
@@ -134,9 +131,9 @@ If an OCSP response is accepted, and if all of the following requirements are me
 
 Validators MUST check the `revocationReason` of any `revoked` response to disambiguate the `removedFromCRL` case from an actual revocation.
 
-If the above conditions are met for any OCSP response in the _<<C2PA Manifest>>_ Store, then the validator MUST either issue a `signingCredential.ocsp.notRevoked` success code, indicating that the certificate is considered not revoked at the time of signing, or (for additional assurance) perform an online OCSP check as described in xref:_x509_ocsp_online[xrefstyle=full].
+If the above conditions are met for any OCSP response in the _<<C2PA Manifest>>_ Store, then the validator MUST either issue a `cawg.x509.ocsp.not_revoked` success code, indicating that the certificate is considered not revoked at the time of signing, or (for additional assurance) perform an online OCSP check as described in xref:_x509_ocsp_online[xrefstyle=full].
 
-Otherwise, if an OCSP response in the _<<C2PA Manifest>>_ Store meets all of the above conditions except that the `certStatus` field is `revoked`, the certificate MUST be considered revoked and the *<<_identity_assertion,identity assertion>>* MUST be rejected with a `signingCredential.ocsp.revoked` failure code.
+Otherwise, if an OCSP response in the _<<C2PA Manifest>>_ Store meets all of the above conditions except that the `certStatus` field is `revoked`, the certificate MUST be considered revoked and the *<<_identity_assertion,identity assertion>>* MUST be rejected with a `cawg.identity.credential_revoked` failure code.
 
 [#_x509_ocsp_online]
 ====== Determining revocation from online OCSP response
@@ -145,11 +142,11 @@ If, for a given certificate, no OCSP response in the _<<C2PA Manifest>>_ Store s
 
 NOTE: Querying the credential status method can reveal to an observer the identity of the asset being validated, and so this query is optional.
 
-If the validator chooses not to perform an online OCSP check, it MUST issue a `signingCredential.ocsp.skipped` informational code.
+If the validator chooses not to perform an online OCSP check, it MUST issue a `cawg.x509.ocsp.skipped` informational code.
 
-If the validator attempts to query the OCSP responder but is unable to receive a response, it MUST issue a `signingCredential.ocsp.inaccessible` informational code.
+If the validator attempts to query the OCSP responder but is unable to receive a response, it MUST issue a `cawg.x509.ocsp.inaccessible` informational code.
 
-If a response is received and accepted per requirements 1 through 4 of section 3.2 of https://datatracker.ietf.org/doc/html/rfc6960[RFC 6960], it MUST establish that the signer’s certificate was not revoked at the time of signing if either of the following requirements is fulfilled:
+If a response is received and accepted per requirements 1 through 4 of section 3.2 of https://datatracker.ietf.org/doc/html/rfc6960[RFC 6960], it MUST establish that the _<<_named_actor,named actor’s>>_ certificate was not revoked at the time of signing if either of the following requirements is fulfilled:
 
 * The *<<_identity_assertion,identity assertion>>* signature has a valid time stamp, and the attested time falls within the `(thisUpdate,nextUpdate)` interval of the response, or
 * The *<<_identity_assertion,identity assertion>>* signature does not have a valid time stamp but the current real-world time falls within the `(thisUpdate,nextUpdate)` interval of the response,
@@ -159,14 +156,107 @@ and both of the following requirements are fulfilled:
 * The `certStatus` field of the response is `good`, or `revoked` with a `revocationReason` of `removeFromCRL`, and
 * The OCSP signer of the response is an “authorized responder” as defined by section 4.2.2.2 of https://datatracker.ietf.org/doc/html/rfc6960[RFC 6960].
 
-If the `certStatus` field of the response is `revoked` with a `revocationReason` that is not `removeFromCRL`, the response MUST establish that the signer’s certificate was not revoked at the time of signing only if both of the following requirements are met:
+If the `certStatus` field of the response is `revoked` with a `revocationReason` that is not `removeFromCRL`, the response MUST establish that the _<<_named_actor,named actor’s>>_ certificate was not revoked at the time of signing only if both of the following requirements are met:
 
 * The *<<_identity_assertion,identity assertion>>* has a valid time stamp, and the attested time falls within the `(thisUpdate,nextUpdate)` interval of the response, and
 * The `revocationTime` in the response is after the attested time stamp.
 
-If the above conditions are met, the certificate MUST be considered not revoked at the time of signing, and the validator MUST issue a `signingCredential.ocsp.notRevoked` success code.
+If the above conditions are met, the certificate MUST be considered not revoked at the time of signing, and the validator MUST issue a `cawg.x509.ocsp.not_revoked` success code.
 
 Otherwise:
 
-* If the `certStatus` field of the response is `unknown`, a `signingCredential.ocsp.unknown` informational code MUST be recorded.
-* Otherwise, the certificate MUST be considered revoked and the *<<_identity_assertion,identity assertion>>* MUST be rejected with a `signingCredential.ocsp.revoked` failure code.
+* If the `certStatus` field of the response is `unknown`, a `cawg.x509.ocsp.unknown` informational code MUST be recorded.
+* Otherwise, the certificate MUST be considered revoked and the *<<_identity_assertion,identity assertion>>* MUST be rejected with a `cawg.identity.credential_revoked` failure code.
+
+===== Status codes
+
+The following status codes are specific to the validation of *<<_identity_assertion,identity assertions>>* whose `signer_payload.sig_type` is `cawg.x509.cose`.
+The failure code `cawg.identity.credential_revoked` defined in xref:_status_codes[xrefstyle=full] is also issued by this procedure.
+
+[width="100%",cols="4,4,10",options="header"]
+|=======================
+| Value
+| Status
+| Definition
+
+|`cawg.x509.algorithm.unsupported`
+| Failure
+| The signature algorithm used to sign the *<<_identity_assertion,identity assertion>>* is not on the allowed or deprecated list defined in the C2PA technical specification.
+
+|`cawg.x509.credential.trusted`
+| Success
+| A chain of trust from the *<<_identity_assertion,identity assertion>>* signing certificate to a trust anchor configuration was verified.
+
+|`cawg.x509.credential.untrusted`
+| Failure
+| A chain of trust could not be verified from the *<<_identity_assertion,identity assertion>>* signing certificate to any configured trust anchor, or a CA certificate in the chain was determined to be revoked.
+
+|`cawg.x509.signature.validated`
+| Success
+| The cryptographic signature over the *<<_identity_assertion,identity assertion>>* was validated against the signing certificate.
+
+|`cawg.x509.signature.mismatch`
+| Failure
+| The cryptographic signature over the *<<_identity_assertion,identity assertion>>* could not be validated against the signing certificate.
+
+|`cawg.x509.signature.inside_validity`
+| Success
+| No trusted time stamp was available, and the current time at validation falls within the validity period of the _<<_named_actor,named actor’s>>_ certificate and all CA certificates up to the trust anchor.
+
+|`cawg.x509.signature.outside_validity`
+| Failure
+| The time of signing falls outside the validity period of the _<<_named_actor,named actor’s>>_ certificate or one of the CA certificates up to the trust anchor.
+
+|`cawg.x509.time_stamp.trusted`
+| Success
+| The Time Stamping Authority’s certificate has a valid chain of trust to a trust anchor in the C2PA TSA Trust List (or other list of trust anchors used by the validator for this purpose).
+
+|`cawg.x509.time_stamp.validated`
+| Success
+| The signature over the TimeStampToken was validated and all time-stamp validation requirements were met.
+
+|`cawg.x509.time_stamp.malformed`
+| Informational
+| A time stamp associated with the *<<_identity_assertion,identity assertion>>* is malformed (for example, more than one `tstToken` is present in a `sigTst2` header, or the `messageImprint` field is missing).
+
+|`cawg.x509.time_stamp.mismatch`
+| Informational
+| The signature over the TimeStampToken did not validate, or the `messageImprint` value did not match the *<<_identity_assertion,identity assertion>>* signature.
+
+|`cawg.x509.time_stamp.untrusted`
+| Informational
+| The Time Stamping Authority’s certificate could not be located or its chain of trust could not be constructed, or the time stamp uses a signature or hashing algorithm that is not on the allowed or deprecated list.
+
+|`cawg.x509.time_stamp.outside_validity`
+| Informational
+| The attested time from a time stamp falls outside the validity period of the Time Stamping Authority’s signing certificate or one of the CA certificates up to the trust anchor.
+
+|`cawg.x509.time_stamp.credential_invalid`
+| Informational
+| A certificate in the Time Stamping Authority’s certificate chain was determined to be invalid.
+
+|`cawg.x509.time_of_signing.inside_validity`
+| Informational
+| The “claimed time of signing” attested by the `iat` protected header falls within the validity period of the _<<_named_actor,named actor’s>>_ certificate and all CA certificates up to the trust anchor.
+
+|`cawg.x509.time_of_signing.outside_validity`
+| Informational
+| The “claimed time of signing” attested by the `iat` protected header falls outside the validity period of the _<<_named_actor,named actor’s>>_ certificate or one of the CA certificates up to the trust anchor.
+
+|`cawg.x509.ocsp.not_revoked`
+| Success
+| The _<<_named_actor,named actor’s>>_ certificate was determined to not be revoked at the time of signing.
+
+|`cawg.x509.ocsp.skipped`
+| Informational
+| The validator chose not to perform an online OCSP check.
+
+|`cawg.x509.ocsp.inaccessible`
+| Informational
+| The validator attempted to query an OCSP responder but was unable to receive a response.
+
+|`cawg.x509.ocsp.unknown`
+| Informational
+| An OCSP response was received, but its `certStatus` field was `unknown`.
+
+|=======================
