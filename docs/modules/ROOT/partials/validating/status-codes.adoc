@@ -55,21 +55,6 @@ The evaluation in xref:_trust_scenarios_in_identity_assertion[xrefstyle=full] co
 | `cawg.identity.pad.invalid`
 | The `pad1` or `pad2` field contains non-zero bytes.
 
-| `cawg.identity.expected_partial_claim.mismatch`
-| The `signer_payload.expected_partial_claim` field did not match the _<<C2PA claim>>_ data structure.
-
-| `cawg.identity.expected_claim_generator.mismatch`
-| The `signer_payload.expected_claim_generator` field did not match the X.509 certificate used to sign the _<<C2PA claim>>._
-
-| `cawg.identity.unexpected_countersigner`
-| An *<<_identity_assertion,identity assertion>>* exists in this _<<C2PA Manifest>>_ that was not described in `signer_payload.expected_countersigners`.
-
-| `cawg.identity.expected_countersigner.mismatch`
-| An *<<_identity_assertion,identity assertion>>* exists in this _<<C2PA Manifest>>_ that has the expected `signer_payload` but has different signing credentials than were described in `signer_payload.expected_countersigners`.
-
-| `cawg.identity.expected_countersigner.missing`
-| The `signer_payload.expected_countersigners` describes an *<<_identity_assertion,identity assertion>>* that does not exist in this _<<C2PA Manifest>>._
-
 |=======================
 
 NOTE: Additional failure codes relating to specific signature types are defined in xref:_credentials_signatures_and_validation_methods[xrefstyle=full].

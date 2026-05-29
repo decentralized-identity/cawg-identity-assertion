@@ -18,14 +18,14 @@ It is subject to several requirements as described in xref:_referenced_assertion
 Valid credential types and the corresponding `signature` data structures and `signer_payload.sig_type` values are defined in xref:_credentials_signatures_and_validation_methods[xrefstyle=full].
 * `role` _(optional)_ contains one or more descriptions of the _<<_named_actor,named actor’s>>_ relationship(s) to the _<<C2PA asset>>._
 Possible role values are described in xref:_named_actor_roles[xrefstyle=full].
-* `expected_partial_claim` _(optional),_ if present, describes the content of the expected _<<C2PA claim>>,_ in which the *<<_identity_assertion,identity assertion>>* appears.
-It can be used to prevent the introduction or removal of _<<_c2pa_assertion,C2PA assertions>>_ (other than the _<<_referenced_assertion,referenced assertions>>_) that could create unintended or unexpected semantics for the overall _<<C2PA Manifest>>._
-The method for calculating this field is described in xref:_calculating_the_expected_partial_claim_field[xrefstyle=full].
-* `expected_claim_generator` _(optional),_ if present, describes the X.509 certificate of the expected _<<C2PA claim generator>>._
-It can be used to avoid creating an unwanted association between the _<<_named_actor,named actor>>_ and an unexpected or undesired _<<C2PA claim generator>>._
-The method for calculating this field is described in xref:_calculating_the_expected_claim_generator_field[xrefstyle=full].
-* `expected_countersigners` _(optional),_ if present, describes the content of other *<<_identity_assertion,identity assertion>>* in the same _<<C2PA Manifest>>._
-The method for calculating this field is described in xref:_calculating_the_expected_countersigners_field[xrefstyle=full].
+
+[NOTE]
+.Historical fields
+====
+Earlier drafts of this specification defined three additional optional fields in `signer_payload`: `expected_partial_claim`, `expected_claim_generator`, and `expected_countersigners`.
+These fields were never adopted in practice and have been removed from this specification.
+Validators and other consumers MUST ignore these fields if they are encountered in an *<<_identity_assertion,identity assertion>>.*
+====
 
 The *<<_identity_assertion,identity assertion>>* SHALL have a label of `cawg.identity`.
 
