@@ -2,10 +2,10 @@
 
 To validate the COSE signature for an *<<_identity_assertion,identity assertion>>,* the steps described in the listed sections of the C2PA technical specification MUST be followed with adaptations as described:
 
-* link:++https://spec.c2pa.org/specifications/specifications/2.4/specs/C2PA_Specification.html#_validate_the_signature++[Section 15.5, “Validate the signature.”] Disregard the paragraph that starts with “Retrieve the URI reference.”
+* link:++https://spec.c2pa.org/specifications/specifications/2.4/specs/C2PA_Specification.html#_validate_the_signature++[Section 15.7, “Validate the signature.”] Disregard the paragraph that starts with “Retrieve the URI reference.”
 Instead retrieve the COSE signature from the `signature` field of the *<<_identity_assertion,identity assertion>>.*
-* link:++https://spec.c2pa.org/specifications/specifications/2.4/specs/C2PA_Specification.html#_validate_the_time_stamp++[Section 15.6, “Validate the time-stamp”]
-* link:++https://spec.c2pa.org/specifications/specifications/2.4/specs/C2PA_Specification.html#_validate_the_credential_revocation_information++[Section 15.7, “Validate the credential revocation information”]
+* link:++https://spec.c2pa.org/specifications/specifications/2.4/specs/C2PA_Specification.html#_validate_the_time_stamp++[Section 15.8, “Validate the time-stamp”]
+* link:++https://spec.c2pa.org/specifications/specifications/2.4/specs/C2PA_Specification.html#_validate_the_credential_revocation_information++[Section 15.9, “Validate the credential revocation information”]
 
 In each of the above sections, the following changes MUST be applied:
 

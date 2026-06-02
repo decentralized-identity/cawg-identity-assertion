@@ -27,10 +27,10 @@ The content of the _<<_placeholder_assertion,placeholder assertion>>_ is unimpor
 7. The list of _<<_referenced_assertions,referenced assertions>>_ (including the _<<_hard_binding,hard binding>>_ assertion) MUST be presented to the _<<_credential_holder,credential holder>>_ for each *<<_identity_assertion,identity assertion>>* to be added, as described in xref:_presenting_the_signer_payload_data_structure_for_signature[xrefstyle=full] by the corresponding _<<_credential_holder,credential holder>>._
 Once each signature has been obtained, the _<<_placeholder_assertion,placeholder assertion>>_ content MUST be replaced with the final *<<_identity_assertion,identity assertion>>* content incorporating that signature.
 The _<<_identity_assertion_generator,identity assertion generator>>_ SHOULD independently validate the signature from the _<<_credential_holder,credential holder>>_ before proceeding.
-8. The remaining steps from link:++https://spec.c2pa.org/specifications/specifications/2.4/specs/C2PA_Specification.html#_multiple_step_processing++[Section 10.4, “Multiple step processing,”] MUST now be completed.
-9. link:++https://spec.c2pa.org/specifications/specifications/2.4/specs/C2PA_Specification.html#_signing_a_claim++[Section 10.3.2.4, “Signing a claim”]
-10. link:++https://spec.c2pa.org/specifications/specifications/2.4/specs/C2PA_Specification.html#_time_stamps++[Section 10.3.2.5, “Time stamps”]
-11. link:++https://spec.c2pa.org/specifications/specifications/2.4/specs/C2PA_Specification.html#_credential_revocation_information++[Section 10.3.2.6, “Credential revocation information”]
+8. The remaining steps from link:++https://spec.c2pa.org/specifications/specifications/2.4/specs/C2PA_Specification.html#_multiple_step_processing++[Section 11.4, “Multiple step processing,”] MUST now be completed.
+9. link:++https://spec.c2pa.org/specifications/specifications/2.4/specs/C2PA_Specification.html#_signing_a_claim++[Section 11.3.2.4, “Signing a claim”]
+10. link:++https://spec.c2pa.org/specifications/specifications/2.4/specs/C2PA_Specification.html#_time_stamps++[Section 12.3.2.5, “Time stamps”]
+11. link:++https://spec.c2pa.org/specifications/specifications/2.4/specs/C2PA_Specification.html#_credential_revocation_information++[Section 11.3.2.6, “Credential revocation information”]
 
 These steps are also represented by the following sequence diagram, which is non-normative:
 
