@@ -33,4 +33,4 @@ An <<_identity_assertion_generator,identity assertion generator>> may wish to ta
 
 include::identity-claims-aggregation/index.adoc[]
 
-include::x509.adoc[]
+include::x509/index.adoc[]
