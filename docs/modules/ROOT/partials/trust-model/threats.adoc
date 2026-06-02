@@ -131,10 +131,6 @@ The attacker could not:
 ======
 ====
 
-A _<<_credential_holder,credential holder>>_ can prevent these attacks by using one or more of the following optional mechanisms in `signer_payload` which are intended to limit the content of the enclosing _<<C2PA Manifest>>:_
-
-* `expected_partial_claim`, which describes the content of the expected _<<C2PA claim>>_ in which the *<<_identity_assertion,identity assertion>>* appears.
-* `expected_claim_generator`, which describes the X.509 certificate of the expected _<<C2PA claim generator>>._
-* `expected_countersigners`, which describes the signing credential(s) of the expected _<<_named_actor,named actors>>_ for other *<<_identity_assertion,identity assertions>>* in the same _<<C2PA Manifest>>._
-
-See xref:_overview[xrefstyle=full], for complete description of these mechanisms.
+This specification does not currently define a mitigation for this class of attack.
+Earlier versions of this specification defined optional `signer_payload` fields (`expected_partial_claim`, `expected_claim_generator`, and `expected_countersigners`) that were intended to limit the content of the enclosing _<<C2PA Manifest>>,_ but those fields were never adopted in practice and have since been removed.
+A future revision of this specification may reintroduce a mechanism to address this threat.
