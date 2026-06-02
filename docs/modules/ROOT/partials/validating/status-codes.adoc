@@ -1,7 +1,7 @@
 === Status codes
 
 The set of standard success and failure codes for *<<_identity_assertion,identity assertion>>* validations are defined below.
-These follow the format defined by the section titled link:++https://spec.c2pa.org/specifications/specifications/2.3/specs/C2PA_Specification.html#_returning_validation_results++[Section 15.2, Returning validation results,”] of the C2PA technical specification.
+These follow the format defined by the section titled link:++https://spec.c2pa.org/specifications/specifications/2.4/specs/C2PA_Specification.html#_returning_validation_results++[Section 15.2, Returning validation results,”] of the C2PA technical specification.
 
 The `url` field for a status code MUST always be the label of the *<<_identity_assertion,identity assertion>>.*
 It is omitted from the tables below.
@@ -55,20 +55,8 @@ The evaluation in xref:_trust_scenarios_in_identity_assertion[xrefstyle=full] co
 | `cawg.identity.pad.invalid`
 | The `pad1` or `pad2` field contains non-zero bytes.
 
-| `cawg.identity.expected_partial_claim.mismatch`
-| The `signer_payload.expected_partial_claim` field did not match the _<<C2PA claim>>_ data structure.
-
-| `cawg.identity.expected_claim_generator.mismatch`
-| The `signer_payload.expected_claim_generator` field did not match the X.509 certificate used to sign the _<<C2PA claim>>._
-
-| `cawg.identity.unexpected_countersigner`
-| An *<<_identity_assertion,identity assertion>>* exists in this _<<C2PA Manifest>>_ that was not described in `signer_payload.expected_countersigners`.
-
-| `cawg.identity.expected_countersigner.mismatch`
-| An *<<_identity_assertion,identity assertion>>* exists in this _<<C2PA Manifest>>_ that has the expected `signer_payload` but has different signing credentials than were described in `signer_payload.expected_countersigners`.
-
-| `cawg.identity.expected_countersigner.missing`
-| The `signer_payload.expected_countersigners` describes an *<<_identity_assertion,identity assertion>>* that does not exist in this _<<C2PA Manifest>>._
+| `cawg.identity.network_traffic_blocked`
+| The credential used in this *<<_identity_assertion,identity assertion>>* can only be validated by downloading related materials from the Internet. The validator has been configured to prohibit some required traffic, so the validation can not be completed successfully.
 
 |=======================
 
