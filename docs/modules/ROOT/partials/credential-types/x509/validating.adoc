@@ -1,13 +1,15 @@
 ==== Validating the COSE signature
 
-To validate the COSE signature for an *<<_identity_assertion,identity assertion>>,* the steps described in the listed sections of the C2PA technical specification MUST be followed with adaptations as described:
+[NOTE]
+====
+The procedure described in this section is based on the sections of the C2PA technical specification, version 2.4, titled link:++https://spec.c2pa.org/specifications/specifications/2.4/specs/C2PA_Specification.html#_validate_the_signature++[Section 15.7, “Validate the signature,”] link:++https://spec.c2pa.org/specifications/specifications/2.4/specs/C2PA_Specification.html#_validate_the_time_stamp++[Section 15.8, “Validate the time-stamp,”] and link:++https://spec.c2pa.org/specifications/specifications/2.4/specs/C2PA_Specification.html#_validate_the_credential_revocation_information++[Section 15.9, “Validate the credential revocation information.”]
+It has been adapted to operate on the COSE signature contained in an *<<_identity_assertion,identity assertion>>* rather than on a _<<C2PA claim>>_ signature.
+====
 
-* link:++https://spec.c2pa.org/specifications/specifications/2.4/specs/C2PA_Specification.html#_validate_the_signature++[Section 15.7, “Validate the signature.”] Disregard the paragraph that starts with “Retrieve the URI reference.”
-Instead retrieve the COSE signature from the `signature` field of the *<<_identity_assertion,identity assertion>>.*
-* link:++https://spec.c2pa.org/specifications/specifications/2.4/specs/C2PA_Specification.html#_validate_the_time_stamp++[Section 15.8, “Validate the time-stamp”]
-* link:++https://spec.c2pa.org/specifications/specifications/2.4/specs/C2PA_Specification.html#_validate_the_credential_revocation_information++[Section 15.9, “Validate the credential revocation information”]
+To validate the COSE signature for an *<<_identity_assertion,identity assertion>>,* the validator MUST follow the procedure described in this section.
 
-In each of the above sections, the following changes MUST be applied:
+[#_x509_validate_the_signature]
+===== Validate the signature
 
 * Any reference to the _claim_ MUST be replaced with the CBOR serialization of the `signer_payload` field from the *<<_identity_assertion,identity assertion>>.*
 * Any reference to the _claim generator_ MUST be replaced with the _<<_actor,actor>>_ whose _X.509 certificate_ is being used for this assertion.
