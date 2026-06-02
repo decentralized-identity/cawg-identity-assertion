@@ -18,9 +18,6 @@
       "@id": "cawg:role",
       "@type": "@vocab"
     },
-    "expected_partial_claim": "cawg:expected_partial_claim",
-    "expected_claim_generator": "cawg:expected_claim_generator",
-    "expected_countersigners": "cawg:expected_countersigners",
     "username": "schema:alternateName",
     "uri": "@id",
     "provider": "cawg:provider",

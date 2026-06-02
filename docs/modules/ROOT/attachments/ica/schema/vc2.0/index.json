@@ -252,15 +252,6 @@
               "type": "string",
               "enum": ["cawg.creator", "cawg.contributor", "cawg.editor", "cawg.producer",
                 "cawg.publisher", "cawg.sponsor", "cawg.translator"]
-            },
-            "expected_partial_claim": {
-              "type": "string"
-            },
-            "expected_claim_generator": {
-              "type": "string"
-            },
-            "expected_countersigners": {
-              "type": "string"
             }
           },
           "required": ["referenced_assertions", "sig_type"]
