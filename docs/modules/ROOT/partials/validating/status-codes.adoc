@@ -70,7 +70,7 @@ The evaluation in xref:_trust_scenarios_in_identity_assertion[xrefstyle=full] co
 | `cawg.identity.expected_countersigner.missing`
 | The `signer_payload.expected_countersigners` describes an *<<_identity_assertion,identity assertion>>* that does not exist in this _<<C2PA Manifest>>._
 
-| `cawg.identity.network_traffic_required`
+| `cawg.identity.network_traffic_blocked`
 | The credential used in this *<<_identity_assertion,identity assertion>>* can only be validated by downloading related materials from the Internet. The validator has been configured to prohibit some required traffic, so the validation can not be completed successfully.
 
 |=======================
