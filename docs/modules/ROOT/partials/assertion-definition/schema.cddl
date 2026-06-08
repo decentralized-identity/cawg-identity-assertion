@@ -1,6 +1,8 @@
 identity = {
   "signer_payload": $signer-payload-map, ; content to be signed by credential holder
   "signature": bstr, ; byte string of the signature
+  ? "trust_registry_uri": https-uri, ; TO DO: define
+  ? "referenced_registry_uri": https-uri, ; TO DO: define
   "pad1": bstr, ; byte string filled with binary `0x00` values used for filling up space
   ? "pad2": bstr, ; optional byte string filled with binary `0x00` values used for filling up space
 }
@@ -15,3 +17,6 @@ hash-map = {
   "alg": tstr .size (1..max-tstr-length), ; a string identifying the cryptographic hash algorithm used to compute this hash, taken from the C2PA hash algorithm identifier list
   "hash": bstr, ;  byte string containing the hash value
 }
+
+; TO DO: Check CDDL syntax
+https-uri /= tstr .regexp "https://.*"

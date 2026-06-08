@@ -7,6 +7,8 @@ The *<<_identity_assertion,identity assertion>>* contains the following data fie
 
 * `signer_payload` contains the set of data to be signed by this _<<_credential_holder,credential holder>>_
 * `signature` contains the raw byte stream of the _<<_credential_holder,credential holder>>’s_ signature
+* `trust_registry_uri` contains a URI identifying the _<<_trust_registry,trust registry>>_ that defines the governance framework, trust rules, or authorized entities relevant to this assertion. *TO DO:* Should this be defined in terms of ToIP TRQP?
+* `referenced_registry_uri` contains a URI identifying the registry, identifier system, or authoritative source referenced by this assertion.
 * `pad1` and `pad2` are byte strings filled with binary `0x00` values used to fill space
 
 The `signer_payload` field is a structure of type `signer-payload-map` which is signed by the _<<_credential_holder,credential holder>>_.

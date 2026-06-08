@@ -64,6 +64,10 @@ A placeholder assertion MUST be used when the final file layout of the _<<C2PA a
 
 The set of _<<_c2pa_assertion,C2PA assertions>>_ that are referenced by an *<<_identity_assertion,identity assertion>>* and thus bound to (i.e. authorized by or created by) the _<<_credential_holder,credential holder>>_ named in the *<<_identity_assertion,identity assertion>>.*
 
+==== Referenced registry
+
+**TO DO:** Write definition. (e.g. HAND or Utah's Widget registry). Generic reference that can be used for additional processing of attribution data.
+
 ==== Trust
 
 In the context of an *<<_identity_assertion,identity assertion>>,* we define _trust_ as meeting or exceeding the minimum level of confidence an _<<_identity_assertion_consumer,identity assertion consumer>>_ requires over assertions made about the identity of the _<<_named_actor,named actor>>_ and the _<<_named_actor,named actor’s>>_ true intention regarding their attestations via content included in and referenced by the *<<_identity_assertion,identity assertion>>.*
@@ -74,7 +78,15 @@ A list of _<<_actor,actors>>,_ published by an authoritative source that are tru
 
 Adapted from link:++https://trustoverip.github.io/ctwg-main-glossary/#term:trust-list++[Trust Over IP’s definition of trust list].
 
-A _trust list_ can be considered a simplified form of a link:++https://trustoverip.github.io/ctwg-main-glossary/#term:trust-registry++[trust registry].
+A _trust list_ can be considered a simplified form of a <<_trust_registry,trust registry>>.
+
+==== Trust registry
+
+**TO DO:** Review definition. See also _<<_referenced_registry,referenced registry>>._
+
+A registry that serves as an authoritative source for trust graphs or other governed information describing one or more trust communities. A trust registry is typically authorized by a governance framework.
+
+Adapted from link:++https://glossary.trustoverip.org/#term:trust-registry++[Trust Over IP’s definition of trust registry].
 
 ==== Verifiable identifier
 
