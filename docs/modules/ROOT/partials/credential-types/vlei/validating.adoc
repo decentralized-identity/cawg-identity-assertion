@@ -1,0 +1,3 @@
+==== Validating the KERI signature
+
+*TO DO:* Write this section.
