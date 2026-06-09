@@ -1,0 +1,36 @@
+==== Generating the KERI signature
+
+To generate a signature an <<_actor>> (The Controller of the AID) starts by serializing the contents of the `signer_payload` field from the <<_identity_assertion>>.
+The `signer_payload` data structure MUST be serialized as described in https://www.rfc-editor.org/rfc/rfc8949.html#name-core-deterministic-encoding[Section 4.2.1, “Core Deterministic Encoding,”] of RFC 8949: Concise Binary Object Representation.
+
+The resulting byte string is then used as an input to the selected signature mechanism preferred by the AID controller and supported by the vLEI technical suite.
+
+NOTE: _KERI_ signatures use *_CESR_* encoding, which indicates, in a prefix, the type of the signature used
+
+If the then current _Establishment Event_ in the *_KEL_* of the AID requires a certain set of keys to add to threshold (`kt` field of an establishment event) >= 1, this step MUST be perfomed for each of the suitable keys.
+
+The resulting set of signatures MUST be used as the input to `vlei-signature-payload-map.aid_sig` field. Each signature in the array MUST be an indexed CESR encoded signature (indexed Controller Signature).
+
+The follow-on subsections describe the usage of the other fields in the `vlei-signature-payload-map`.
+
+Once all of the required and optional fileds have been provided, the `vlei-signature-payload-map` is then serailzed according to the "Core Deterministic Encoding" (see above) and the resulting byte string is used as an input to the `identity.signature` field.
+
+===== Mandatory fields of the `vlei-signature-payload-map`
+
+In addition to the `aid_sig` field described above, the following fields MUST be provided as follows:
+
+* `signer_aid` --  MUST be the CESR encoded Autonomic Identifier (AID) of the <<_actor>>
+* `qvi_cred` -- MUST be the then valid, JSON encoded QVI credential of the QVI that issued the legal entity (see below) and, if used, `OOR` or `ECR` credentials.
+* `le_cred` -- MUST be the then valid, JSON encoded legal entity credential
+* `signer_aid_oobi` -- MUST be an Out of Band Introduction URL of the signer
+* `kel_seq_num` -- MUST be the number of the latest _Establishment Event_ (the value of `s` field) which defined the then active keys of the AID.
+
+===== Conditional fields of `vlei-signature-payload-map`
+
+If the `signer_payload.role` field is set to either `oor` or `ecr`, then the `vlei-signature-payload-map.role_cred` field MUST be provided.
+In that case, the `role_auth_cred` field of the `role_cred` sequence MUST contain JSON encoded `Role Authorization Credential` and the `role_cred` field of the sequence MUST contain the corresponding JSON encoded role credential. Specifically, if the `signer_payload.role` was set to `oor` then the "Official Organizational Role" credential MUST be used.  Alternatively, if the `ecr` value was used, then the "Engagement Context Role" credential MUST be provided.
+
+===== Optional fields of the `vlei-signature-payload-map`
+
+In case the <<_actor>> requires an especially high level of assurance for this assertion, the `anchor_seq_num` field MAY be used.
+If used, the field must be set to the sequence number of the *_anchoring event_* in the AID's KEL. The said event (one of the `ixn`, `rot` or `drt` type ) then MUST have in its `a` field the CESR encoded hash of the serialized (as specified above) `signer_payload`. That is, the CESR encoded hash must be one of the values in the array of the `a` field.

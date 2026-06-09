@@ -1,0 +1,35 @@
+=== vLEI credentials and KERI signatures
+
+In some use cases, an _<<_actor,actor>>_ in the system MAY wish to provide a https://www.gleif.org/en/organizational-identity/lei-vlei/the-verifiable-lei-vlei[vLEI] to have an organizational identity described by the credential associated with the list of _<<_referenced_assertions,referenced assertions>>_.
+
+The `signer_payload.sig_type` value for such an assertion MUST be `cawg.vlei`.
+The `signature` value MUST be a `vlei-signature-payload-map` as described below.
+
+==== Global Legal Entity Identifier Foundation
+
+Established by the Financial Stability Board in June 2014, the Global Legal Entity Identifier Foundation (_GLEIF_) is tasked to support the implementation and use of the Legal Entity Identifier (_LEI_). The foundation is backed and overseen by the Regulatory Oversight Committee (_ROC_). The ROC represents public authorities from around the globe that have come together to increase transparency in global markets and strengthen the fight against financial crime and corporate fraud. GLEIF is a supra-national not-for-profit organization headquartered in Basel, Switzerland.
+
+GLEIF maintains publicly available https://search.gleif.org/#/search/simpleSearch=[Global LEI Index], which provides access to a set of verified company metatada (e.g. its addess, form of incorporation, operating name, etc). Thus LEI serves as an entry point for performing a variety of use-case specific entity Identification and Validation (_ID&V_) activities.
+
+==== Verifiable LEI
+
+To enable trusted usage of LEI in automated data exchanges and other on-line use-cases, GLEIF introduced Verifiable LEI (_vLEI_) -- a set of verifiable electronic credentials. vLEI is based on Key Event Receipt Infrastructure (_KERI_) and Authentic Chained Data Container (_ACDC_) technology.
+
+The credentials can be broken down into two categories:
+
+* *_Basis Identification Credentials_* - credentials enabling the process of identifying the entity and its actors
+* *_Governance Credentials_* - credentials that enable governance processes and establish the root of trust.
+
+In the first category, the currently defined credentials are Legal Entity vLEI Credential (_LE_), Legal Entity Official Organizational Role (_OOR_) vLEI Credential and Legal Entity Engagement Context Role (_ECR_) vLEI Credential.
+
+In the second category, GLEIF has currently defined Qualified vLEI Issuer vLEI Credential, OOR Authorization vLEI Credential and ECR Authorization vLEI Credential.
+
+GLEIF serves as a root of trust for the whole ecosystem and maintains https://www.gleif.org/en/organizational-identity/introducing-the-verifiable-lei-vlei/introducing-the-vlei-ecosystem-governance-framework[vLEI Ecosystem Governance Framework]. For a more detailed information on roles and trust model established by this framework, refer to the section <<Trust model for vLEI credentials>>.
+
+include::keri_payload.adoc[]
+
+include::generating.adoc[]
+
+include::validating.adoc[]
+
+include::trust-model.adoc[]

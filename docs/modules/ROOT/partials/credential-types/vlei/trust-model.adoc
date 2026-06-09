@@ -1,0 +1,3 @@
+==== Trust model for vLEI credentials
+
+*TO DO:* Write this section.
