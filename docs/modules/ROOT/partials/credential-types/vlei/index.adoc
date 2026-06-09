@@ -1,0 +1,17 @@
+=== vLEI credentials and KERI signatures
+
+In some use cases, an _<<_actor,actor>>_ in the system MAY wish to provide a (link needed) vLEI to have an organizational identity described by the credential associated with the list of _<<_referenced_assertions,referenced assertions>>._
+
+The `signer_payload.sig_type` value for such an assertion MUST be `cawg.vlei`.
+The `signature` value MUST be a (type) as described below.
+
+*TO DO:* Brief introduction to vLEIs and KERI infrastructure.
+Link out to addendum for additional detail.
+
+include::keri_payload.adoc[]
+
+include::generating.adoc[]
+
+include::validating.adoc[]
+
+include::trust-model.adoc[]
