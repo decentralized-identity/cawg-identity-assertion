@@ -1,8 +1,17 @@
 === Other concepts
 
+==== Archival-quality credential
+
+Any _<<_verifiable_identifier,verifiable identifier>>_ that can be used to make claims on behalf of its _<<_named_actor,named actor>>_ for which an independent system is able to verify the link between a claim made with that credential and its _<<_named_actor,named actor>>_ with that credential at any time after the claim is made.
+
 ==== Credential holder
 
 The _<<_actor,actor>>_ that has control (specifically signature authority) over a _<<_verifiable_identifier,verifiable identifier>>_ that describes a specific _<<_named_actor,named actor>>._
+
+*TO DO:* Open questions:
+
+* Does the credential subject need to pre-authorize or pre-specify the means of verification?
+* Does the trust framework need to specify how the verification occurs?
 
 ==== Credential revocation
 
