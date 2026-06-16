@@ -11,6 +11,12 @@ This is typically indicated by an action on the part of the credential issuer st
 
 Adapted from link:++https://trustoverip.github.io/ctwg-main-glossary/#term:revocation++[Trust Over IP’s definition of revocation].
 
+==== Governance framework
+
+A collection of one or more governance documents published by the governing body of a trust community.
+
+Adapted from link:++https://glossary.trustoverip.org/#term:governance-framework++[Trust Over IP’s definition of governance framework].
+
 ==== Identity claims aggregator
 
 An _<<_actor,actor>>_ that collects identity claims (attestations) regarding a _<<_named actor,named actor>>_ from various _<<_identity_provider,identity providers>>_ and can replay those identity claims into *<<_identity assertion,identity assertions>>* on behalf of the _<<_named_actor,named actor>>._
@@ -66,7 +72,7 @@ The set of _<<_c2pa_assertion,C2PA assertions>>_ that are referenced by an *<<_i
 
 ==== Referenced registry
 
-**TO DO:** Write definition. (e.g. HAND or Utah's Widget registry). Generic reference that can be used for additional processing of attribution data.
+A repository of additional _<<_c2pa_assertion,C2PA assertions>>_ or additional metadata which can be verified to determine whether the _<<_named_actor,named actor>>_ from the *<<_identity_assertion,identity assertion>>* is associated with the additional information provided.
 
 ==== Trust
 
@@ -82,9 +88,8 @@ A _trust list_ can be considered a simplified form of a <<_trust_registry,trust 
 
 ==== Trust registry
 
-**TO DO:** Review definition. See also _<<_referenced_registry,referenced registry>>._
-
 A registry that serves as an authoritative source for trust graphs or other governed information describing one or more trust communities. A trust registry is typically authorized by a governance framework.
+See also _<<_referenced_registry,referenced registry>>._
 
 Adapted from link:++https://glossary.trustoverip.org/#term:trust-registry++[Trust Over IP’s definition of trust registry].
 
