@@ -16,3 +16,7 @@ _This section is non-normative._
 * Added guidance on outbound network traffic while validating identity assertions.
 * Updated links to point to version 2.4 of C2PA Content Credentials specification.
 * Removed optional fields `expected_partial_claim`, `expected_claim_generator`, and `expected_countersigners`.
+
+*16 June 2026*
+
+* Introduced definition of _<<_archival_quality_credential,archival-quality credential>>._
