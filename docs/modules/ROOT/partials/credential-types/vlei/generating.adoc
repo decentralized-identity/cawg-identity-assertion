@@ -28,7 +28,7 @@ In addition to the `aid_sig` field described above, the following fields MUST be
 ===== Conditional fields of `vlei-signature-payload-map`
 
 If the `signer_payload.role` field is set to either `oor` or `ecr`, then the `vlei-signature-payload-map.role_cred` field MUST be provided.
-In that case, the `role_auth_cred` field of the `role_cred` sequence MUST contain JSON encoded `Role Authorization Credential` and the `role_cred` field of the sequence MUST contain the corresponding JSON encoded role credential. Specifically, if the `signer_payload.role` was set to `oor` then the "Official Organizational Role" credential MUST be used.  Alternatively, if the `ecr` value was used, then the "Engagement Context Role" credential MUST be provided.
+In that case, the `auth_cred` field of the `role_cred` sequence MUST contain JSON encoded `Role Authorization Credential` and the `cred` field of the sequence MUST contain the corresponding JSON encoded role credential. Specifically, if the `signer_payload.role` was set to `oor` then the "Official Organizational Role" credential MUST be used.  Alternatively, if the `ecr` value was used, then the "Engagement Context Role" credential MUST be provided.
 
 ===== Optional fields of the `vlei-signature-payload-map`
 

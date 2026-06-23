@@ -1,3 +1,60 @@
-==== Validating the KERI signature
+==== Validating KERI signature
 
-*TO DO:* Write this section.
+To validate the KERI signature on the identity assertion, the following steps MUST be performed:
+
+. Check Signature Type
++
+`identity.signer_payload.sig_type` MUST be equal to "cawg.vlei"
+
+. Collect required vLEI metadata
+
+.. Decode `vlei-signature-payload-map`
++
+The `identity.signer_payload.signature` field contains CBOR encoded <<vlei-signature-payload-map>> data structure,
+which provides the verifier with the most of the metadata required to verify the signature.
+
+.. Sync authorized Public Keys of the Signer
++
+Using the `signer_aid` field, check that the KEL of the signer has already been processed and that the keys associated with the establishment event sequence number, as specified in the `kel_seq_num` field, are available.
+If not, then use the OOBI URL in the `signer_aid_oobi` field to download and validate the KEL. Abort the process, if KEL is not available, does not contain the required seq number or fails validation.
+
+.. Verify Trust Chain
++
+NOTE: It is assumed that the following preparation steps have been carried out as a part of the verification's software setup. Schemas of the QVI, LE, OOR and ECR Credentials have been installed. The verifier has obtained and validated the credentials of the issuing QVI(s). See <<vlei_trust_model, vLEI Trust Model>> for a detailed discussion.
++
+The following text provides all the mandatory steps that MUST be perfomed in order to verify the Trust Chain. For concisness, the checks that are to be perfomed are described briefly. For specific dependencies between various vLEI credentials that MUST be validated for each of the used credentials, please refer to the <<vlei_trust_model, vLEI Trust Model>> subsection.
+
+... Verify LE Credential
++
+LE credential contained in the `le_cred` field MUST comply with the GLEIF's LE Credential Schema. Validate dependencies on the QVI credential. Check the status of the credential against the witnesses of issuing QVI .
++
+*TODO:* define "archival" procedure. How to deal with a credential that was valid at the time of signature but might have been revoked since?
+
+... Verify Role Credential
++
+If `identity.signer_payload.role` is equal to either `oor` or `ecr` then the `role_cred` field (CBOR sequence) of the <<vlei-signature-payload-map>> MUST not be empty and MUST be validated. Skip this step if `identity.signer_payload.role` filed is equal to `le` or abort with an error, if this field contains any other value.
+
+.... Verify OOR Credential
++
+Check that `role_cred.cred` is not empty and satisfies the OOR Credential Schema. Validate dependencies on the LE and QVI credentials. Check the status of the credential against the issuing QVI witnesses.
+
+.... Verify ECR Credential
++
+Check that `role_cred.cred` is not empty and satisfies the ECR Credential Schema. Check the status of the credential against the issuing QVI witnesses.
++
+*TODO:* describe (or refer to) two types of ECR credentials: QVI or LE issued. They require different checks.
+
+. Verify Anchor
++
+If `identity.signature.anchor_seq_num` is not empty, the verifier MUST ensure that the AID KEL has a valid event with that sequence number and check that the CESR encoded hash of the serialized `identity.signer_payload` matches one of the values in the `a` field (a list) of this event.
++
+*TODO:* do we need to specify the hash algorithm? Or just use blake3, which is default?
+
+. Verify Signature
++
+Serialize `identity.signer_payload` field as specified in the <<Generating the KERI signature>> section.
++
+For each CESR encoded signature in the `identity.signature.aid_sig` array perform signature validation against the serialized `signer_payload` binary string. The CESR encoding provides the ind
+ex of the key used (position in the `k` field in the Establishment Event) and its type (i.e. signature algorithm).
++
+The verifier MUST ensure that the weights of keys used add up to the `kt` (key threshold) field value of the Establishment Event specified in `identity.signature.kel_seq_num`.  If `kt` is a list of threshold values, then the weight of each key corresponds to the value at the index (the same as encoded in the signature) of the `kt` field. In this case, the weights MUST add up to at least 1. If `kt` is a number, then this number of signatures is required. E.g. `kt` is 3, then any three signatures perfomed by the 3 different keys from the `k` list will suffice.

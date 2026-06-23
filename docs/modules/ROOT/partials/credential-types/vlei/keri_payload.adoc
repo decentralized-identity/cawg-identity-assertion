@@ -12,12 +12,13 @@ Where `le`, `ecr` and `oor` values correspond to the the respective vLEI credent
 [unnumbered]
 ===== _vlei-signature-payload-map_ definition
 
+[[vlei-signature-payload-map, vLEI Signature Payload Map]]
 ```CBOR
 vlei-signature-payload-map = {
   "signer_aid": tstr
   "qvi_cred": tstr
   "le_cred": tstr
-  ?"role_cred" = ("role_auth_cred": tstr, "role_cred": tstr)
+  ?"role_cred" = ("auth_cred": tstr, "cred": tstr)
   "signer_aid_oobi": tstr
   "kel_seq_num": uint
   ?"anchor_seq_num": uint
