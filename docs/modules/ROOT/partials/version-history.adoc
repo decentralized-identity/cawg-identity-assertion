@@ -20,3 +20,8 @@ _This section is non-normative._
 *16 June 2026*
 
 * Introduced definition of _<<_archival_quality_credential,archival-quality credential>>._
+
+*14 July 2026*
+
+* Introduced the _<<_trusted_assertion,trusted assertion>>_ mechanism (CWT + COSE with pre-configured trust anchors), including its credential format, trust model, validation process and status codes, optional claim metadata, and governance.
+* Added definitions of _<<_trusted_assertion,trusted assertion>>,_ _<<_trusted_assertion_authority,trusted assertion authority>>,_ _<<_trusted_assertion_authority_registry,trusted assertion authority registry>>,_ and _<<_assertion_claim_type,assertion claim type>>._

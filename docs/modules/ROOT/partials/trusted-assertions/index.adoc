@@ -1,0 +1,13 @@
+== Trusted assertions
+
+include::overview.adoc[]
+
+include::credential-format.adoc[]
+
+include::trust-model.adoc[]
+
+include::validating.adoc[]
+
+include::claim-metadata.adoc[]
+
+include::governance.adoc[]
