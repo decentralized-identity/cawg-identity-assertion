@@ -10,10 +10,10 @@ As an example, the legal status of an asset may change due to legal transactions
 
 ==== Assertion claim type
 
-A globally unique, namespaced identifier that names the statement carried by a *<<_trusted_assertion,trusted assertion>>* (for example, `iptc:vnp`).
-The meaning of an _assertion claim type_ is governed by the issuing *<<_trusted_assertion_authority,trusted assertion authority>>;* CAWG standardizes only its syntax and does not define the set of possible claim types.
+A globally unique, namespaced identifier that names the statement carried by a *<<_signer_claim,signer claim>>* (for example, `iptc:vnp`).
+The meaning of an _assertion claim type_ is governed by the issuing *<<_signer_claim_authority,signer claim authority>>;* CAWG standardizes only its syntax and does not define the set of possible claim types.
 
-See xref:_trusted_assertion_credential_format[xrefstyle=full].
+See xref:_signer_claim_credential_format[xrefstyle=full].
 
 ==== Credential holder
 
@@ -84,6 +84,30 @@ A placeholder assertion MUST be used when the final file layout of the _<<C2PA a
 
 The set of _<<_c2pa_assertion,C2PA assertions>>_ that are referenced by an *<<_identity_assertion,identity assertion>>* and thus bound to (i.e. authorized by or created by) the _<<_credential_holder,credential holder>>_ named in the *<<_identity_assertion,identity assertion>>.*
 
+==== Signer claim
+
+A signed statement made by a *<<_signer_claim_authority,signer claim authority>>* about a _<<_named_actor,named actor>>,_ describing an additional validation, status, or accreditation held by that _<<_named_actor,named actor>>._
+Where an *<<_identity_assertion,identity assertion>>* answers _“Who is this entity?”,_ a _signer claim_ answers _“What additional validation, status, or accreditation does this entity have?”_
+
+A _signer claim_ is distinct from the _<<_named_actor,named actor’s>>_ own _<<_verifiable_identifier,verifiable identifier>>_ and from any certificate issuance or certificate lifecycle event.
+It is expressed as a CBOR Web Token secured with a COSE signature.
+
+See xref:_signer_claims[xrefstyle=full].
+
+==== Signer claim authority
+
+An _<<_actor,actor>>_ that issues *<<_signer_claim,signer claims>>* about _<<_named_actor,named actors>>._
+A _signer claim authority_ governs the vocabulary and semantics of the claims it issues and the policies under which it issues them.
+A validator establishes trust in a _signer claim authority_ through its *<<_signer_claim_authority_registry,signer claim authority registry>>.*
+
+==== Signer claim authority registry
+
+A list, held by a validator, of *<<_signer_claim_authority,signer claim authorities>>* together with the public keys used to verify *<<_signer_claim,signer claims>>* issued by each.
+The _signer claim authority registry_ determines which *<<_signer_claim,signer claims>>* a validator is willing to surface.
+Its contents are distributed out of band, independently of any individual *<<_signer_claim,signer claim>>.*
+
+See xref:_signer_claim_trust_model[xrefstyle=full].
+
 ==== Trust
 
 In the context of an *<<_identity_assertion,identity assertion>>,* we define _trust_ as meeting or exceeding the minimum level of confidence an _<<_identity_assertion_consumer,identity assertion consumer>>_ requires over assertions made about the identity of the _<<_named_actor,named actor>>_ and the _<<_named_actor,named actor’s>>_ true intention regarding their attestations via content included in and referenced by the *<<_identity_assertion,identity assertion>>.*
@@ -95,30 +119,6 @@ A list of _<<_actor,actors>>,_ published by an authoritative source that are tru
 Adapted from link:++https://trustoverip.github.io/ctwg-main-glossary/#term:trust-list++[Trust Over IP’s definition of trust list].
 
 A _trust list_ can be considered a simplified form of a link:++https://trustoverip.github.io/ctwg-main-glossary/#term:trust-registry++[trust registry].
-
-==== Trusted assertion
-
-A signed statement made by a *<<_trusted_assertion_authority,trusted assertion authority>>* about a _<<_named_actor,named actor>>,_ describing an additional validation, status, or accreditation held by that _<<_named_actor,named actor>>._
-Where an *<<_identity_assertion,identity assertion>>* answers _“Who is this entity?”,_ a _trusted assertion_ answers _“What additional validation, status, or accreditation does this entity have?”_
-
-A _trusted assertion_ is distinct from the _<<_named_actor,named actor’s>>_ own _<<_verifiable_identifier,verifiable identifier>>_ and from any certificate issuance or certificate lifecycle event.
-It is expressed as a CBOR Web Token secured with a COSE signature.
-
-See xref:_trusted_assertions[xrefstyle=full].
-
-==== Trusted assertion authority
-
-An _<<_actor,actor>>_ that issues *<<_trusted_assertion,trusted assertions>>* about _<<_named_actor,named actors>>._
-A _trusted assertion authority_ governs the vocabulary and semantics of the claims it issues and the policies under which it issues them.
-A validator establishes trust in a _trusted assertion authority_ through its *<<_trusted_assertion_authority_registry,trusted assertion authority registry>>.*
-
-==== Trusted assertion authority registry
-
-A list, held by a validator, of *<<_trusted_assertion_authority,trusted assertion authorities>>* together with the public keys used to verify *<<_trusted_assertion,trusted assertions>>* issued by each.
-The _trusted assertion authority registry_ determines which *<<_trusted_assertion,trusted assertions>>* a validator is willing to surface.
-Its contents are distributed out of band, independently of any individual *<<_trusted_assertion,trusted assertion>>.*
-
-See xref:_trusted_assertion_trust_model[xrefstyle=full].
 
 ==== Verifiable identifier
 

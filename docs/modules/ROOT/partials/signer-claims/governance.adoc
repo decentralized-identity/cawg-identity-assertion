@@ -1,0 +1,32 @@
+=== Signer claim governance
+
+_This section is non-normative._
+
+The *<<_signer_claim,signer claim>>* mechanism divides governance responsibilities between CAWG and the individual *<<_signer_claim_authority,signer claim authorities>>.*
+
+CAWG governs the parts of the mechanism that every validator must understand in common:
+
+* the *<<_signer_claim_authority_registry,signer claim authority registry>>* and the way trust in an *<<_signer_claim_authority,authority>>* is configured by a validator;
+* the assignment of `Authority ID` values;
+* the format used to distribute *<<_signer_claim_authority,authority>>* public keys;
+* the CWT profile described in xref:_signer_claim_credential_format[xrefstyle=full]; and
+* the syntax of *<<_assertion_claim_type,assertion claim type>>* identifiers.
+
+CAWG does _not_ standardize the set of possible claims.
+
+Each *<<_signer_claim_authority,signer claim authority>>* governs the meaning of the claims it issues:
+
+* the vocabulary of *<<_assertion_claim_type,assertion claim types>>* within its own namespace;
+* the semantics of each claim;
+* the metadata endpoints described in xref:_signer_claim_metadata[xrefstyle=full]; and
+* the policies under which it issues claims.
+
+The result is that a validator only needs to understand CWT, COSE, and the *<<_signer_claim_authority_registry,signer claim authority registry>>.*
+It does not need bespoke code for any particular *<<_signer_claim_authority,authority>>* — whether an industry body, a wire service, a government registry, or a future ecosystem.
+New claims are introduced as data and configuration rather than as changes to validator software.
+
+[NOTE]
+.Open governance question
+====
+Whether `Authority ID` values should be assigned centrally by CAWG or expressed in a decentralized form is an open question, noted also in xref:_signer_claim_trust_model[xrefstyle=full], and is expected to be resolved before this section leaves draft status.
+====

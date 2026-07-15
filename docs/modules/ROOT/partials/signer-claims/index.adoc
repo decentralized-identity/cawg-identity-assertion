@@ -1,4 +1,4 @@
-== Trusted assertions
+== Signer claims
 
 include::overview.adoc[]
 

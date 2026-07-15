@@ -1,11 +1,11 @@
-=== Trusted assertion claim metadata
+=== Signer claim metadata
 
 _This section is non-normative unless otherwise stated._
 
-An *<<_trusted_assertion_authority,trusted assertion authority>>* MAY publish metadata describing the *<<_assertion_claim_type,assertion claim types>>* that it issues.
+An *<<_signer_claim_authority,signer claim authority>>* MAY publish metadata describing the *<<_assertion_claim_type,assertion claim types>>* that it issues.
 This metadata enables a validator to present a friendly label, description, or icon for a claim without embedding any knowledge of the claim in its own software.
 
-An *<<_trusted_assertion_authority,authority>>* that publishes metadata SHOULD make it available at a stable URL, one per *<<_assertion_claim_type,assertion claim type>>.*
+An *<<_signer_claim_authority,authority>>* that publishes metadata SHOULD make it available at a stable URL, one per *<<_assertion_claim_type,assertion claim type>>.*
 
 .Example metadata endpoint
 [source]
@@ -29,12 +29,12 @@ A validator MAY:
 
 * look up claim metadata when it is online;
 * cache metadata locally for later offline use; and
-* continue to validate *<<_trusted_assertion,trusted assertions>>* while offline, using cached metadata or none at all.
+* continue to validate *<<_signer_claim,signer claims>>* while offline, using cached metadata or none at all.
 
 The following requirements apply to any validator that consumes claim metadata:
 
 * Metadata lookup MUST be optional.
-* Metadata lookup MUST NOT affect the cryptographic validity of a *<<_trusted_assertion,trusted assertion>>.* A validator MUST reach the same validation outcome (as described in xref:_validating_a_trusted_assertion[xrefstyle=full]) whether or not metadata is available.
+* Metadata lookup MUST NOT affect the cryptographic validity of a *<<_signer_claim,signer claim>>.* A validator MUST reach the same validation outcome (as described in xref:_validating_a_signer_claim[xrefstyle=full]) whether or not metadata is available.
 * A validator MUST NOT treat the absence or unavailability of metadata as a validation failure.
 
 This arrangement allows new claim ecosystems — friendly labels, icons, and rich presentation — to be introduced without any update to validator software.

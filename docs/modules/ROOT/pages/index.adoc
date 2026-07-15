@@ -39,7 +39,7 @@ include::partial$validating/index.adoc[]
 
 include::partial$credential-types/index.adoc[]
 
-include::partial$trusted-assertions/index.adoc[]
+include::partial$signer-claims/index.adoc[]
 
 include::partial$trust-model/index.adoc[]
 
