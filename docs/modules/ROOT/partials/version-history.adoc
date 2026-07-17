@@ -20,3 +20,7 @@ _This section is non-normative._
 *16 June 2026*
 
 * Introduced definition of _<<_archival_quality_credential,archival-quality credential>>._
+
+*17 July 2026*
+
+* Revised X.509 validation status codes to avoid conflict with C2PA status codes.
