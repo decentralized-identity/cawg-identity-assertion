@@ -24,3 +24,4 @@ _This section is non-normative._
 *17 July 2026*
 
 * Revised X.509 validation status codes to avoid conflict with C2PA status codes.
+* Working group approved as 1.3 final.
