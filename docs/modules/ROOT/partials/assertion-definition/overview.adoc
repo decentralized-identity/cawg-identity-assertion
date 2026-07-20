@@ -7,6 +7,9 @@ The *<<_identity_assertion,identity assertion>>* contains the following data fie
 
 * `signer_payload` contains the set of data to be signed by this _<<_credential_holder,credential holder>>_
 * `signature` contains the raw byte stream of the _<<_credential_holder,credential holder>>’s_ signature
+* `trust_registry` _(optional)_ is a structure that defines the _<<_governance_framework,governance framework>>_ claimed by the _<<_named_actor,named actor>>._ This is described in xref:_trust_registry_requirements[xrefstyle=full].
+* `referenced_registry_uri` contains a URI identifying the registry, identifier system, or authoritative source referenced by this assertion.
+*TO DO:* Define what is at this URI?
 * `pad1` and `pad2` are byte strings filled with binary `0x00` values used to fill space
 
 The `signer_payload` field is a structure of type `signer-payload-map` which is signed by the _<<_credential_holder,credential holder>>_.
@@ -50,6 +53,21 @@ This binding MUST be chosen using the approach described in the opening paragrap
 * The list MAY reference other *<<_identity_assertion,identity assertions>>,* provided that no cycle of references among *<<_identity_assertion,identity assertions>>* is created.
 
 NOTE: The requirement that the `hash` value for a _<<_referenced_assertions,referenced assertion>>_ be known prior to presenting `signer_payload` for signature implies that an *<<_identity_assertion,identity assertion>>* MUST NOT refer to itself.
+
+==== Trust registry requirements
+
+*TO DO:* Is this TRQP payload appropriate? If so, we can flesh that out more after the Monday meeting. Look at https://trustoverip.github.io/tswg-trust-registry-protocol/approved/#authorization-query-schema[§6.1, Authorization query schema] to determine what information we need to provide.
+
+[source,json]
+----
+"trust_registry": {
+  "trqp_authorization_uri": "https://example.com",
+  "entity_id": "user-1234",
+  "authority_id": "auth-service-A",
+  "action": "issue",
+  "resource": "country:state:driverlicense"
+}
+----
 
 ==== Named actor roles
 

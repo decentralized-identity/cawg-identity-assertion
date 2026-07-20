@@ -41,6 +41,13 @@ An example in https://www.rfc-editor.org/rfc/rfc8949.html#name-diagnostic-notati
     ],
     "role": ["cawg.creator"],
   },
+  "trust_registry": {
+    "trqp_authorization_uri": "https://example.com",
+    "entity_id": "user-1234",
+    "authority_id": "auth-service-A",
+    "action": "issue",
+    "resource": "country:state:driverlicense"
+  },
   "signature": b64'....', // COSE signature
   "pad1": b64'....', // zero-filled pad buffer
   "pad2": b64'....'  // zero-filled pad buffer
