@@ -1,0 +1,104 @@
+:revdate: {docdate}
+:version-label!:
+:sectnums:
+:sectnumlevels: 5
+:chapter-label: API
+
+[[TR-API]]
+== Trust Registry Resolution API for CAWG Identity Assertions
+
+CAWG identity assertions let an X.509 certificate answer questions of baseline identity, such as "this content was signed by BBC." They do not, by themselves, answer questions of standing within a community, such as "is BBC currently recognized as a Verified News Publisher." That second class of question is answered by a Governing Authority's Trust Registry: a service, identified by an `authorityId` (for example `did:webvh:ABC123:iptc.org:registry`), that records which `entityId` values it has authorized to perform which `action` on which `resource`, and for how long.
+
+This document describes a series of xref:trust-registry-use-cases[use cases] for why a Validator needs to resolve Trust Registry membership separately from certificate validation. It then goes into detail on how the Trust Registry Resolution API is used to answer these queries. This process of resolving Trust Registry membership is composed of 2 key components:
+
+. xref:trust-registry-use-cases[The Trust Registry use cases].
+. xref:trust-registry-resolution-api[The Trust Registry Resolution API].
+
+[[trust-registry-use-cases]]
+=== Use Cases
+
+The following use cases illustrate common situations in which a Trust Registry is queried. In these use cases: the IPTC is a Governing Authority operating a Trust Registry of Verified News Publishers; BBC is an entity that may or may not be a member of that registry; Bob's news-reading software is a Validator relying on CAWG identity assertions.
+
+==== UC1: Confirming an organizational trust claim
+
+BBC signs a photo using a CAWG certificate that asserts organizational identity ("I am BBC") and references the IPTC's `authorityId` and its own `entityId` in the identity assertion. Bob's news-reading software validates the certificate, then queries the IPTC's Trust Registry Resolution API with the `authorityId`, `entityId`, `action` (`publish`), and `resource` (`photo.journalist.approved`) taken from the assertion. The registry returns `true`, along with the window during which that authorization holds, and Bob's software displays BBC as a Verified News Publisher.
+
+==== UC2: Enrolling a new entity in a Trust Registry
+
+Before BBC's content can resolve successfully in UC1, BBC must register its `entityId` with the IPTC. BBC requests an enrollment challenge from the IPTC's Trust Registry Resolution API, signs it with the private key corresponding to its CAWG certificate, and submits the signature together with the certificate and any additional evidence the IPTC's published membership criteria require. The IPTC verifies the signature, confirms the evidence, and enrolls the `entityId`, either immediately or pending manual review.
+
+==== UC3: Verifying authorization at the time of publication
+
+Months after BBC's photo was published, its Verified News Publisher status is revoked. Bob's news-reading software re-validates the photo and needs to know whether BBC was authorized to publish it *at the time it was published*, not whether BBC is authorized now. Bob's software queries the authorization check endpoint with an `atTime` value corresponding to the photo's original publication date and receives the historical answer, along with the validity window that applied at that time.
+
+==== UC4: Confirming multiple simultaneous permissions
+
+A downstream service wants to know whether BBC could both `publish` and `syndicate` a resource during the same period, rather than issuing two separate queries and reasoning about their overlap itself. It calls the array variant of the authorization check with both actions and receives a single combined answer along with the narrowest common validity window.
+
+[[trust-registry-resolution-api]]
+=== Trust Registry Resolution API specification
+
+The Trust Registry Resolution API is a Web API providing a standard way for a Validator to resolve `entityId` membership, permitted `action` and `resource` values, and authorization status against a Governing Authority's Trust Registry, identified by its `authorityId`. It also offers a standard API for a Governing Authority to enroll new entities into its Trust Registry.
+
+==== Route overview
+
+The Trust Registry Resolution API is organized into five route groups:
+
+`authorities`:: retrieves descriptive metadata about a Governing Authority's Trust Registry.
+`entities`:: lists the entities that are members of a Trust Registry, or retrieves the full authorization profile of one entity.
+`actions` / `resources`:: enumerate the action and resource values a Trust Registry recognizes.
+`authorization`:: resolves whether an entity is authorized to perform one or more actions on a resource, and during what window.
+`enrollment`:: registers a new entity, or updates an existing entity's registration, using a signed-challenge proof of certificate control.
+
+===== Authority routes
+
+`GET /authorities/{authorityId}`::
+Returns descriptive metadata about the Trust Registry operated under the given `authorityId`, such as its name, a human-readable description, and a link to its published Trust Registry membership criteria. Intended to help a Validator decide whether to trust this `authorityId` before querying it further.
+
+===== Entity routes
+
+`GET /authorities/{authorityId}/entities`::
+Returns zero or more `entityId` values known to be part of the Trust Registry operated under the given `authorityId`. Supports pagination via `maxResults` and `cursor`, since an `entityId` may belong to many Trust Registries but a single registry may hold a large number of entities.
+
+`GET /authorities/{authorityId}/entities/{entityId}`::
+Returns every `(action, resource)` grant recorded for the given `entityId` within the Trust Registry, along with each grant's validity window. Intended to avoid repeated calls to the authorization check routes when a Validator wants an entity's complete standing.
+
+===== Actions and resources routes
+
+`GET /authorities/{authorityId}/actions`::
+Returns the set of `action` values that the Trust Registry is able to authorize, since an `authorityId` only allows a particular set of actions.
+
+`GET /authorities/{authorityId}/resources`::
+Returns the set of `resource` categories that the Trust Registry governs, since an `authorityId` only recognizes a particular set of resource categories.
+
+===== Authorization routes
+
+`GET /authorities/{authorityId}/entities/{entityId}/authorization`::
+Given an `action` and a `resource`, returns whether the entity is (or, if `atTime` is given, was or will be) authorized, along with the validity window of that authorization. The registry attests to the entity's eligibility for the resource category, not to any specific asset the entity creates.
+
+`GET /authorities/{authorityId}/entities/{entityId}/authorizations`::
+Array variant of the authorization check. Given a `resource` and one or more `action` values, returns a single boolean that is true only if the entity is authorized for every listed action, together with the narrowest validity window common to all of them.
+
+===== Enrollment routes
+
+`POST /authorities/{authorityId}/entities/{entityId}/enrollment-challenges`::
+Creates a one-time challenge that the entity must sign using the private key corresponding to the CAWG certificate that carries this `entityId`, as proof of control before enrollment.
+
+`POST /authorities/{authorityId}/entities/{entityId}/enrollment`::
+Submits the entity's CAWG certificate together with a signature over a previously issued challenge, plus any Governing Authority-specific supporting evidence. The Governing Authority verifies the signature, evaluates the request against its published membership criteria, and returns the resulting enrollment status, which may be immediate or pending manual review.
+
+==== OpenAPI Specification of the Trust Registry Resolution API
+
+The API specification and documentation is available below in the OpenAPI format as a <<trust-registry-resolution-api-json, JSON>> or <<trust-registry-resolution-api-yaml, YAML>> document.
+
+[[trust-registry-resolution-api-json]]
+[source,json]
+----
+include::resolution-api.json[]
+----
+
+[[trust-registry-resolution-api-yaml]]
+[source,yaml]
+----
+include::resolution-api.yaml[]
+----

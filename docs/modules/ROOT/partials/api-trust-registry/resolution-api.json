@@ -1,0 +1,915 @@
+{
+   "openapi": "3.1.1",
+   "info": {
+      "title": "CAWG Trust Registry Resolution API",
+      "description": "This is the OpenAPI specification of the CAWG Trust Registry Resolution API. A Trust Registry is operated by a Governing Authority (identified by an authorityId, e.g. `did:webvh:ABC123:iptc.org:registry`) and answers whether a given entity (entityId) is authorized to perform an action on a resource. The entityId is expected to match the entity identifier recorded in the entity's CAWG certificate, so that a Validator can link an X.509-asserted identity (\"I am BBC\") to a Trust Registry membership claim (\"BBC is a Verified News Publisher\"). A resource identifies a category of resource that the Trust Registry governs (e.g. `photo.journalist.approved`), not a specific piece of content; the registry attests to the entity's eligibility for that category, not to any particular asset the entity later publishes",
+      "version": "1.0.0",
+      "license": {
+         "name": "Creative Commons Attribution 4.0 International",
+         "url": "https://creativecommons.org/licenses/by/4.0/"
+      }
+   },
+   "externalDocs": {
+      "description": "CAWG Identity Assertion Specification",
+      "url": "https://cawg.io/identity/"
+   },
+   "servers": [
+      {
+         "url": "https://trustregistry.example.org/v1"
+      }
+   ],
+   "security": [
+      {
+         "auth": [
+            "query:trustregistry"
+         ]
+      },
+      {}
+   ],
+   "paths": {
+      "/authorities/{authorityId}": {
+         "get": {
+            "tags": [
+               "authorities"
+            ],
+            "summary": "Returns metadata about a Governing Authority's Trust Registry",
+            "description": "Retrieve descriptive information about the Trust Registry operated under the given authorityId, such as its name, a human-readable description, and a link to its published Trust Registry membership criteria. Intended to help a Validator decide whether to trust this authorityId before querying it",
+            "operationId": "getAuthority",
+            "parameters": [
+               {
+                  "name": "authorityId",
+                  "in": "path",
+                  "description": "Identifier of the Governing Authority operating the Trust Registry, e.g. `did:webvh:ABC123:iptc.org:registry`",
+                  "required": true,
+                  "schema": {
+                     "type": "string"
+                  }
+               }
+            ],
+            "responses": {
+               "200": {
+                  "description": "Successful operation",
+                  "content": {
+                     "application/json": {
+                        "schema": {
+                           "$ref": "#/components/schemas/trustregistry.authorityInfo"
+                        }
+                     }
+                  }
+               },
+               "404": {
+                  "description": "authorityId not found",
+                  "content": {}
+               },
+               "403": {
+                  "description": "Client not allowed to perform this operation",
+                  "content": {}
+               },
+               "500": {
+                  "description": "Service failure",
+                  "content": {}
+               }
+            },
+            "security": [
+               {
+                  "auth": [
+                     "query:trustregistry"
+                  ]
+               },
+               {}
+            ]
+         }
+      },
+      "/authorities/{authorityId}/entities": {
+         "get": {
+            "tags": [
+               "entities"
+            ],
+            "summary": "Lists the entityId values that are members of a Governing Authority's Trust Registry",
+            "description": "Returns zero or more entityId values known to be part of the Trust Registry operated under the given authorityId. An entityId may be part of many authorityId Trust Registries, but this endpoint only returns membership within the one specified",
+            "operationId": "listEntities",
+            "parameters": [
+               {
+                  "name": "authorityId",
+                  "in": "path",
+                  "description": "Identifier of the Governing Authority operating the Trust Registry",
+                  "required": true,
+                  "schema": {
+                     "type": "string"
+                  }
+               },
+               {
+                  "name": "maxResults",
+                  "in": "query",
+                  "description": "The maximum number of entityId values to return",
+                  "schema": {
+                     "type": "integer",
+                     "minimum": 1,
+                     "default": 100
+                  }
+               },
+               {
+                  "name": "cursor",
+                  "in": "query",
+                  "description": "Opaque pagination cursor returned by a previous call to this endpoint, used to retrieve the next page of results",
+                  "schema": {
+                     "type": "string"
+                  }
+               }
+            ],
+            "responses": {
+               "200": {
+                  "description": "Successful operation",
+                  "content": {
+                     "application/json": {
+                        "schema": {
+                           "$ref": "#/components/schemas/trustregistry.entityList"
+                        }
+                     }
+                  }
+               },
+               "400": {
+                  "description": "Invalid query value",
+                  "content": {}
+               },
+               "404": {
+                  "description": "authorityId not found",
+                  "content": {}
+               },
+               "403": {
+                  "description": "Client not allowed to perform this operation",
+                  "content": {}
+               },
+               "500": {
+                  "description": "Service failure",
+                  "content": {}
+               }
+            },
+            "security": [
+               {
+                  "auth": [
+                     "query:trustregistry"
+                  ]
+               },
+               {}
+            ]
+         }
+      },
+      "/authorities/{authorityId}/actions": {
+         "get": {
+            "tags": [
+               "actions"
+            ],
+            "summary": "Lists the actions recognized by a Governing Authority's Trust Registry",
+            "description": "Returns the set of action values that the Trust Registry operated under the given authorityId is able to authorize (e.g. `publish`), since an authorityId only allows a particular set of actions",
+            "operationId": "listActions",
+            "parameters": [
+               {
+                  "name": "authorityId",
+                  "in": "path",
+                  "description": "Identifier of the Governing Authority operating the Trust Registry",
+                  "required": true,
+                  "schema": {
+                     "type": "string"
+                  }
+               }
+            ],
+            "responses": {
+               "200": {
+                  "description": "Successful operation",
+                  "content": {
+                     "application/json": {
+                        "schema": {
+                           "$ref": "#/components/schemas/trustregistry.actionList"
+                        }
+                     }
+                  }
+               },
+               "404": {
+                  "description": "authorityId not found",
+                  "content": {}
+               },
+               "403": {
+                  "description": "Client not allowed to perform this operation",
+                  "content": {}
+               },
+               "500": {
+                  "description": "Service failure",
+                  "content": {}
+               }
+            },
+            "security": [
+               {
+                  "auth": [
+                     "query:trustregistry"
+                  ]
+               },
+               {}
+            ]
+         }
+      },
+      "/authorities/{authorityId}/resources": {
+         "get": {
+            "tags": [
+               "resources"
+            ],
+            "summary": "Lists the resource categories recognized by a Governing Authority's Trust Registry",
+            "description": "Returns the set of resource values that the Trust Registry operated under the given authorityId governs (e.g. `photo.journalist.approved`), since an authorityId only recognizes a particular set of resource categories",
+            "operationId": "listResources",
+            "parameters": [
+               {
+                  "name": "authorityId",
+                  "in": "path",
+                  "description": "Identifier of the Governing Authority operating the Trust Registry",
+                  "required": true,
+                  "schema": {
+                     "type": "string"
+                  }
+               }
+            ],
+            "responses": {
+               "200": {
+                  "description": "Successful operation",
+                  "content": {
+                     "application/json": {
+                        "schema": {
+                           "$ref": "#/components/schemas/trustregistry.resourceList"
+                        }
+                     }
+                  }
+               },
+               "404": {
+                  "description": "authorityId not found",
+                  "content": {}
+               },
+               "403": {
+                  "description": "Client not allowed to perform this operation",
+                  "content": {}
+               },
+               "500": {
+                  "description": "Service failure",
+                  "content": {}
+               }
+            },
+            "security": [
+               {
+                  "auth": [
+                     "query:trustregistry"
+                  ]
+               },
+               {}
+            ]
+         }
+      },
+      "/authorities/{authorityId}/entities/{entityId}": {
+         "get": {
+            "tags": [
+               "entities"
+            ],
+            "summary": "Returns the full authorization profile of an entity within a Trust Registry",
+            "description": "Retrieve every (action, resource) grant recorded for the given entityId within the Trust Registry operated under the given authorityId, along with each grant's validity window. Intended to avoid repeated calls to the authorization check endpoints when a Validator wants the entity's complete standing",
+            "operationId": "getEntity",
+            "parameters": [
+               {
+                  "name": "authorityId",
+                  "in": "path",
+                  "description": "Identifier of the Governing Authority operating the Trust Registry",
+                  "required": true,
+                  "schema": {
+                     "type": "string"
+                  }
+               },
+               {
+                  "name": "entityId",
+                  "in": "path",
+                  "description": "Identifier of the entity being queried, matching the entity identifier recorded in the entity's CAWG certificate",
+                  "required": true,
+                  "schema": {
+                     "type": "string"
+                  }
+               }
+            ],
+            "responses": {
+               "200": {
+                  "description": "Successful operation",
+                  "content": {
+                     "application/json": {
+                        "schema": {
+                           "$ref": "#/components/schemas/trustregistry.entityProfile"
+                        }
+                     }
+                  }
+               },
+               "404": {
+                  "description": "authorityId or entityId not found",
+                  "content": {}
+               },
+               "403": {
+                  "description": "Client not allowed to perform this operation",
+                  "content": {}
+               },
+               "500": {
+                  "description": "Service failure",
+                  "content": {}
+               }
+            },
+            "security": [
+               {
+                  "auth": [
+                     "query:trustregistry"
+                  ]
+               },
+               {}
+            ]
+         }
+      },
+      "/authorities/{authorityId}/entities/{entityId}/authorization": {
+         "get": {
+            "tags": [
+               "authorization"
+            ],
+            "summary": "Checks whether an entity is authorized to perform an action on a resource",
+            "description": "Given an authorityId, entityId, action, and resource, returns whether the entity is currently (or, if atTime is given, was/will be) authorized, along with the validity window of that authorization. The registry attests to the entity's eligibility for the resource category, not to any specific asset the entity creates",
+            "operationId": "checkAuthorization",
+            "parameters": [
+               {
+                  "name": "authorityId",
+                  "in": "path",
+                  "description": "Identifier of the Governing Authority operating the Trust Registry",
+                  "required": true,
+                  "schema": {
+                     "type": "string"
+                  }
+               },
+               {
+                  "name": "entityId",
+                  "in": "path",
+                  "description": "Identifier of the entity being queried, matching the entity identifier recorded in the entity's CAWG certificate",
+                  "required": true,
+                  "schema": {
+                     "type": "string"
+                  }
+               },
+               {
+                  "name": "action",
+                  "in": "query",
+                  "description": "The action being queried, e.g. `publish`",
+                  "required": true,
+                  "schema": {
+                     "type": "string"
+                  }
+               },
+               {
+                  "name": "resource",
+                  "in": "query",
+                  "description": "The resource category being queried, e.g. `photo.journalist.approved`. Identifies the category of resource the entity is asserting about, not a specific instance of content",
+                  "required": true,
+                  "schema": {
+                     "type": "string"
+                  }
+               },
+               {
+                  "name": "atTime",
+                  "in": "query",
+                  "description": "An optional point in time at which to evaluate the authorization, to support checking whether the entity was authorized at a past moment (e.g. when a piece of content was published) rather than at query time. Defaults to the time the request is received",
+                  "schema": {
+                     "type": "string",
+                     "format": "date-time"
+                  }
+               }
+            ],
+            "responses": {
+               "200": {
+                  "description": "Successful operation",
+                  "content": {
+                     "application/json": {
+                        "schema": {
+                           "$ref": "#/components/schemas/trustregistry.authorizationResult"
+                        }
+                     }
+                  }
+               },
+               "400": {
+                  "description": "Invalid query value",
+                  "content": {}
+               },
+               "404": {
+                  "description": "authorityId or entityId not found",
+                  "content": {}
+               },
+               "403": {
+                  "description": "Client not allowed to perform this operation",
+                  "content": {}
+               },
+               "500": {
+                  "description": "Service failure",
+                  "content": {}
+               }
+            },
+            "security": [
+               {
+                  "auth": [
+                     "query:trustregistry"
+                  ]
+               },
+               {}
+            ]
+         }
+      },
+      "/authorities/{authorityId}/entities/{entityId}/enrollment-challenges": {
+         "post": {
+            "tags": [
+               "enrollment"
+            ],
+            "summary": "Issues a challenge for an entity to prove control of its CAWG certificate",
+            "description": "Creates a one-time challenge value that the entity must sign using the private key corresponding to the CAWG certificate that carries this entityId. Submitting the signed challenge to the enrollment endpoint lets the Governing Authority verify that the requester actually controls the entityId before granting or updating Trust Registry membership",
+            "operationId": "createEnrollmentChallenge",
+            "parameters": [
+               {
+                  "name": "authorityId",
+                  "in": "path",
+                  "description": "Identifier of the Governing Authority operating the Trust Registry",
+                  "required": true,
+                  "schema": {
+                     "type": "string"
+                  }
+               },
+               {
+                  "name": "entityId",
+                  "in": "path",
+                  "description": "Identifier of the entity requesting enrollment, matching the entity identifier recorded in the entity's CAWG certificate",
+                  "required": true,
+                  "schema": {
+                     "type": "string"
+                  }
+               }
+            ],
+            "responses": {
+               "201": {
+                  "description": "Challenge created",
+                  "content": {
+                     "application/json": {
+                        "schema": {
+                           "$ref": "#/components/schemas/trustregistry.enrollmentChallenge"
+                        }
+                     }
+                  }
+               },
+               "404": {
+                  "description": "authorityId not found",
+                  "content": {}
+               },
+               "403": {
+                  "description": "Client not allowed to perform this operation",
+                  "content": {}
+               },
+               "500": {
+                  "description": "Service failure",
+                  "content": {}
+               }
+            },
+            "security": [
+               {
+                  "auth": [
+                     "enroll:trustregistry"
+                  ]
+               }
+            ]
+         }
+      },
+      "/authorities/{authorityId}/entities/{entityId}/enrollment": {
+         "post": {
+            "tags": [
+               "enrollment"
+            ],
+            "summary": "Submits a signed challenge to register or update an entity's Trust Registry membership",
+            "description": "Submits the entity's CAWG certificate together with a signature, over a challenge previously obtained from the enrollment-challenges endpoint, made with the certificate's private key. The Governing Authority verifies the signature against the certificate, extracts the entityId, and evaluates the request against its published Trust Registry membership criteria. Depending on the Governing Authority's enrollment process this may complete immediately or remain pending manual review; evidence may include a previously enrolled entityId when an entity is switching Certificate Authorities",
+            "operationId": "submitEnrollment",
+            "parameters": [
+               {
+                  "name": "authorityId",
+                  "in": "path",
+                  "description": "Identifier of the Governing Authority operating the Trust Registry",
+                  "required": true,
+                  "schema": {
+                     "type": "string"
+                  }
+               },
+               {
+                  "name": "entityId",
+                  "in": "path",
+                  "description": "Identifier of the entity requesting enrollment, matching the entity identifier recorded in the entity's CAWG certificate",
+                  "required": true,
+                  "schema": {
+                     "type": "string"
+                  }
+               }
+            ],
+            "requestBody": {
+               "description": "Signed challenge and supporting evidence for Trust Registry enrollment",
+               "content": {
+                  "application/json": {
+                     "schema": {
+                        "$ref": "#/components/schemas/trustregistry.enrollmentSubmission"
+                     }
+                  }
+               },
+               "required": true
+            },
+            "responses": {
+               "201": {
+                  "description": "Enrollment approved",
+                  "content": {
+                     "application/json": {
+                        "schema": {
+                           "$ref": "#/components/schemas/trustregistry.enrollmentStatus"
+                        }
+                     }
+                  }
+               },
+               "202": {
+                  "description": "Enrollment accepted and pending manual review",
+                  "content": {
+                     "application/json": {
+                        "schema": {
+                           "$ref": "#/components/schemas/trustregistry.enrollmentStatus"
+                        }
+                     }
+                  }
+               },
+               "400": {
+                  "description": "Invalid request body, expired challenge, or signature verification failure",
+                  "content": {}
+               },
+               "404": {
+                  "description": "authorityId not found or no outstanding challenge for this entityId",
+                  "content": {}
+               },
+               "403": {
+                  "description": "Client not allowed to perform this operation",
+                  "content": {}
+               },
+               "500": {
+                  "description": "Service failure",
+                  "content": {}
+               }
+            },
+            "security": [
+               {
+                  "auth": [
+                     "enroll:trustregistry"
+                  ]
+               }
+            ]
+         }
+      },
+      "/authorities/{authorityId}/entities/{entityId}/authorizations": {
+         "get": {
+            "tags": [
+               "authorization"
+            ],
+            "summary": "Checks whether an entity is authorized to perform several actions on a resource",
+            "description": "Array variant of the authorization check. Given an authorityId, entityId, resource, and one or more action values, returns a single boolean that is true only if the entity is authorized for every listed action, together with the narrowest validity window common to all of them (i.e. the intersection of each action's individual window). If any requested action is not authorized, authorized is false and the returned window, if any, describes the period during which none of the requested actions were jointly authorized",
+            "operationId": "checkAuthorizations",
+            "parameters": [
+               {
+                  "name": "authorityId",
+                  "in": "path",
+                  "description": "Identifier of the Governing Authority operating the Trust Registry",
+                  "required": true,
+                  "schema": {
+                     "type": "string"
+                  }
+               },
+               {
+                  "name": "entityId",
+                  "in": "path",
+                  "description": "Identifier of the entity being queried, matching the entity identifier recorded in the entity's CAWG certificate",
+                  "required": true,
+                  "schema": {
+                     "type": "string"
+                  }
+               },
+               {
+                  "name": "action",
+                  "in": "query",
+                  "description": "The actions being queried, e.g. `publish`. Repeat this parameter for each action, e.g. `?action=publish&action=edit`",
+                  "required": true,
+                  "style": "form",
+                  "explode": true,
+                  "schema": {
+                     "type": "array",
+                     "minItems": 1,
+                     "items": {
+                        "type": "string"
+                     }
+                  }
+               },
+               {
+                  "name": "resource",
+                  "in": "query",
+                  "description": "The resource category being queried, e.g. `photo.journalist.approved`. Applies to every action listed",
+                  "required": true,
+                  "schema": {
+                     "type": "string"
+                  }
+               },
+               {
+                  "name": "atTime",
+                  "in": "query",
+                  "description": "An optional point in time at which to evaluate the authorizations. Defaults to the time the request is received",
+                  "schema": {
+                     "type": "string",
+                     "format": "date-time"
+                  }
+               }
+            ],
+            "responses": {
+               "200": {
+                  "description": "Successful operation",
+                  "content": {
+                     "application/json": {
+                        "schema": {
+                           "$ref": "#/components/schemas/trustregistry.authorizationResult"
+                        }
+                     }
+                  }
+               },
+               "400": {
+                  "description": "Invalid query value",
+                  "content": {}
+               },
+               "404": {
+                  "description": "authorityId or entityId not found",
+                  "content": {}
+               },
+               "403": {
+                  "description": "Client not allowed to perform this operation",
+                  "content": {}
+               },
+               "500": {
+                  "description": "Service failure",
+                  "content": {}
+               }
+            },
+            "security": [
+               {
+                  "auth": [
+                     "query:trustregistry"
+                  ]
+               },
+               {}
+            ]
+         }
+      }
+   },
+   "components": {
+      "schemas": {
+         "trustregistry.authorityInfo": {
+            "type": "object",
+            "description": "Descriptive metadata about a Governing Authority's Trust Registry",
+            "required": [
+               "authorityId"
+            ],
+            "properties": {
+               "authorityId": {
+                  "type": "string",
+                  "description": "Identifier of the Governing Authority operating the Trust Registry",
+                  "example": "did:webvh:ABC123:iptc.org:registry"
+               },
+               "name": {
+                  "type": "string",
+                  "description": "Human-readable name of the Governing Authority",
+                  "example": "IPTC Verified News Publisher Registry"
+               },
+               "description": {
+                  "type": "string",
+                  "description": "Human-readable description of the Trust Registry and what membership within it means"
+               },
+               "membershipCriteriaUrl": {
+                  "type": "string",
+                  "format": "uri",
+                  "description": "URL of the Governing Authority's published criteria for Trust Registry membership"
+               },
+               "url": {
+                  "type": "string",
+                  "format": "uri",
+                  "description": "URL of the Governing Authority's website"
+               }
+            }
+         },
+         "trustregistry.entityList": {
+            "type": "object",
+            "required": [
+               "entities"
+            ],
+            "properties": {
+               "entities": {
+                  "type": "array",
+                  "description": "entityId values that are members of the queried Trust Registry",
+                  "items": {
+                     "type": "string"
+                  }
+               },
+               "nextCursor": {
+                  "type": "string",
+                  "description": "Opaque cursor to pass as the cursor query parameter to retrieve the next page of results. Absent when there are no further results"
+               }
+            }
+         },
+         "trustregistry.actionList": {
+            "type": "object",
+            "required": [
+               "actions"
+            ],
+            "properties": {
+               "actions": {
+                  "type": "array",
+                  "description": "action values recognized by the queried Trust Registry",
+                  "items": {
+                     "type": "string"
+                  }
+               }
+            }
+         },
+         "trustregistry.resourceList": {
+            "type": "object",
+            "required": [
+               "resources"
+            ],
+            "properties": {
+               "resources": {
+                  "type": "array",
+                  "description": "resource categories recognized by the queried Trust Registry",
+                  "items": {
+                     "type": "string"
+                  }
+               }
+            }
+         },
+         "trustregistry.authorizationResult": {
+            "type": "object",
+            "required": [
+               "authorized"
+            ],
+            "properties": {
+               "authorized": {
+                  "type": "boolean",
+                  "description": "Whether the entity is (or, if atTime was given, was/will be) authorized"
+               },
+               "startDate": {
+                  "type": [
+                     "string",
+                     "null"
+                  ],
+                  "format": "date-time",
+                  "description": "Start of the validity window described by authorized. Null or absent if there is no lower bound"
+               },
+               "endDate": {
+                  "type": [
+                     "string",
+                     "null"
+                  ],
+                  "format": "date-time",
+                  "description": "End of the validity window described by authorized. Null or absent if there is no upper bound"
+               }
+            }
+         },
+         "trustregistry.enrollmentChallenge": {
+            "type": "object",
+            "required": [
+               "challenge",
+               "expiresAt"
+            ],
+            "properties": {
+               "challenge": {
+                  "type": "string",
+                  "description": "Base64-encoded one-time value to be signed by the private key corresponding to the entity's CAWG certificate"
+               },
+               "expiresAt": {
+                  "type": "string",
+                  "format": "date-time",
+                  "description": "Time after which this challenge is no longer valid and a new one must be requested"
+               }
+            }
+         },
+         "trustregistry.enrollmentSubmission": {
+            "type": "object",
+            "required": [
+               "challenge",
+               "signature",
+               "certificate"
+            ],
+            "properties": {
+               "challenge": {
+                  "type": "string",
+                  "description": "The challenge value previously returned by the enrollment-challenges endpoint"
+               },
+               "signature": {
+                  "type": "string",
+                  "description": "Base64-encoded signature over the challenge, produced with the private key corresponding to the certificate field"
+               },
+               "certificate": {
+                  "type": "string",
+                  "description": "Base64-encoded (DER or PEM) CAWG certificate containing the entityId, used to verify the signature and extract validated fields"
+               },
+               "evidence": {
+                  "type": "object",
+                  "description": "Governing Authority-specific supporting evidence required by its published Trust Registry membership criteria, e.g. a previously enrolled entityId when the entity is switching Certificate Authorities",
+                  "additionalProperties": true
+               }
+            }
+         },
+         "trustregistry.enrollmentStatus": {
+            "type": "object",
+            "required": [
+               "entityId",
+               "status"
+            ],
+            "properties": {
+               "entityId": {
+                  "type": "string",
+                  "description": "Identifier of the entity, extracted from the submitted certificate after signature verification"
+               },
+               "status": {
+                  "type": "string",
+                  "enum": [
+                     "approved",
+                     "pending",
+                     "rejected"
+                  ],
+                  "description": "Outcome of the enrollment request. approved means the entity is now a Trust Registry member; pending means the request awaits manual review; rejected means the request did not meet membership criteria"
+               },
+               "message": {
+                  "type": "string",
+                  "description": "Human-readable detail about the status, e.g. the reason for a rejected request"
+               }
+            }
+         },
+         "trustregistry.entityProfile": {
+            "type": "object",
+            "required": [
+               "entityId",
+               "authorizations"
+            ],
+            "properties": {
+               "entityId": {
+                  "type": "string",
+                  "description": "Identifier of the entity"
+               },
+               "authorizations": {
+                  "type": "array",
+                  "description": "Every (action, resource) grant recorded for this entity within the queried Trust Registry",
+                  "items": {
+                     "type": "object",
+                     "required": [
+                        "action",
+                        "resource",
+                        "authorized"
+                     ],
+                     "properties": {
+                        "action": {
+                           "type": "string"
+                        },
+                        "resource": {
+                           "type": "string"
+                        },
+                        "authorized": {
+                           "type": "boolean"
+                        },
+                        "startDate": {
+                           "type": [
+                              "string",
+                              "null"
+                           ],
+                           "format": "date-time"
+                        },
+                        "endDate": {
+                           "type": [
+                              "string",
+                              "null"
+                           ],
+                           "format": "date-time"
+                        }
+                     }
+                  }
+               }
+            }
+         }
+      },
+      "securitySchemes": {
+         "auth": {
+            "type": "oauth2",
+            "flows": {
+               "clientCredentials": {
+                  "tokenUrl": "https://auth.example.com/oauth/token",
+                  "scopes": {
+                     "query:trustregistry": "Query entities, actions, resources, and authorization status within a Trust Registry",
+                     "enroll:trustregistry": "Register or update an entity's Trust Registry membership"
+                  }
+               }
+            }
+         }
+      }
+   }
+}
