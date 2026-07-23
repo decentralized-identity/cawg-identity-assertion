@@ -2,12 +2,10 @@
 
 KERI signature payload is using the `identity.signature` field of the <<CBOR schema>> to store all data that are needed to verify the signature  following `vlei-signature-payload-map` CBOR type as defined below.
 
-Additionally, the fields `sig_type` and `role` of the `identity.signer_payload` map MUST be set as follows:
+Additionally, the field `sig_type` of the `identity.signer_payload` map MUST be set as follows:
 ```CBOR
 "sig_type": "cawg.vlei"
-"role": "le" / "ecr" /"oor"
 ```
-Where `le`, `ecr` and `oor` values correspond to the the respective vLEI credential type issued to the signing AID(s).
 
 [unnumbered]
 ===== _vlei-signature-payload-map_ definition
@@ -19,10 +17,17 @@ vlei-signature-payload-map = {
   "qvi_cred": tstr
   "le_cred": tstr
   ?"role_cred" = ("auth_cred": tstr, "cred": tstr)
-  "signer_aid_oobi": tstr
+  "signer_aid_oobi": [+tstr]
   "kel_seq_num": uint
   ?"anchor_seq_num": uint
   "aid_sig": [+tstr]
 }
 ```
+
 See section <<Generating the KERI signature>> for the description of the rules that MUST be followed when creating the payload.
+
+NOTE: *Archivial Quality.* +
+ +
+The KERI/ACDC architecture is designed to accomodate and promote decentralization and peer to peer data exchange. Due to this architectural choice the ability to verify KERI signatures and ACDC credentials can be limited in terms of the number of years passed since signature and/or attestation event. Specifically, the signer/issuer can, with time, move their Witnesses to a new location, making OOBI not resolvable, or even stop the operation altogether. +
+ +
+One way to overcome this limitation is to store all the required evidence, e.g. KELs and TELs, along with the signature in the Assertion (payload) itself, the other alternative is to rely on a 3rd party service to store the verifable evidence in a well known, archive, location. This version of the specification was designed to reduce the amount of spece required for the Assertion. Also, at the time of the writing, there's no commitment from the GLEIF ecosystem to store KELs and TELs of the participants, including that of QVIs, who are no longer active. Therefore the signatures are verifiable by any verifier as long as any of the OOBIs (signer_aid_oobi field) are still resolvable and the issuing QVI is still operational.

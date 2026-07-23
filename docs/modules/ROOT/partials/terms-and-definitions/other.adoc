@@ -1,8 +1,21 @@
 === Other concepts
 
+==== Archival-quality credential
+
+Any _<<verifiable_identifier,verifiable identifier>>_ that can be used to make claims on behalf of its _<<named_actor,named actor>>_ for which an independent system is able to verify the link between a claim made with that credential and its _<<named_actor,named actor>>_ for the stated validation lifetime of that credential.
+Any implementation of an archival-quality credential MUST specify an expected period for which credential validation can be expected to succeed and the means by which any relevant data necessary for verification can be accessed during that stated lifetime.
+
+IMPORTANT: An archival-quality credential can not make guarantees about the ongoing validity of data.
+As an example, the legal status of an asset may change due to legal transactions that can't be recorded in an immutable data structure.
+
 ==== Credential holder
 
 The _<<_actor,actor>>_ that has control (specifically signature authority) over a _<<_verifiable_identifier,verifiable identifier>>_ that describes a specific _<<_named_actor,named actor>>._
+
+*TO DO:* Open questions:
+
+* Does the credential subject need to pre-authorize or pre-specify the means of verification?
+* Does the trust framework need to specify how the verification occurs?
 
 ==== Credential revocation
 

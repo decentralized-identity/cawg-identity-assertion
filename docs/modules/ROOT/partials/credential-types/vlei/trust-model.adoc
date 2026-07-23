@@ -1,3 +1,54 @@
 ==== [[vlei_trust_model]] Trust model for vLEI credentials
 
-*TO DO:* Write this section.
+Similar to the world of Web PKI, where Certificate Authorities (CA) maintain their root of trust public/private key pairs, GLEIF is using the underlying technology, Key Event Receipt Infrastructure (KERI) to maintain their digital Identifiers (called Autonomic Identifiers, for short AIDs). The AIDs are permanent identifiers that allow secure key rotation and breach recovery, flexible multi-signature rules, and transparency of their Key Event history.
+
+KERI and AIDs support the notion of “delegation”, which ensures that related (delegated) identifiers (AIDs) must inform their “delegator” of the critical changes (called establishement events) to their key histories to be valid. In particular, the delegator must anchor an establishment event (e.g. `dip`, `drt`) of the delegate in the delegator's KEL.
+
+This enables a technically enforced compliance between the Root of Trust (GLEIF) and their QVIs (the delegates).
+
+The figure “Overview of Trust Hierarchy and Governance Roles” illustrates how technology is used to create a verifiable and scalable chain of trust with permanent digital identifiers.
+
+image::vlei/trust_hierarhy.png[600,600,align=center,title="Overview of Trust Hierarchy and Governance Roles"]
+
+GLEIF is using 3 AIDs to perform adminsitrative and governance tasks in the vLEI ecosystem. The Root AID controlled by GLEIF Authorized Representatives (GARs), GLEIF Internal Delegated AID (GIDA) and GLEIF External Delegated AID (GEDA). Both GIDA and GEDA are delegated from the ROOT AID.
+
+GIDA is only used to control the GLEIF's own vLEI credentails.
+
+GEDA is the AID that is used to delegate all QVIs AIDs and issue QVI credentials. Which means that in order to validate signatures of a QVI or credentials issued by it, one must retrieve, validate and maintain the state (KEL) of the GLEIF's ROOT, then GEDA and finally that of the target QVI.
+
+The other, complimentray mechanism used to clearly designate various actors in the vLEI ecosystem is the usage of verifiable credentials.
+
+Authentic Chained Data Container (ACDC) verifiable credentials technology is tightly integrated and relies on KERI for its security, cofidentiality and robustness. An ACDC credential does not carry a signature of its issuer directly. Instead, the hash (SAID) of the issuance or the revocation event (an event in Transaction Event Log -- TEL) is stored (anchored) in the KEL of the issuer (one of the `ixn`, `rot` or `drt` events) in the `a` field. As a result, the signatures on these events are verifiable as part of the KEL's validation and are subject to all the secutity (multisig, key pre/rotations, etc. ) features of KERI and guarantee that no credentials can be issued (or revoked) without knowledge of the AID Controller. For the full description of ACDC security mechanisms and its workings please refer to the specification.
+
+===== GLEIF Verifiable Credentials
+
+GLEIF Governance Framework defines the following verifiable credential types:
+
+- Qualified vLEI Issuer (QVI) Credential - asserts QVIs LEI number and its AID, issued by GLEIF (GEDA AID)
+- Legal Entity (LE) Credential - asserts holder's LEI number it their AID, links to the issuing QVI's credential
+- Official Organizational Role (OOR) Credential - asserts the Holder's Legal Name and the Official Role, LEI of the entity they belong to, issuing QVI's AID; links to issuance authorization credential (see below)
+- Engagement Context Role (ECR) Credential - asserts the Holder's Legal Name and the Role's Description, LEI of the entity they belong to, issuing QVI's or LE's AID; links to issuance authorization credential or the issuing entity's LE credential.
+
+A key feature of the ACDC technology is the ability to "chain" credentials together, enabling a dependency graph of verifable assertions.
+
+In the vLEI ecosystem LE, OOR and ECR vLEI credentials make use of this mechanism. For example, in order to issue an OOR credential, the legal entity issues an OOR Authorization credential to the issuing QVI, thus providing the evidence that they endorce certain AID holder in a specific role for their organization.
+
+In order to verify an ACDC vLEI credential, a verifier must, therefore, perform the following steps:
+- if not already done, obtain vLEI credentials' schemas, validate their fingeprints (schema ID and that of the embedded blocks)
+- parse the target credential (e.g. ECR vLEI), ensure it follows the published, fingerprinted schema
+- collect all related (linked) credentials and perfom validation agains their schemas
+- validate that the "edges" of the resulting dependency graph are correctly constructed, e.g. issuer and issuee AIDs and credentials schemas match
+- obtain (if not already available) KELs of the issuing AIDs using OOBIs and validate them
+- obtain TELs of all not yet validated credentials, check that the credentials' IDs (SAIDs) match that in the TEL `iss` events.
+   - if TEL contains a `rev` (revocation) event set the failed flag
+- validate that the 'iss' or 'rev' TEL event is correctly anchored in the issuers' KELs
+
+If all steps complete correctly, mark the credential(s) as checked and proceed to use the data of the verified credentials as trusted. If any of the credentials in the dependency graph have a valid revocation event, stop the processing.
+
+Note, many of the steps described above can be cached (e.g. QVI and LE credentials and the verification of the corresponding KELs). One can, for example, use a specialized "Watcher" process that keep track of the important AIDs (e.g. GLEIF, QVIs, etc) and carriers the checks periodically, caching the results.
+
+Addtionaly, it's important to note that due to decentralized nature of KERI/ACDC (e.g. rotatable set of witnesses) it's theoretically possible that KELs of an AID can respond with a conflicting history (there is no global consensus). To capture this behavior and revoke trust, it's important to interract with the vLEI ecosystem using a set of verifying watchers -- servers that peridically track KELs/TEls of the important AIDs and ensure that the history is consistent. Please note that KERI supports "superceedeing recovery" mechanims, a way to deal with compromised keys, where an unauthorized interaction (`ixn`) event (or a sequence of `ixn` events) can be replaced with a key rotation event, restoring the control over the AID and rendering any anchored, unauthorized TEL events illegal.
+
+Please use GLEIF Governace Framework to check the most current policies and rules related to the functioning and trust assumptions of the vLEI credentials' ecosystem.
+
+The schemas of the vLEI crednetials are published at the following repository: https://github.com/GLEIF-IT/vLEI-schema/

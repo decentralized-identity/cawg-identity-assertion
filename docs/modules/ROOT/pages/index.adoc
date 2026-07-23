@@ -7,12 +7,14 @@
 
 include::partial$abstract.adoc[]
 
-*Version 1.3 Draft 02 June 2026* · xref:_version_history[]
+*Version 1.3 Working Group Approved 17 July 2026* · xref:_version_history[]
 
 [IMPORTANT]
 =====
-This is a working draft of an upcoming version of this specification and may be changed without warning.
+This is a final draft of an upcoming version of this specification and may be changed without warning.
 Implementors needing a stable specification should instead refer to the xref:1.2@ROOT:index.adoc[1.2 version of this specification].
+
+This version differs from version 1.2 primarily in the removal of `expected_countersigners` and similar fields and in changes in how CAWG X.509 validation is reflected in status codes.
 =====
 
 include::partial$common/license.adoc[]
