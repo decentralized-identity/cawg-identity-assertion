@@ -34,3 +34,5 @@ An _<<_identity_assertion_generator,identity assertion generator>>_ may wish to 
 include::identity-claims-aggregation/index.adoc[]
 
 include::x509/index.adoc[]
+
+include::vlei/index.adoc[]
