@@ -2,12 +2,10 @@
 
 KERI signature payload is using the `identity.signature` field of the <<CBOR schema>> to store all data that are needed to verify the signature  following `vlei-signature-payload-map` CBOR type as defined below.
 
-Additionally, the fields `sig_type` and `role` of the `identity.signer_payload` map MUST be set as follows:
+Additionally, the field `sig_type` of the `identity.signer_payload` map MUST be set as follows:
 ```CBOR
 "sig_type": "cawg.vlei"
-"role": "le" / "ecr" /"oor"
 ```
-Where `le`, `ecr` and `oor` values correspond to the the respective vLEI credential type issued to the signing AID(s).
 
 [unnumbered]
 ===== _vlei-signature-payload-map_ definition
@@ -25,4 +23,6 @@ vlei-signature-payload-map = {
   "aid_sig": [+tstr]
 }
 ```
+*TODO:* consider adding optional fields to enable <<_archival_quality_credential>>. E.g. issuer signatures over the timestamp confirming validity of credentials at the time of signing. Also KEL of the signing AID and its parent for the delegated AIDs. Ultimately, we need to find a balance between enabling "perpetual" validation and not overloading the payload. Additional considerations are discussed in the <<vlei_trust_model, vLEI Trust Model>> section.
+
 See section <<Generating the KERI signature>> for the description of the rules that MUST be followed when creating the payload.

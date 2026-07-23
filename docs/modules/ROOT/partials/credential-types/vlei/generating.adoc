@@ -7,7 +7,7 @@ The resulting byte string is then used as an input to the selected signature mec
 
 NOTE: _KERI_ signatures use *_CESR_* encoding, which indicates, in a prefix, the type of the signature used
 
-If the then current _Establishment Event_ in the *_KEL_* of the AID requires a certain set of keys to add to threshold (`kt` field of an establishment event) >= 1, this step MUST be perfomed for each of the suitable keys.
+If the then current _Establishment Event_ in the *_KEL_* of the AID requires ( `kt` field) a certain set of keys to add to threshold >= 1 this step MUST be perfomed for each of the suitable keys.
 
 The resulting set of signatures MUST be used as the input to `vlei-signature-payload-map.aid_sig` field. Each signature in the array MUST be an indexed CESR encoded signature (indexed Controller Signature).
 
@@ -27,10 +27,18 @@ In addition to the `aid_sig` field described above, the following fields MUST be
 
 ===== Conditional fields of `vlei-signature-payload-map`
 
-If the `signer_payload.role` field is set to either `oor` or `ecr`, then the `vlei-signature-payload-map.role_cred` field MUST be provided.
-In that case, the `auth_cred` field of the `role_cred` sequence MUST contain JSON encoded `Role Authorization Credential` and the `cred` field of the sequence MUST contain the corresponding JSON encoded role credential. Specifically, if the `signer_payload.role` was set to `oor` then the "Official Organizational Role" credential MUST be used.  Alternatively, if the `ecr` value was used, then the "Engagement Context Role" credential MUST be provided.
+If the <<_actor>> (AID Controller) is singing the assertion as a representative of a legal entity, then the `vlei-signature-payload-map.role_cred` field MUST be provided.
+
+If the <<_actor>> holds an OOR credential, then the `auth_cred` field of the `role_cred` sequence MUST contain JSON encoded `OOR Authorization Credential` and the `cred` field of the sequence MUST contain the corresponding JSON encoded OOR credential.
+
+Alternatively, if the <<_actor>> holds an ECR credential then the JSON encoded value of this credential MUST be used in the `cred` field. Depending on the issuer of the ECR credential the `auth_cred` field MUST be provided as follows:
+
+* issuer is a QVI: JSON encoded `ECR Authorization Credential`
+* issuer is the legal entity: empty string.
 
 ===== Optional fields of the `vlei-signature-payload-map`
 
 In case the <<_actor>> requires an especially high level of assurance for this assertion, the `anchor_seq_num` field MAY be used.
 If used, the field must be set to the sequence number of the *_anchoring event_* in the AID's KEL. The said event (one of the `ixn`, `rot` or `drt` type ) then MUST have in its `a` field the CESR encoded hash of the serialized (as specified above) `signer_payload`. That is, the CESR encoded hash must be one of the values in the array of the `a` field.
+
+*TODO:* do we need to specify the hash algorithm? Or just use `blake3`, which is default?
