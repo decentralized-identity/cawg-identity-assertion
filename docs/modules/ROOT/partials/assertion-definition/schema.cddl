@@ -1,6 +1,7 @@
 identity = {
   "signer_payload": $signer-payload-map, ; content to be signed by credential holder
   "signature": bstr, ; byte string of the signature
+  ? "named_actor_claims": [1* bstr], ; one or more named actor claims
   "pad1": bstr, ; byte string filled with binary `0x00` values used for filling up space
   ? "pad2": bstr, ; optional byte string filled with binary `0x00` values used for filling up space
 }

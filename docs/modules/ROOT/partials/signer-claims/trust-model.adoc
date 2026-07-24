@@ -1,21 +1,19 @@
-=== Signer claim trust model
+=== Named Actor claim trust model
 
-IMPORTANT: This section augments the _<<_trust_model,trust model>>_ described elsewhere in this specification. It describes only the trust relationships that are specific to *<<_signer_claim,signer claims>>.*
+IMPORTANT: This section augments the _<<_trust_model,trust model>>_ described elsewhere in this specification. It describes only the trust relationships that are specific to *<<_named_actor_claim,Named Actor claims>>.*
 
-Trust in a *<<_signer_claim,signer claim>>* is established entirely through configuration held by the validator.
-A validator maintains a *<<_signer_claim_authority_registry,signer claim authority registry>>* — a list of *<<_signer_claim_authority,signer claim authorities>>* whose statements it is willing to surface — together with the public keys used to verify each authority’s signatures.
+Trust in a *<<_named_actor_claim,Named Actor claim>>* is established entirely through configuration held by a validator. Validators maintain a *<<_named_actor_claim_authority_registry,Named Actor claim authority registry>>*, which is a list of *<<_named_actor_claim_authority,Named Actor claim authorities>>* whose statements it is willing to surface, together with the public keys used to verify each authority’s signatures.
 
-A *<<_signer_claim,signer claim>>* carries no certificate chain and no trust anchor.
-The chain of trust is therefore _not_ contained in the credential; it is supplied out of band by the registry.
-This is a deliberate design choice that keeps claims compact and keeps validation fully offline.
+A *<<_named_actor_claim,Named Actor claim>>* carries no certificate chain and no trust anchor.
+The chain of trust is therefore _not_ contained in the credential; it is supplied out of band by the registry. This is a deliberate design choice that keeps claims compact and keeps validation fully offline.
 
-==== Signer claim authority registry
+==== Named Actor claim authority registry
 
-Each entry in a *<<_signer_claim_authority_registry,signer claim authority registry>>* describes a single *<<_signer_claim_authority,authority>>* and MUST contain at least the following information:
+Each entry in a *<<_named_actor_claim_authority_registry,Named Actor claim authority registry>>* describes a single *<<_named_actor_claim_authority,authority>>* and MUST contain at least the following information:
 
-* an `Authority ID`, which is the value that appears in the `iss` claim of claims issued by this *<<_signer_claim_authority,authority>>;*
-* a human-readable `Name` for the *<<_signer_claim_authority,authority>>;* and
-* one or more public keys, each OPTIONALLY associated with a key identifier (`kid`), used to verify the COSE signatures of claims issued by this *<<_signer_claim_authority,authority>>.*
+* an `Authority ID`, which is the value that appears in the `issuer` field of claims issued by this *<<_named_actor_claim_authority,authority>>;*
+* a human-readable `Name` for the *<<_named_actor_claim_authority,authority>>;* and
+* one or more public keys, each associated with a key identifier (`kid`), used to verify the COSE signatures of claims issued by this *<<_named_actor_claim_authority,authority>>*.
 
 .Illustrative registry contents (non-normative)
 [source]
@@ -24,32 +22,35 @@ Authority ID: iptc
 Name: IPTC
 Public keys:
   - kid: key1
+    key: <credential public key>
   - kid: key2
+    key: <credential public key>
 
 Authority ID: reuters
 Name: Reuters
 Public keys:
   - kid: key1
+    key: <credential public key>
 ----
 
-Listing more than one public key per *<<_signer_claim_authority,authority>>* allows an *<<_signer_claim_authority,authority>>* to rotate keys without invalidating previously issued claims.
-When combined with a trusted time stamp (see xref:_verify_the_time_stamp_and_validity_window[xrefstyle=full]), this supports historical validation: a claim signed with a key that was valid at the time of signing can continue to validate after that key has been retired, provided the key remains present in the registry.
+NOTE: This draft does not specify how the validity of authority keys is established. We may choose to move to x.509 certificates which would allow for revocation and expiration, but that is not yet defined.
+
+Listing more than one public key per *<<_named_actor_claim_authority,authority>>* allows an *<<_named_actor_claim_authority,authority>>* to rotate keys without invalidating previously issued claims. When combined with a trusted time stamp (see xref:_verify_the_time_stamp_and_validity_window[xrefstyle=full]), this supports historical validation: a claim signed with a key that was valid at the time of signing can continue to validate after that key has been retired, provided the key remains present in the registry.
 
 ==== Distribution of registry contents
 
-The means by which a validator obtains and updates its *<<_signer_claim_authority_registry,signer claim authority registry>>* is out of scope for this section, but the following requirements apply:
+The means by which a validator obtains and updates its *<<_named_actor_claim_authority_registry,Named Actor claim authority registry>>* is out of scope for this section, but the following requirements apply:
 
-* Registry distribution MUST be performed out of band, independently of any individual *<<_signer_claim,signer claim>>.*
-* A validator MUST NOT infer trust in an *<<_signer_claim_authority,authority>>* from the content of a claim alone.
-* Validation of a *<<_signer_claim,signer claim>>* MUST NOT require contacting the issuing *<<_signer_claim_authority,authority>>* or any other network service.
+* Registry distribution MUST be performed out of band, independently of any individual *<<_named_actor_claim,Named Actor claim>>.*
+* A validator MUST NOT infer trust in an *<<_named_actor_claim_authority,authority>>* from the content of a claim alone.
+* Validation of a *<<_named_actor_claim,Named Actor claim>>* MUST NOT require contacting the issuing *<<_named_actor_claim_authority,authority>>* or any other network service.
 
-CAWG governs the format used to distribute *<<_signer_claim_authority,authority>>* identifiers and public keys, as described in xref:_signer_claim_governance[xrefstyle=full].
+CAWG governs the format used to distribute *<<_named_actor_claim_authority,authority>>* identifiers and public keys, as described in xref:_named_actor_claim_governance[xrefstyle=full].
 
 [NOTE]
 .Decentralized authority identifiers
 ====
 _This section is non-normative._
 
-This draft treats the `Authority ID` as an opaque identifier assigned within a CAWG-governed registry.
-Whether these identifiers could instead be expressed in a decentralized form (for example, as xref:_w3c_decentralized_identifier[decentralized identifiers]) is an open question for a future revision.
+This draft treats the `Authority ID` as an opaque identifier. Whether these identifiers can be expressed in a decentralized form (for example, as xref:_w3c_decentralized_identifier[decentralized identifiers]) is an open question.
 ====

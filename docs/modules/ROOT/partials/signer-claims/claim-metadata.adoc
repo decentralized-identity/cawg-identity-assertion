@@ -1,24 +1,23 @@
-=== Signer claim metadata
+=== Named Actor claim metadata
 
 _This section is non-normative unless otherwise stated._
 
-An *<<_signer_claim_authority,signer claim authority>>* MAY publish metadata describing the *<<_assertion_claim_type,assertion claim types>>* that it issues.
-This metadata enables a validator to present a friendly label, description, or icon for a claim without embedding any knowledge of the claim in its own software.
+An *<<_named_actor_claim_authority,Named Actor claim authority>>* MAY publish metadata describing the *<<_assertion_claim_type,assertion claim types>>* that it issues. This metadata enables a validator to present a friendly label, description, or icon for a claim without embedding any knowledge of the claim in its own software.
 
-An *<<_signer_claim_authority,authority>>* that publishes metadata SHOULD make it available at a stable URL, one per *<<_assertion_claim_type,assertion claim type>>.*
+When claim semantics are expressed as RDF, a validator MAY retrieve this metadata by dereferencing the predicate URI or object URI used in the claim. An *<<_named_actor_claim_authority,authority>>* that publishes metadata for RDF-based claims SHOULD ensure that dereferencing each relevant URI yields a stable representation of the metadata for that *<<_assertion_claim_type,assertion claim type>>.*
 
 .Example metadata endpoint
 [source]
 ----
-https://example.org/claims/iptc-vnp
+https://example.org/terms/memberOfAssociation
 ----
 
 .Example metadata document
 [source,json]
 ----
 {
-  "id": "iptc:vnp",
-  "displayName": "Verified News Publisher",
+  "id": "example:memberOfAssociation",
+  "displayName": "Member of Association",
   "description": "...",
   "icon": "...",
   "policyUrl": "..."
@@ -29,12 +28,12 @@ A validator MAY:
 
 * look up claim metadata when it is online;
 * cache metadata locally for later offline use; and
-* continue to validate *<<_signer_claim,signer claims>>* while offline, using cached metadata or none at all.
+* continue to validate *<<_named_actor_claim,Named Actor claims>>* while offline, using cached metadata or none at all.
 
 The following requirements apply to any validator that consumes claim metadata:
 
 * Metadata lookup MUST be optional.
-* Metadata lookup MUST NOT affect the cryptographic validity of a *<<_signer_claim,signer claim>>.* A validator MUST reach the same validation outcome (as described in xref:_validating_a_signer_claim[xrefstyle=full]) whether or not metadata is available.
+* Metadata lookup MUST NOT affect the cryptographic validity of a *<<_named_actor_claim,Named Actor claim>>.* A validator MUST reach the same validation outcome (as described in xref:_validating_a_named_actor_claim[xrefstyle=full]) whether or not metadata is available.
 * A validator MUST NOT treat the absence or unavailability of metadata as a validation failure.
 
 This arrangement allows new claim ecosystems — friendly labels, icons, and rich presentation — to be introduced without any update to validator software.

@@ -1,29 +1,30 @@
-=== Signer claims overview
+=== Named Actor claims overview
 
 _This section is non-normative._
 
 An *<<_identity_assertion,identity assertion signature>>* establishes _who_ a _<<_named_actor,named actor>>_ is by binding a _<<_verifiable_identifier,verifiable identifier>>_ to a set of _<<_c2pa_assertion,C2PA assertions>>._
 
-A *<<_signer_claim,signer claim>>*, by contrast, describes additional validations, memberships, accreditations, or statuses that a third party may have granted to that _<<_named_actor,named actor>>._
-Where an *<<_identity_assertion,identity assertion signature>>* answers _“Who is this entity?”_, a *<<_signer_claim,signer claim>>* answers questions such as _“What organisations is this entity a member of?”_ or _“What accreditations has this entity been granted?”_
+A *<<_named_actor_claim,Named Actor claim>>*, by contrast, describes additional validations, memberships, accreditations, or statuses that a third party may have granted to that _<<_named_actor,named actor>>._
+Where an *<<_identity_assertion,identity assertion signature>>* answers _“Who is this entity?”_, a *<<_named_actor_claim,Named Actor claim>>* answers questions such as _“What organisations is this entity a member of?”_ or _“What accreditations has this entity been granted?”_
 
-Examples of the kinds of statements a *<<_signer_claim,signer claim>>* can carry include:
+Examples of the kinds of statements a *<<_named_actor_claim,Named Actor claim>>* can carry include:
 
 * membership of an industry body (for example, a verified news publisher program)
 * a licensing or accreditation status granted by a regulator
 * additional verified details about a _<<_named_actor,named actor>>_ that are not captured in the _<<_verifiable_identifier,verifiable identifier>>_
 
-These statements are made by a *<<_signer_claim_authority,signer claim authority>>* — a role that is distinct from the issuer of the _<<_named_actor,named actor’s>>_ own _<<_verifiable_identifier,verifiable identifier>>_ and from any certificate authority involved in that identifier’s lifecycle.
-A *<<_signer_claim,signer claim>>* is therefore decoupled from certificate issuance and from certificate lifecycle events such as renewal or revocation.
+These statements are made by a *<<_named_actor_claim_authority,Named Actor claim authority>>* — a role that is distinct from the issuer of the _<<_named_actor,named actor’s>>_ own _<<_verifiable_identifier,verifiable identifier>>_ and from any certificate authority involved in that identifier’s lifecycle.
+A *<<_named_actor_claim,Named Actor claim>>* is therefore decoupled from certificate issuance and from certificate lifecycle events such as renewal or revocation.
 
 The mechanism described in this section is designed around the following principles:
 
 . *Separation of concerns.* Establishing identity and attesting to additional status are handled by independent mechanisms and, typically, independent entities.
-. *Offline validation.* A validator can verify a *<<_signer_claim,signer claim>>* without contacting the issuing *<<_signer_claim_authority,authority>>* or any other network service.
-. *Historical validation.* By reusing the existing trusted time stamp mechanism, a *<<_signer_claim,signer claim>>* can be validated long after it was issued, even after the *<<_signer_claim_authority,authority’s>>* keys have rotated.
-. *No per-ecosystem code.* A validator that understands this mechanism does not need new code when a new *<<_signer_claim_authority,authority>>* or a new kind of claim is introduced. Adding support for a new ecosystem should be a matter of configuration.
-. *Compact representation.* A *<<_signer_claim,signer claim>>* should be as small as possible, and should avoid carrying certificates / trust anchors. Trust is established out-of-band through a validator *<<_signer_claim_authority_registry,signer claim authority registry>>.*
+. *Offline validation.* A validator can verify a *<<_named_actor_claim,Named Actor claim>>* without contacting the issuing *<<_named_actor_claim_authority,authority>>* or any other network service.
+. *Historical validation.* By reusing the existing trusted time stamp mechanism, a *<<_named_actor_claim,Named Actor claim>>* can be validated long after it was issued, even after the *<<_named_actor_claim_authority,authority’s>>* keys have rotated.
+. *Status-aware validation.* A Named Actor claim can carry status discovery information (for example, a URL to revocation state) that a validator can evaluate using locally cacheable status data.
+. *No per-ecosystem code.* A validator that understands this mechanism does not need new code when a new *<<_named_actor_claim_authority,authority>>* or a new kind of claim is introduced. Adding support for a new ecosystem / authority should be a matter of configuration.
+. *Compact representation.* A *<<_named_actor_claim,Named Actor claim>>* should be as small as possible, and should avoid carrying certificates / trust anchors. Trust is established out-of-band through a validator *<<_named_actor_claim_authority_registry,Named Actor claim authority registry>>.*
 
 [IMPORTANT]
-Trust is not implied by inclusion. The presence of a *<<_signer_claim,signer claim>>* in a _<<C2PA Manifest>>_ does not, by itself, mean that its statement should be surfaced to an end user.
-A statement should be surfaced only when the *<<_signer_claim_authority,authority>>* that issued it appears in the validator’s *<<_signer_claim_authority_registry,signer claim authority registry>>* and the claim passes all validation steps described in xref:_validating_a_signer_claim[xrefstyle=full].
+Trust is not implied by inclusion. The presence of a *<<_named_actor_claim,Named Actor claim>>* in a _<<C2PA Manifest>>_ does not, by itself, mean that its statement should be surfaced to an end user.
+A statement should be surfaced only when the *<<_named_actor_claim_authority,authority>>* that issued it appears in the validator’s *<<_named_actor_claim_authority_registry,Named Actor claim authority registry>>* and the claim passes all validation steps described in xref:_validating_a_named_actor_claim[xrefstyle=full].

@@ -1,4 +1,4 @@
-== Signer claims
+== Named Actor claims
 
 include::overview.adoc[]
 
