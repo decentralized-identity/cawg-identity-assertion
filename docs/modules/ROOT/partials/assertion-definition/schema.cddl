@@ -19,6 +19,7 @@ signer-payload-map = {
   "referenced_assertions": [1* $hashed-uri-map],
   "sig_type": tstr .size (1..max-tstr-length), ; a string identifying the data type of the signature field
   ? "role": [1* (tstr .size (1..max-tstr-length))], ; one or more strings defining the named actor’s relationship(s) to this C2PA asset
+  ? "trust_registry_uri": https-uri, ; TO DO: define
 }
 
 hash-map = {

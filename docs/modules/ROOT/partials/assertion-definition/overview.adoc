@@ -18,6 +18,9 @@ It contains the following fields:
 It is subject to several requirements as described in xref:_referenced_assertions_requirements[xrefstyle=full].
 * `sig_type` _(required)_ is a string identifying the data type of the signature.
 Valid credential types and the corresponding `signature` data structures and `signer_payload.sig_type` values are defined in xref:_credentials_signatures_and_validation_methods[xrefstyle=full].
+* `trust_registry` _(optional)_ is a structure that defines the _<<_governance_framework,governance framework>>_ claimed by the _<<_named_actor,named actor>>._ This is described in xref:_trust_registry_requirements[xrefstyle=full].
+* `referenced_registry_uri` contains a URI identifying the registry, identifier system, or authoritative source referenced by this assertion.
+*TO DO:* Define what is at this URI?
 * `role` _(optional)_ contains one or more descriptions of the _<<_named_actor,named actor’s>>_ relationship(s) to the _<<C2PA asset>>._
 Possible role values are described in xref:_named_actor_roles[xrefstyle=full].
 
