@@ -8,14 +8,6 @@ Any implementation of an archival-quality credential MUST specify an expected pe
 IMPORTANT: An archival-quality credential can not make guarantees about the ongoing validity of data.
 As an example, the legal status of an asset may change due to legal transactions that can't be recorded in an immutable data structure.
 
-==== Assertion claim type
-
-A globally unique, namespaced identifier that names the statement carried by a *<<_named_actor_claim,Named Actor claim>>* (for example, `iptc:vnp`).
-In this specification, an _assertion claim type_ appears as a triple `predicate` in `credentialSubject.claims`.
-The meaning of an _assertion claim type_ is governed by the issuing *<<_named_actor_claim_authority,Named Actor claim authority>>;* CAWG standardizes only its syntax and does not define the set of possible claim types.
-
-See xref:_named_actor_claim_credential_format[xrefstyle=full].
-
 ==== Credential holder
 
 The _<<_actor,actor>>_ that has control (specifically signature authority) over a _<<_verifiable_identifier,verifiable identifier>>_ that describes a specific _<<_named_actor,named actor>>._

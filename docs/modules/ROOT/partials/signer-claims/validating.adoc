@@ -16,9 +16,9 @@ The validator SHALL inspect the protected header `alg` parameter. If the `alg` p
 
 ==== Parse the Verifiable Credential payload
 
-The validator SHALL obtain the `COSE_Sign1` payload and parse it as a CBOR-encoded verifiable credential. If the payload cannot be parsed, or if any of the required fields (`issuer`, `credentialSubject.id`, `credentialSubject.claims`, `validFrom`, or `validUntil`) is absent, the validator MUST stop validation of this claim and issue the failure code `cawg.named_actor_claim.invalid_vc`.
+The validator SHALL obtain the `COSE_Sign1` payload and parse it as a CBOR-encoded verifiable credential. If the payload cannot be parsed, or if any of the required fields (`issuer`, `credentialSubject`, `cawg:credentialBinding`, `validFrom`, or `validUntil`) is absent, the validator MUST stop validation of this claim and issue the failure code `cawg.named_actor_claim.invalid_vc`.
 
-The validator SHALL verify that `credentialSubject` and `cawg:credentialBinding` are non-empty objects. If these requirements are not met, the validator MUST stop validation of this claim and issue the failure code `cawg.named_actor_claim.invalid_triples`.
+The validator SHALL verify that `credentialSubject` is a non-empty object. If it is not, the validator MUST stop validation of this claim and issue the failure code `cawg.named_actor_claim.invalid_triples`.
 
 ==== Identify the issuing authority
 
@@ -41,25 +41,27 @@ If the signature does not verify against any candidate key, the validator MUST i
 
 ==== Verify the subject binding
 
-The validator SHALL compare `credentialSubject.id` against the subject identifier extracted from the _<<_named_actor,named actor’s>>_ _<<_verifiable_identifier,verifiable identifier>>_ in xref:_validate_the_cawg_credential_and_extract_the_subject_identifier[xrefstyle=full].
+The validator SHALL obtain the subject identifier extracted from the _<<_named_actor,named actor’s>>_ _<<_verifiable_identifier,verifiable identifier>>_ in xref:_validate_the_cawg_credential_and_extract_the_subject_identifier[xrefstyle=full].
+
+If `credentialSubject.id` is present, the validator SHALL compare it against that subject identifier.
 If the two do not correspond, the validator MUST issue the failure code `cawg.named_actor_claim.subject_mismatch` and MUST NOT surface the statement carried by this claim.
+
+If `credentialSubject.id` is absent, the validator MUST use the extracted subject identifier as the effective `credentialSubject.id` for the remainder of claim validation and statement processing.
 
 This step guarantees that a *<<_named_actor_claim,Named Actor claim>>* can only be applied to the _<<_named_actor,named actor>>_ it was issued about, and cannot be transplanted onto a different signer.
 
 [[_verify_credential_binding]]
 ==== Verify credential binding
 
-The validator MUST verify that the `cawg:credentialBinding` field binding matches the signing key of the enclosing *<<_identity_assertion,identity assertion>>.*
+The validator MUST verify that the `cawg:credentialBinding` field is present, and is a non-empty object with at least one recognized binding field present. If the field is absent, empty, or contains no recognized binding types, the validator MUST issue the failure code `cawg.named_actor_claim.credential_binding_unknown` and MUST NOT surface the statement carried by this claim.
 
 For a binding of type `cawg:x509SpkiSha256`, the validator SHALL:
 
 . Extract the end-entity X.509 certificate from the *<<_identity_assertion,identity assertion>>* signature.
-. Compute the SHA-256 digest of the DER-encoded SubjectPublicKeyInfo (SPKI) of that certificate and encode it as a base64url string (without padding).
+. Compute the SHA-256 digest of the DER-encoded SubjectPublicKeyInfo (SPKI) of that certificate and encode it as a base64url string (without padding) as described in link:++https://www.rfc-editor.org/rfc/rfc4648#section-5++[Section 5, "Base Encoding with URL and Filename Safe Alphabet,"] of RFC 4648.
 . Compare the computed value against the `cawg:x509SpkiSha256` value in the credential.
 
 If the values do not match, the validator MUST issue the failure code `cawg.named_actor_claim.credential_binding_mismatch` and MUST NOT surface the statement carried by this claim.
-
-If the `cawg:credentialBinding` map contains a binding type that the validator does not recognise, the validator MUST issue the failure code `cawg.named_actor_claim.credential_binding_unknown_type` and MUST NOT surface the statement carried by this claim.
 
 ==== Verify the time stamp and validity window
 
@@ -101,7 +103,7 @@ If status data indicates that the claim is revoked or suspended, the validator M
 If the validator has completed all of the preceding steps for a *<<_named_actor_claim,Named Actor claim>>* without issuing any failure code, it MUST issue the success code `cawg.named_actor_claim.valid` for that claim.
 
 Only at this point the validator output must include the statement carried by the claim to the _<<_identity_assertion_consumer,identity assertion consumer>>._
-The validator MAY use the optional metadata described in xref:_named_actor_claim_metadata[xrefstyle=full] to present a friendly label, description, or icon for the *<<_assertion_claim_type,assertion claim type>>.*
+The validator MAY use the optional metadata described in xref:_named_actor_claim_metadata[xrefstyle=full] to present a friendly label, description, or icon for the statement.
 
 ==== Status codes
 
@@ -131,7 +133,7 @@ The validator MAY use the optional metadata described in xref:_named_actor_claim
 
 | `cawg.named_actor_claim.invalid_triples`
 | Failure
-| The `credentialSubject.claims` array is missing, empty, or contains one or more malformed triples.
+| The `credentialSubject` array is missing, empty, or contains one or more malformed triples.
 
 | `cawg.named_actor_claim.untrusted_authority`
 | Failure
@@ -147,14 +149,14 @@ The validator MAY use the optional metadata described in xref:_named_actor_claim
 
 | `cawg.named_actor_claim.subject_mismatch`
 | Failure
-| `credentialSubject.id` does not correspond to the subject identifier of the _<<_named_actor,named actor’s>>_ _<<_verifiable_identifier,verifiable identifier>>._
+| `credentialSubject.id` is present but does not correspond to the subject identifier of the _<<_named_actor,named actor’s>>_ _<<_verifiable_identifier,verifiable identifier>>._
 | `cawg.named_actor_claim.credential_binding_mismatch`
 | Failure
 | The `cawg:x509SpkiSha256` value in `cawg:credentialBinding` does not match the SPKI digest of the end-entity X.509 certificate used to sign the enclosing *<<_identity_assertion,identity assertion>>.*
 
-| `cawg.named_actor_claim.credential_binding_unknown_type`
+| `cawg.named_actor_claim.credential_binding_unknown`
 | Failure
-| The `cawg:credentialBinding` map contains a binding type that the validator does not recognise.
+| The `cawg:credentialBinding` map is not present, or does not contain a binding type that the validator recognises.
 | `cawg.named_actor_claim.not_yet_valid`
 | Failure
 | The trusted reference time is earlier than `validFrom`.

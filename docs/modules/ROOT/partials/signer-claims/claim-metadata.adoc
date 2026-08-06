@@ -2,9 +2,9 @@
 
 _This section is non-normative unless otherwise stated._
 
-An *<<_named_actor_claim_authority,Named Actor claim authority>>* MAY publish metadata describing the *<<_assertion_claim_type,assertion claim types>>* that it issues. This metadata enables a validator to present a friendly label, description, or icon for a claim without embedding any knowledge of the claim in its own software.
+An *<<_named_actor_claim_authority,Named Actor claim authority>>* MAY publish metadata describing the statements that it issues. This metadata enables a validator to present a friendly label, description, or icon for a claim without embedding any knowledge of the claim in its own software.
 
-When claim semantics are expressed as RDF, a validator MAY retrieve this metadata by dereferencing the predicate URI or object URI used in the claim. An *<<_named_actor_claim_authority,authority>>* that publishes metadata for RDF-based claims SHOULD ensure that dereferencing each relevant URI yields a stable representation of the metadata for that *<<_assertion_claim_type,assertion claim type>>.*
+When claim semantics are expressed as RDF, a validator MAY retrieve this metadata by dereferencing the predicate URI or object URI used in the claim. An *<<_named_actor_claim_authority,authority>>* that publishes metadata for RDF-based claims SHOULD ensure that dereferencing each relevant URI yields a stable representation of the metadata for that statement.
 
 .Example metadata endpoint
 [source]
