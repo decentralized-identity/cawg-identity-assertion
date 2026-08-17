@@ -4,13 +4,14 @@ site:
   title: Identity Assertion
   start_page: identity::index.adoc
 content:
-  sources: 
+  sources:
   - url: .
     branches: HEAD
     tags:
     - v1.0
     - v1.1-final
     - "1.2"
+    - v1.3
     start_path: docs
 
 ui:
