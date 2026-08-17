@@ -58,6 +58,8 @@ NOTE: The requirement that the `hash` value for a _<<_referenced_assertions,refe
 
 *TO DO:* Is this TRQP payload appropriate? If so, we can flesh that out more after the Monday meeting. Look at https://trustoverip.github.io/tswg-trust-registry-protocol/approved/#authorization-query-schema[§6.1, Authorization query schema] to determine what information we need to provide.
 
+*TO DO:* Revisit trust TF meeting from 3 August to see if there is a more appropriate example. Add context parameter based on discussion from that meeting. Context used if there's something specific about the kind of resource (time limits, etc. -- look at TRQP spec). CAWG may add specific vocabulary if useful.
+
 [source,json]
 ----
 "trust_registry": {
@@ -65,7 +67,8 @@ NOTE: The requirement that the `hash` value for a _<<_referenced_assertions,refe
   "entity_id": "user-1234",
   "authority_id": "auth-service-A",
   "action": "issue",
-  "resource": "country:state:driverlicense"
+  "resource": "country:state:driverlicense",
+  "context": { (optional) ... }
 }
 ----
 

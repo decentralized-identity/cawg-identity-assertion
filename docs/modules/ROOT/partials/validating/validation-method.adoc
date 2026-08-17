@@ -30,3 +30,15 @@ The procedure for validating each signature type and corresponding status codes 
 
 The `pad1` and `pad2` fields of an *<<_identity_assertion,identity assertion>>* MUST contain only zero-value (`0x00`) bytes.
 The `cawg.identity.pad.invalid` error code SHALL be used to report assertions that contain other values in these fields.
+
+==== Validation of trust registry
+
+TO DO: Add instructions for how to validate trust registry information if it exists. Look at TRQP validation query request and response pattern.
+
+https://trustoverip.github.io/tswg-trust-registry-protocol/approved/
+
+TO DO: Encourage caching of responses to avoid overload.
+
+FROM Charlie: suggest we use a resource of "https://cawg.io/identity-validation-credential" that we define, then write an "identity validation" requirements / policy document.
+
+TRQP stapling?
