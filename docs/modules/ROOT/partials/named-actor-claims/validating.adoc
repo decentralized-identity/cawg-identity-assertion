@@ -1,0 +1,180 @@
+=== Validating a Named Actor claim
+
+A validator MUST validate each *<<_named_actor_claim,Named Actor claim>>*, only after it has validated the enclosing *<<_identity_assertion,identity assertion>>* as described in xref:_validation_method[xrefstyle=full]. Validation of a *<<_named_actor_claim,Named Actor claim>>* MUST be performed entirely offline: it MUST NOT require contacting the issuing *<<_named_actor_claim_authority,authority>>* or any other network service.
+
+The validator SHALL follow the steps in the following subsections, in the order presented, for each *<<_named_actor_claim,Named Actor claim>>* it processes.
+
+==== Validate the CAWG credential and extract the subject identifier
+
+The validator SHALL first complete validation of the Identity Assertion as described in xref:_validating_the_identity_assertion[xrefstyle=full].
+
+==== Parse the `COSE_Sign1` structure in the Named Actor claim
+
+The validator SHALL parse the *<<_named_actor_claim,Named Actor claim>>* as a tagged `COSE_Sign1` object as described in link:++https://www.rfc-editor.org/rfc/rfc9052.html#name-signing-with-one-signer++[Section 4.2, “Signing with one signer,”] of RFC 9052. If parsing fails, the validator MUST stop validation of this claim and issue the failure code `cawg.named_actor_claim.invalid_cose_sign1`.
+
+The validator SHALL inspect the protected header `alg` parameter. If the `alg` parameter is missing or references an algorithm that is not one of those defined in link:++https://spec.c2pa.org/specifications/specifications/2.4/specs/C2PA_Specification.html#_digital_signatures++[Section 13.2, “Digital signatures,”] of the C2PA specification, the validator MUST issue the failure code `cawg.named_actor_claim.invalid_alg`.
+
+==== Parse the Verifiable Credential payload
+
+The validator SHALL obtain the `COSE_Sign1` payload and parse it as a CBOR-encoded verifiable credential. If the payload cannot be parsed, or if any of the required fields (`issuer`, `credentialSubject`, `cawg:credentialBinding`, `validFrom`, or `validUntil`) is absent, the validator MUST stop validation of this claim and issue the failure code `cawg.named_actor_claim.invalid_vc`.
+
+The validator SHALL verify that `credentialSubject` is a non-empty object. If it is not, the validator MUST stop validation of this claim and issue the failure code `cawg.named_actor_claim.invalid_triples`.
+
+==== Identify the issuing authority
+
+The validator SHALL inspect the `issuer` field and locate a matching `Authority ID` in its *<<_named_actor_claim_authority_registry,Named Actor claim authority registry>>.*
+If no matching *<<_named_actor_claim_authority,authority>>* is found, the validator MUST stop validation of this claim and issue the failure code `cawg.named_actor_claim.untrusted_authority`.
+
+NOTE: A *<<_named_actor_claim,Named Actor claim>>* issued by an *<<_named_actor_claim_authority,authority>>* that is not in the registry is not an error in the claim itself. A validator SHOULD treat `cawg.named_actor_claim.untrusted_authority` as a signal that the statement should not be surfaced to the user, rather than as a defect in the enclosing *<<_identity_assertion,identity assertion>>.*
+
+==== Select the authority public key
+
+The validator SHALL select the public key or keys used to verify the signature from the registry entry located in the previous step.
+If the `COSE_Sign1` header contains a `kid` parameter, the validator SHALL select the key whose identifier matches that `kid`.
+If the `kid` does not match any key listed for the *<<_named_actor_claim_authority,authority>>,* the validator MUST issue the failure code `cawg.named_actor_claim.unknown_key` but MAY continue validation using the other keys listed for the *<<_named_actor_claim_authority,authority>>.*
+If no `kid` is present, the validator SHALL attempt verification against each key listed for the *<<_named_actor_claim_authority,authority>>.*
+
+==== Verify the COSE signature
+
+The validator SHALL verify the signature using the selected public key material as described in link:++https://www.rfc-editor.org/rfc/rfc9052#section-4.4++[Section 4.4, “Signing and verification process,”] of RFC 9052.
+If the signature does not verify against any candidate key, the validator MUST issue the failure code `cawg.named_actor_claim.signature_mismatch` and MUST NOT surface the statement carried by this claim.
+
+==== Verify the subject binding
+
+The validator SHALL obtain the subject identifier extracted from the _<<_named_actor,named actor’s>>_ _<<_verifiable_identifier,verifiable identifier>>_ in xref:_validate_the_cawg_credential_and_extract_the_subject_identifier[xrefstyle=full].
+
+If `credentialSubject.id` is present, the validator SHALL compare it against that subject identifier.
+If the two do not correspond, the validator MUST issue the failure code `cawg.named_actor_claim.subject_mismatch` and MUST NOT surface the statement carried by this claim.
+
+If `credentialSubject.id` is absent, the validator MUST use the extracted subject identifier as the effective `credentialSubject.id` for the remainder of claim validation and statement processing.
+
+This step guarantees that a *<<_named_actor_claim,Named Actor claim>>* can only be applied to the _<<_named_actor,named actor>>_ it was issued about, and cannot be transplanted onto a different signer.
+
+[[_verify_credential_binding]]
+==== Verify credential binding
+
+The validator MUST verify that the `cawg:credentialBinding` field is present, and is a non-empty object with at least one recognized binding field present. If the field is absent, empty, or contains no recognized binding types, the validator MUST issue the failure code `cawg.named_actor_claim.credential_binding_unknown` and MUST NOT surface the statement carried by this claim.
+
+For a binding of type `cawg:x509SpkiSha256`, the validator SHALL:
+
+. Extract the end-entity X.509 certificate from the *<<_identity_assertion,identity assertion>>* signature.
+. Compute the SHA-256 digest of the DER-encoded SubjectPublicKeyInfo (SPKI) of that certificate and encode it as a base64url string (without padding) as described in link:++https://www.rfc-editor.org/rfc/rfc4648#section-5++[Section 5, "Base Encoding with URL and Filename Safe Alphabet,"] of RFC 4648.
+. Compare the computed value against the `cawg:x509SpkiSha256` value in the credential.
+
+If the values do not match, the validator MUST issue the failure code `cawg.named_actor_claim.credential_binding_mismatch` and MUST NOT surface the statement carried by this claim.
+
+==== Verify the time stamp and validity window
+
+The validator SHALL determine a trusted reference time for this claim.
+The reference time SHALL be taken, in order of preference, from:
+
+* the time stamp carried in the *<<_named_actor_claim,Named Actor claim’s>>* own `sigTst2` unprotected header, if present and valid;
+* the time stamp for the _<<C2PA Manifest>>_ as described in link:++https://spec.c2pa.org/specifications/specifications/2.4/specs/C2PA_Specification.html#_time_stamps++[Section 11.3.2.5, “Time-stamps,”] of the C2PA technical specification; or
+* the current date and time, if no trusted time stamp is available.
+
+If a `sigTst2` time stamp is present, the validator SHALL validate it following the procedure described in link:++https://spec.c2pa.org/specifications/specifications/2.4/specs/C2PA_Specification.html#_time_stamps++[Section 11.3.2.5, “Time-stamps,”] of the C2PA technical specification.
+If the time stamp validates, the validator MUST issue the success code `cawg.named_actor_claim.time_stamp.validated`.
+If it does not validate, the validator MUST issue the status code `cawg.named_actor_claim.time_stamp.invalid`, MUST NOT use the time stamp as the reference time, and SHALL fall back to the next available source.
+
+Using the trusted reference time, the validator SHALL verify that:
+
+[source]
+----
+validFrom <= reference_time < validUntil
+----
+
+If `reference_time` is earlier than `validFrom`, the validator MUST issue the failure code `cawg.named_actor_claim.not_yet_valid` and MUST NOT surface the statement carried by this claim.
+If `reference_time` is at or after `validUntil`, the validator MUST issue the failure code `cawg.named_actor_claim.expired` and MUST NOT surface the statement carried by this claim.
+
+Because the reference time is derived from a trusted time stamp when one is available, a claim that was valid at the time the _<<C2PA asset>>_ was signed continues to validate afterwards, even after its `validUntil` time has passed relative to the current date.
+
+[[_verify_credential_status]]
+==== Verify credential status
+
+If a Named Actor claim contains a `credentialStatus` field, the validator MUST evaluate it using locally available status data.
+Validation of credential status MUST NOT require network access at claim-validation time.
+
+If status data is unavailable, stale, or insufficient to determine the status of the claim, the validator MUST issue the failure code `cawg.named_actor_claim.status_unknown` and MUST NOT surface the statement carried by this claim.
+
+If status data indicates that the claim is revoked or suspended, the validator MUST issue the failure code `cawg.named_actor_claim.revoked` and MUST NOT surface the statement carried by this claim.
+
+==== Surface the statement
+
+If the validator has completed all of the preceding steps for a *<<_named_actor_claim,Named Actor claim>>* without issuing any failure code, it MUST issue the success code `cawg.named_actor_claim.valid` for that claim.
+
+Only at this point the validator output must include the statement carried by the claim to the _<<_identity_assertion_consumer,identity assertion consumer>>._
+The validator MAY use the optional metadata described in xref:_named_actor_claim_metadata[xrefstyle=full] to present a friendly label, description, or icon for the statement.
+
+==== Status codes
+
+[width="100%",cols="5,3,10",options="header"]
+|=======================
+| Value | Status | Definition
+
+| `cawg.named_actor_claim.valid`
+| Success
+| The *<<_named_actor_claim,Named Actor claim>>* passed all validation requirements and its statement may be surfaced.
+
+| `cawg.named_actor_claim.time_stamp.validated`
+| Success
+| The time stamp carried by the *<<_named_actor_claim,Named Actor claim>>* was validated.
+
+| `cawg.named_actor_claim.invalid_cose_sign1`
+| Failure
+| The *<<_named_actor_claim,Named Actor claim>>* could not be parsed as a tagged `COSE_Sign1` structure.
+
+| `cawg.named_actor_claim.invalid_alg`
+| Failure
+| The `alg` header is missing or references an unsupported signature algorithm.
+
+| `cawg.named_actor_claim.invalid_vc`
+| Failure
+| The `COSE_Sign1` payload could not be parsed as a verifiable credential, or a required field is absent.
+
+| `cawg.named_actor_claim.invalid_triples`
+| Failure
+| The `credentialSubject` array is missing, empty, or contains one or more malformed triples.
+
+| `cawg.named_actor_claim.untrusted_authority`
+| Failure
+| The `issuer` field does not match any `Authority ID` in the validator’s *<<_named_actor_claim_authority_registry,Named Actor claim authority registry>>.*
+
+| `cawg.named_actor_claim.unknown_key`
+| Failure
+| The `kid` header does not match any public key listed for the issuing *<<_named_actor_claim_authority,authority>>.*
+
+| `cawg.named_actor_claim.signature_mismatch`
+| Failure
+| The COSE signature did not verify against any candidate public key for the issuing *<<_named_actor_claim_authority,authority>>.*
+
+| `cawg.named_actor_claim.subject_mismatch`
+| Failure
+| `credentialSubject.id` is present but does not correspond to the subject identifier of the _<<_named_actor,named actor’s>>_ _<<_verifiable_identifier,verifiable identifier>>._
+| `cawg.named_actor_claim.credential_binding_mismatch`
+| Failure
+| The `cawg:x509SpkiSha256` value in `cawg:credentialBinding` does not match the SPKI digest of the end-entity X.509 certificate used to sign the enclosing *<<_identity_assertion,identity assertion>>.*
+
+| `cawg.named_actor_claim.credential_binding_unknown`
+| Failure
+| The `cawg:credentialBinding` map is not present, or does not contain a binding type that the validator recognises.
+| `cawg.named_actor_claim.not_yet_valid`
+| Failure
+| The trusted reference time is earlier than `validFrom`.
+
+| `cawg.named_actor_claim.expired`
+| Failure
+| The trusted reference time is at or after `validUntil`.
+
+| `cawg.named_actor_claim.time_stamp.invalid`
+| Failure
+| The time stamp carried by the *<<_named_actor_claim,Named Actor claim>>* could not be validated.
+
+| `cawg.named_actor_claim.status_unknown`
+| Failure
+| The validator could not determine credential status from locally available status data.
+
+| `cawg.named_actor_claim.revoked`
+| Failure
+| The credential status indicates the Named Actor claim is revoked or suspended.
+
+|=======================
