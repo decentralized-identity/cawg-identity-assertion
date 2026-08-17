@@ -5,3 +5,4 @@
 * https://www.w3.org/TR/vc-data-model-2.0/[Verifiable credentials data model, version 2.0]
 * https://www.w3.org/TR/did-core/[W3C decentralized identifiers (DIDs), version 1.0]
 * https://tools.ietf.org/html/rfc5280[Internet X.509 public key infrastructure certificate] (RFC 5280)
+* https://trustoverip.github.io/tswg-trust-registry-protocol/approved/[Trust Registry Query Protocol (TRQP), version 2.0]

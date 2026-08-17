@@ -16,6 +16,9 @@ It contains the following fields:
 It is subject to several requirements as described in xref:_referenced_assertions_requirements[xrefstyle=full].
 * `sig_type` _(required)_ is a string identifying the data type of the signature.
 Valid credential types and the corresponding `signature` data structures and `signer_payload.sig_type` values are defined in xref:_credentials_signatures_and_validation_methods[xrefstyle=full].
+* `trust_registry` _(optional)_ is a structure that defines the _<<_governance_framework,governance framework>>_ claimed by the _<<_named_actor,named actor>>._ This is described in xref:_trust_registry_requirements[xrefstyle=full].
+* `referenced_registry_uri` contains a URI identifying the registry, identifier system, or authoritative source referenced by this assertion.
+*TO DO:* Define what is at this URI?
 * `role` _(optional)_ contains one or more descriptions of the _<<_named_actor,named actor’s>>_ relationship(s) to the _<<C2PA asset>>._
 Possible role values are described in xref:_named_actor_roles[xrefstyle=full].
 
@@ -50,6 +53,24 @@ This binding MUST be chosen using the approach described in the opening paragrap
 * The list MAY reference other *<<_identity_assertion,identity assertions>>,* provided that no cycle of references among *<<_identity_assertion,identity assertions>>* is created.
 
 NOTE: The requirement that the `hash` value for a _<<_referenced_assertions,referenced assertion>>_ be known prior to presenting `signer_payload` for signature implies that an *<<_identity_assertion,identity assertion>>* MUST NOT refer to itself.
+
+==== Trust registry requirements
+
+*TO DO:* Is this TRQP payload appropriate? If so, we can flesh that out more after the Monday meeting. Look at https://trustoverip.github.io/tswg-trust-registry-protocol/approved/#authorization-query-schema[§6.1, Authorization query schema] to determine what information we need to provide.
+
+*TO DO:* Revisit trust TF meeting from 3 August to see if there is a more appropriate example. Add context parameter based on discussion from that meeting. Context used if there's something specific about the kind of resource (time limits, etc. -- look at TRQP spec). CAWG may add specific vocabulary if useful.
+
+[source,json]
+----
+"trust_registry": {
+  "trqp_authorization_uri": "https://example.com",
+  "entity_id": "user-1234",
+  "authority_id": "auth-service-A",
+  "action": "issue",
+  "resource": "country:state:driverlicense",
+  "context": { (optional) ... }
+}
+----
 
 ==== Named actor roles
 
