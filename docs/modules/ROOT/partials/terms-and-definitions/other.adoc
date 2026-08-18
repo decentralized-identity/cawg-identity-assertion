@@ -93,6 +93,12 @@ See also _<<_referenced_registry,referenced registry>>._
 
 Adapted from link:++https://glossary.trustoverip.org/#term:trust-registry++[Trust Over IP’s definition of trust registry].
 
+==== Trust registry snapshot
+
+A signed, time-bounded copy of some or all of the entries in a _<<_trust_registry,trust registry>>_ at a specific point in time, packaged as a standalone _<<C2PA asset>>_ so that it can be cached and evaluated locally by an _<<_identity_assertion_consumer,identity assertion consumer>>_ without contacting the trust registry for each individual authorization decision.
+
+A trust registry snapshot has its own expiration time, independent of the validity period of any individual entry it contains.
+
 ==== Verifiable identifier
 
 Any credential for which an independent system is able to associate, discover, and verify the cryptographic keys associated with that credential.

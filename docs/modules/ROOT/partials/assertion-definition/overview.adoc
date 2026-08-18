@@ -7,8 +7,6 @@ The *<<_identity_assertion,identity assertion>>* contains the following data fie
 
 * `signer_payload` contains the set of data to be signed by this _<<_credential_holder,credential holder>>_
 * `signature` contains the raw byte stream of the _<<_credential_holder,credential holder>>’s_ signature
-* `trust_registry` _(optional)_ is a structure that defines the _<<_governance_framework,governance framework>>_ claimed by the _<<_named_actor,named actor>>._ This is described in xref:_trust_registry_requirements[xrefstyle=full].
-* `referenced_registry_uri` _(optional)_ contains a URI identifying a _<<_referenced_registry,referenced registry>>_ associated with this *<<_identity_assertion,identity assertion>>.*
 * `pad1` and `pad2` are byte strings filled with binary `0x00` values used to fill space
 
 The `signer_payload` field is a structure of type `signer-payload-map` which is signed by the _<<_credential_holder,credential holder>>_.
@@ -58,38 +56,30 @@ NOTE: The requirement that the `hash` value for a _<<_referenced_assertions,refe
 
 ==== Trust registry requirements
 
-The `entity_id`, `authority_id`, `action`, and `resource` fields below correspond directly to the required fields of https://trustoverip.github.io/tswg-trust-registry-protocol/approved/#authorization-query-schema[§6.1, Authorization query schema] of the TRQP specification.
+The `entity_id`, `authority_id`, `action`, and `resource` fields of `trust_registry` correspond directly to the required fields of https://trustoverip.github.io/tswg-trust-registry-protocol/approved/#authorization-query-schema[§6.1, Authorization query schema] of the TRQP specification.
 
-`trqp_authorization_uri` is a CAWG-specific addition and is not itself part of the TRQP query schema: TRQP instead expects the query endpoint to be discovered from `authority_id`, for example via a DID document, as described in https://trustoverip.github.io/tswg-trust-registry-protocol/approved/#authority_id[§5.1, `authority_id`] of the TRQP specification.
-*TO DO:* Confirm with the working group whether `trqp_authorization_uri` should be kept as an explicit, credential-holder-supplied override of the endpoint, or removed in favor of relying entirely on `authority_id`-based discovery.
+`context` _(optional)_ carries additional, ecosystem-specific constraints needed to interpret the authorization, such as a role or region qualifier.
+This specification does not currently define a required vocabulary for `context`; a future minor version of this specification MAY define CAWG-specific `context` keys.
+
+`trqp_authorization_uri` _(optional)_ lets the _<<_credential_holder,credential holder>>_ name a specific TRQP-compliant endpoint to query.
+It is a CAWG-specific addition and is not itself part of the TRQP query schema, which instead expects the query endpoint to be discovered from `authority_id`, for example via a DID document, as described in https://trustoverip.github.io/tswg-trust-registry-protocol/approved/#authority_id[§5.1, `authority_id`] of the TRQP specification.
+If `trqp_authorization_uri` is absent, a validator resolves `authority_id` to either a live query endpoint or a cached _<<_trust_registry_snapshot,trust registry snapshot>>_, as described in xref:_validation_of_trust_registry[xrefstyle=full].
 
 [source,json]
 ----
 "trust_registry": {
-  "trqp_authorization_uri": "https://example.com",
   "entity_id": "user-1234",
   "authority_id": "auth-service-A",
   "action": "issue",
-  "resource": "country:state:driverlicense"
+  "resource": "country:state:driverlicense",
+  "context": {
+    "role": "journalist",
+    "region": "CA"
+  }
 }
 ----
 
-===== Verification
-
-If `trust_registry` is present in `signer_payload`, an _<<_identity_assertion_consumer,identity assertion consumer>>_ MAY perform the following steps to verify the claimed _<<_governance_framework,governance framework>>_:
-
-* Submit an authorization query to the TRQP-compliant endpoint identified by `trqp_authorization_uri`, using the `entity_id`, `authority_id`, `action`, and `resource` values from `trust_registry` as described in https://trustoverip.github.io/tswg-trust-registry-protocol/approved/#authorization-query-schema[§6.1, Authorization query schema] of the TRQP specification.
-* Evaluate the response returned by the trust registry as described in https://trustoverip.github.io/tswg-trust-registry-protocol/approved/#authorization-response-schema[§6.2, Authorization response schema] of the TRQP specification.
-A validator MUST check the response’s `authorized` field: a boolean that is `true` only if the queried `action` on `resource` is confirmed authorized for `entity_id` by `authority_id`.
-The response’s optional `message` field, if present, MAY be surfaced to the _<<_identity_assertion_consumer,identity assertion consumer>>_ for additional context.
-* A validator MUST NOT issue the `cawg.identity.trust_registry.authorized` status code for an *<<_identity_assertion,identity assertion>>* unless the trust registry response’s `authorized` field is `true`.
-If `authorized` is `false`, the validator MUST issue the `cawg.identity.trust_registry.unauthorized` status code.
-* If `trqp_authorization_uri` cannot be reached, or the trust registry returns a response that does not conform to the TRQP authorization response schema (see https://trustoverip.github.io/tswg-trust-registry-protocol/approved/#error-handling[§8.4, Error handling] of the TRQP specification), the validator MUST issue the `cawg.identity.trust_registry.unreachable` status code rather than treating the claim as either authorized or unauthorized.
-+
-These status codes are defined in xref:_status_codes[xrefstyle=full].
-
-NOTE: This verification is independent of and additional to the COSE signature verification described in xref:_credentials_signatures_and_validation_methods[xrefstyle=full].
-A `trust_registry` claim that fails verification does not by itself invalidate the *<<_identity_assertion,identity assertion>>;* it only means the governance framework claim could not be confirmed.
+NOTE: The procedure for validating a `trust_registry` claim, including both a live TRQP query and a cached _<<_trust_registry_snapshot,trust registry snapshot>>_, is described in xref:_validation_of_trust_registry[xrefstyle=full].
 
 ==== Named actor roles
 

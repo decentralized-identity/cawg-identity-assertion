@@ -39,17 +39,16 @@ An example in https://www.rfc-editor.org/rfc/rfc8949.html#name-diagnostic-notati
         "hash": b64'Yzag4o5jO4xPyfANVtw7ETlbFSWZNfeM78qbSi8Abkk='
       }
     ],
+    "role": ["cawg.creator"],
     "trust_registry": {
-      "trqp_authorization_uri": "https://example.com",
       "entity_id": "user-1234",
       "authority_id": "academicResearchPublicationAuthority",
       "action": "publish",
       "resource": "researchPublication",
-      "context": { optional },
-      // { jouralist right to publish newsArticle.text },
-      // { photograph right to publish photo.journalist },
-    },
-    "role": ["cawg.creator"],
+      "context": {
+        "role": "journalist"
+      }
+    }
   },
   "signature": b64'....', // COSE signature
   "pad1": b64'....', // zero-filled pad buffer

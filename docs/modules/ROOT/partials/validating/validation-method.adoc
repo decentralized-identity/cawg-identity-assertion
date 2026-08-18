@@ -30,3 +30,48 @@ The procedure for validating each signature type and corresponding status codes 
 
 The `pad1` and `pad2` fields of an *<<_identity_assertion,identity assertion>>* MUST contain only zero-value (`0x00`) bytes.
 The `cawg.identity.pad.invalid` error code SHALL be used to report assertions that contain other values in these fields.
+
+==== Validation of trust registry
+
+If `trust_registry` is present in `signer_payload`, an _<<_identity_assertion_consumer,identity assertion consumer>>_ MAY evaluate the claimed _<<_governance_framework,governance framework>>_ using either of the methods described in this section.
+A validator is not required to support both methods, but SHOULD prefer the _<<_trust_registry_snapshot,trust registry snapshot>>_ method when a snapshot for `trust_registry.authority_id` is available, because it does not require disclosing `entity_id`, `action`, or `resource` to the authority at the time of validation, and it remains usable if the authority’s service is temporarily unreachable.
+
+NOTE: This verification is independent of and additional to the COSE signature verification described in xref:_credentials_signatures_and_validation_methods[xrefstyle=full].
+A `trust_registry` claim that fails verification does not by itself invalidate the *<<_identity_assertion,identity assertion>>;* it only means the governance framework claim could not be confirmed.
+
+===== Live TRQP query
+
+* Submit an authorization query to the TRQP-compliant endpoint identified by `trust_registry.trqp_authorization_uri`, or, if absent, the endpoint discovered from `trust_registry.authority_id`, using the `entity_id`, `authority_id`, `action`, `resource`, and `context` values from `trust_registry` as described in https://trustoverip.github.io/tswg-trust-registry-protocol/approved/#authorization-query-schema[§6.1, Authorization query schema] of the TRQP specification.
+* Evaluate the response returned by the trust registry as described in https://trustoverip.github.io/tswg-trust-registry-protocol/approved/#authorization-response-schema[§6.2, Authorization response schema] of the TRQP specification.
+A validator MUST check the response’s `authorized` field: a boolean that is `true` only if the queried `action` on `resource` is confirmed authorized for `entity_id` by `authority_id`.
+The response’s optional `message` field, if present, MAY be surfaced to the _<<_identity_assertion_consumer,identity assertion consumer>>_ for additional context.
+* A validator MUST NOT issue the `cawg.identity.trust_registry.authorized` status code for an *<<_identity_assertion,identity assertion>>* unless the trust registry response’s `authorized` field is `true`.
+If `authorized` is `false`, the validator MUST issue the `cawg.identity.trust_registry.unauthorized` status code.
+* If no endpoint could be queried, or the trust registry returns a response that does not conform to the TRQP authorization response schema (see https://trustoverip.github.io/tswg-trust-registry-protocol/approved/#error-handling[§8.4, Error handling] of the TRQP specification), the validator MUST issue the `cawg.identity.trust_registry.unreachable` status code rather than treating the claim as either authorized or unauthorized.
+
+A validator that queries a live TRQP endpoint for every *<<_identity_assertion,identity assertion>>* it validates discloses `entity_id`, `action`, and `resource` to the authority on every validation, and makes every validation depend on the availability of the authority’s service.
+The _<<_trust_registry_snapshot,trust registry snapshot>>_ method below is RECOMMENDED as a way to reduce both of these risks.
+
+===== Trust registry snapshot
+
+An authority MAY publish its trust registry as a _<<_trust_registry_snapshot,trust registry snapshot>>_: a signed _<<C2PA Manifest Store>>_, distributed as a standalone _<<C2PA asset>>_, that contains a set of registry entries together with an overall expiration time for the snapshot as a whole.
+Each registry entry within a snapshot corresponds to one `trust_registry` claim and records at least the `authority_id`, `entity_id`, `action`, `resource`, and `context` values it authorizes, together with the time the entry became effective (`valid_from`) and, optionally, the time it ceases to be effective (`valid_until`).
+An authority SHOULD publish its current trust registry snapshot at a stable, well-known location associated with `authority_id`, for example `https://\{authority_id}/.well-known/c2pa-trust-registry`.
+
+A validator that has, or retrieves, a trust registry snapshot for `trust_registry.authority_id` MUST perform the following steps to evaluate a `trust_registry` claim:
+
+* Validate the snapshot’s own _<<C2PA Manifest>>_, including its _<<_hard_binding,hard binding>>_, as described elsewhere in this specification and in the C2PA technical specification.
+If the snapshot’s manifest does not validate, the validator MUST discard the snapshot.
+* Verify that the snapshot’s overall expiration time has not passed.
+A validator MUST NOT treat an expired snapshot as representing the authority’s current registry state.
+* Locate a registry entry within the snapshot whose `authority_id`, `entity_id`, `action`, and `resource` match the corresponding fields of `trust_registry`, and whose `context`, if present in either the entry or `trust_registry`, is consistent with the other.
+* If a matching entry is found, verify that the time being evaluated — the current time, when assessing whether the _<<_named_actor,named actor>>_ is presently recognized by the authority, or the time indicated by a trusted time stamp associated with the *<<_identity_assertion,identity assertion>>,* when assessing whether the _<<_named_actor,named actor>>_ was recognized at the time of signing — falls on or after the entry’s `valid_from` and, if `valid_until` is present, before it.
+* If the entry references a status list entry (for example, using a https://www.w3.org/TR/vc-bitstring-status-list/[Bitstring Status List]), verify that the referenced status indicates the entry is active.
+
+A validator MUST NOT issue the `cawg.identity.trust_registry.authorized` status code for an *<<_identity_assertion,identity assertion>>* unless all of the above checks succeed using an unexpired snapshot.
+If a matching entry is found but its validity period does not cover the time being evaluated, or its status is not active, the validator MUST issue the `cawg.identity.trust_registry.unauthorized` status code.
+If no matching entry is found in an unexpired snapshot, the validator MUST issue the `cawg.identity.trust_registry.unauthorized` status code.
+If no unexpired snapshot for `trust_registry.authority_id` can be obtained — whether because none is cached and none can be retrieved, or because every snapshot obtained is expired — the validator MUST issue the `cawg.identity.trust_registry.unreachable` status code.
+
+A validator SHOULD cache a retrieved trust registry snapshot and reuse it for every *<<_identity_assertion,identity assertion>>* it validates until the snapshot expires, rather than retrieving a new snapshot per validation.
+Caching in this way is what allows the trust registry snapshot method to avoid the availability and disclosure risks described above: the authority is contacted only when the cached snapshot expires, not once per validation.
