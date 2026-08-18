@@ -1,0 +1,85 @@
+:revdate: {docdate}
+:version-label!:
+:sectnums:
+:sectnumlevels: 5
+:chapter-label: API
+
+[[TR-API]]
+== Trust Registry Resolution API for CAWG Identity Assertions
+
+CAWG identity assertions let an X.509 certificate answer questions of baseline identity, such as "this content was signed by BBC." They do not, by themselves, answer questions of standing within a community, such as "is BBC currently recognized as a Verified News Publisher." That second class of question is answered by a Governing Authority's Trust Registry: a service that records which entities it has authorized to perform which actions on which resources.
+
+This document describes xref:trust-registry-use-cases[use cases] for why a Validator needs to resolve Trust Registry membership separately from certificate validation, then documents `cawg-trqp-refimpl` (https://github.com/sankarshanmukhopadhyay/cawg-trqp-verifier-refimpl), the CAWG-TRQP reference implementation that answers these queries today, and its xref:trust-registry-resolution-api[HTTP API].
+
+NOTE: `cawg-trqp-refimpl`'s HTTP API is a request/response reference implementation, not a prescriptive specification. It is narrower than a fully general Trust Registry Resolution API: it has no entity enrollment flow, no historical (`atTime`) authorization queries, and no capability-discovery routes for listing an authority's recognized actions or resources. It documents an existing tool, not a normative contract every Trust Registry must implement.
+
+[[trust-registry-use-cases]]
+=== Use Cases
+
+The following use cases illustrate common situations in which a Trust Registry is queried. In these use cases: the IPTC is a Governing Authority operating a Trust Registry of Verified News Publishers; BBC is an entity that may or may not be a member of that registry; Bob's news-reading software is a Validator relying on CAWG identity assertions.
+
+==== UC1: Confirming an organizational trust claim
+
+BBC signs a photo using a CAWG certificate that asserts organizational identity ("I am BBC") and references the IPTC's authority identifier and its own entity identifier in the identity assertion. Bob's news-reading software validates the certificate, then queries the IPTC's Trust Registry with the authority identifier, entity identifier, action (`publish`), and resource (`photo.journalist.approved`) taken from the assertion. The registry returns `true`, and Bob's software displays BBC as a Verified News Publisher.
+
+==== UC2: Verifying a full manifest, not just a single authorization claim
+
+Rather than checking one authorization fact in isolation, Bob's software submits the complete manifest-derived assertion (asset identifier, entity, authority, issuer, action, resource, and any process-of-creation evidence) to the reference implementation's verification endpoint. It receives back a single structured `trust_outcome` - `trusted`, `rejected`, or `deferred` - along with explanations covering asset integrity, actor authorization, issuer recognition, and process-proof appraisal together, rather than having to combine several individual registry queries itself.
+
+==== UC3: Exporting a decision for later replay
+
+A regulator asks Bob's organization to justify a trust decision made six months earlier. Bob's software re-runs the verification and additionally requests an audit bundle: a signed, canonically hashable record of the request, the decision, and the policy evidence used to reach it, sufficient for the regulator (or Bob's own systems) to replay the decision independently later without re-querying the original Trust Registry.
+
+[[trust-registry-resolution-api]]
+=== `cawg-trqp-refimpl` HTTP API
+
+`cawg-trqp-refimpl`'s HTTP service (`HTTPTRQPService`, built on Express) provides a JSON-over-HTTP interface to its verifier core. Every route other than the health check accepts a JSON request body and returns a JSON response; there is no query-string or path-parameter based routing.
+
+==== Route overview
+
+The API is organized into four groups:
+
+`GET /health`:: reports service health and which capabilities (authorization, recognition, verify, audit_bundle, gateway) this deployment has enabled.
+`/trqp/authorization`, `/trqp/recognition`, `/trqp/gateway/authorization`:: resolve a single authorization or issuer-recognition question against the configured `PolicyService`, optionally mediated through a `TrustGateway`.
+`/trqp/verify`:: runs a full verification pass - asset integrity, actor authorization, issuer recognition, and process-proof appraisal together - and returns a single `trust_outcome`.
+`/trqp/audit-bundle`:: runs the same verification pass as `/trqp/verify`, then exports a signed, replayable record of the decision.
+
+===== Service route
+
+`GET /health`::
+Returns the service's health status and the list of enabled capabilities. Unauthenticated; intended for load balancer / orchestrator health checks.
+
+===== Authorization routes
+
+`POST /trqp/authorization`::
+Given `entity_id`, `authority_id`, `action`, and `resource` in the request body, returns whether the entity is currently authorized, drawn from the configured `PolicyService`.
+
+`POST /trqp/recognition`::
+Given `authority_id` and `recognized_authority_id`, returns whether the first authority recognizes the second as a trusted issuer of identity assertions.
+
+`POST /trqp/gateway/authorization`::
+Equivalent to `POST /trqp/authorization`, but routes the query through a `TrustGateway` that can mediate requests across multiple configured authority routes, returning route/feed-descriptor evidence describing how the request was mediated alongside the authorization result.
+
+===== Verification and audit routes
+
+`POST /trqp/verify`::
+Given the fields of a manifest-derived verification request (`asset_id`, `integrity_ok`, `entity_id`, `authority_id`, `issuer_id`, `action`, `resource`, `context`, and optional `process_evidence`), plus an optional `profile`/`overlays` selecting which verification profile's controls to apply and an optional `use_gateway` flag, returns a structured `trust_outcome` (`trusted`, `trusted_cached`, `rejected`, or `deferred`) with explanations.
+
+`POST /trqp/audit-bundle`::
+Runs the same verification pass as `/trqp/verify`, then packages the request, result, and policy evidence into a canonical, hashable audit bundle suitable for replay and independent re-verification later. An optional `privacy_profile` controls how much of the raw request the bundle retains; profiles that retain the raw request require the caller to present the matching scope in an `X-TRQP-Scopes` header, or the request is rejected with `403`.
+
+==== OpenAPI Specification of the `cawg-trqp-refimpl` HTTP API
+
+The API specification and documentation is available below in the OpenAPI format as a <<trust-registry-resolution-api-json, JSON>> or <<trust-registry-resolution-api-yaml, YAML>> document.
+
+[[trust-registry-resolution-api-json]]
+[source,json]
+----
+include::resolution-api.json[]
+----
+
+[[trust-registry-resolution-api-yaml]]
+[source,yaml]
+----
+include::resolution-api.yaml[]
+----
