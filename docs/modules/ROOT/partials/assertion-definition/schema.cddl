@@ -1,9 +1,18 @@
 identity = {
   "signer_payload": $signer-payload-map, ; content to be signed by credential holder
   "signature": bstr, ; byte string of the signature
-  ? "referenced_registry_uri": https-uri, ; TO DO: define
+  ? "trust_registry": trust-registry-map, ; TRQP authorization query and endpoint; see "Trust registry requirements"
+  ? "referenced_registry_uri": https-uri, ; URI of a referenced registry; see "Referenced registry" in Terms and definitions
   "pad1": bstr, ; byte string filled with binary `0x00` values used for filling up space
   ? "pad2": bstr, ; optional byte string filled with binary `0x00` values used for filling up space
+}
+
+trust-registry-map = {
+  "trqp_authorization_uri": https-uri, ; the TRQP-compliant endpoint to query
+  "entity_id": tstr .size (1..max-tstr-length), ; the identifier for the entity being tested for authorization
+  "authority_id": tstr .size (1..max-tstr-length), ; the identifier for the authority being queried
+  "action": tstr .size (1..max-tstr-length), ; the action being checked
+  "resource": tstr .size (1..max-tstr-length), ; the resource being checked
 }
 
 signer-payload-map = {
@@ -18,5 +27,4 @@ hash-map = {
   "hash": bstr, ;  byte string containing the hash value
 }
 
-; TO DO: Check CDDL syntax
-https-uri /= tstr .regexp "https://.*"
+https-uri = tstr .regexp "https://.*"

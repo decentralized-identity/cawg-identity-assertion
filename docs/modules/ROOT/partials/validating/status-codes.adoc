@@ -21,6 +21,9 @@ The _<<_named_actor,named actor>>_ is considered *trusted* according to the eval
 | The *<<_identity_assertion,identity assertion>>,* including the referenced credentials and signature binding the _<<_credential_holder,credential holder>>_ to the _<<C2PA claim>>_, is validated.
 The evaluation in xref:_trust_scenarios_in_identity_assertion[xrefstyle=full] could not identify any root of trust for the _<<_named_actor,named actor>>._
 
+| `cawg.identity.trust_registry.authorized`
+| The `trust_registry` field is present, and the trust registry identified by `trust_registry.trqp_authorization_uri` returned an authorization response confirming that `trust_registry.entity_id` is authorized for `trust_registry.action` on `trust_registry.resource` by `trust_registry.authority_id`, as described in xref:_trust_registry_requirements[xrefstyle=full].
+
 |=======================
 
 ==== Failure codes
@@ -57,6 +60,12 @@ The evaluation in xref:_trust_scenarios_in_identity_assertion[xrefstyle=full] co
 
 | `cawg.identity.network_traffic_blocked`
 | The credential used in this *<<_identity_assertion,identity assertion>>* can only be validated by downloading related materials from the Internet. The validator has been configured to prohibit some required traffic, so the validation can not be completed successfully.
+
+| `cawg.identity.trust_registry.unauthorized`
+| The `trust_registry` field is present, and the trust registry identified by `trust_registry.trqp_authorization_uri` returned an authorization response indicating that `trust_registry.entity_id` is *not* authorized for `trust_registry.action` on `trust_registry.resource` by `trust_registry.authority_id`, as described in xref:_trust_registry_requirements[xrefstyle=full].
+
+| `cawg.identity.trust_registry.unreachable`
+| The `trust_registry` field is present, but `trust_registry.trqp_authorization_uri` could not be reached, or returned a response that does not conform to the TRQP authorization response schema, as described in xref:_trust_registry_requirements[xrefstyle=full].
 
 |=======================
 
