@@ -49,3 +49,7 @@ A PEM-encoded version of this list is available at https://ccadb.my.salesforce-s
 IPTC publishes separate lists for end-entity certificates and approved trust anchors.
 A PEM-encoded version of the end-entity certificate list is available at https://trust.iptc.org/end-entity-list.pem.
 A PEM-encoded version of the trust anchor list is available at https://trust.iptc.org/anchor-list.pem.
+** The *https://c2pa.org/conformance/[C2PA Trust List].*
+This list is maintained by the C2PA Conformance Program.
+A PEM-encoded version of this list is available at https://raw.githubusercontent.com/c2pa-org/conformance-public/main/trust-list/C2PA-TRUST-LIST.pem.
+The C2PA Trust List is included in the CAWG trust configuration only for the duration of the interim period described in this section.
