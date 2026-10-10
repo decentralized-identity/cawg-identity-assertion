@@ -42,8 +42,8 @@
       },
       {
         "type": "cawg.crypto_wallet",
-        "username": "username",
-        "uri": "https://example-crypto-wallet.com/username",
+        "address": "fa64ef445f994138bdeb9baac6ce1e16",
+        "uri": "https://example-crypto-wallet.com/fa64ef445f994138bdeb9baac6ce1e16",
         "provider": {
           "id": "https://example-crypto-wallet.com",
           "name": "Example Crypto Wallet"
