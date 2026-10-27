@@ -29,3 +29,7 @@ _This section is non-normative._
 *17 August 2026*
 
 * Ratified by DIF Steering Committee.
+
+*26 October 2026*
+
+* Fixed the `$ref` values in the identity claims aggregation JSON schemas (`ica/schema/vc1.1` and `ica/schema/vc2.0`) to point to `#/$defs/…`, where the shared definitions are, rather than to the nonexistent `#/definitions/…`.
