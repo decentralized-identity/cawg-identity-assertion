@@ -7,9 +7,9 @@
 
 include::partial$abstract.adoc[]
 
-*Version 1.3 DIF Ratified Specification 17 August 2026* · xref:_version_history[]
+*Version 1.4 Draft 16 November 2026* · xref:_version_history[]
 
-IMPORTANT: This version differs from version 1.2 primarily in the removal of `expected_countersigners` and similar fields and in changes in how CAWG X.509 validation is reflected in status codes.
+IMPORTANT: This version differs from version 1.3 only in the extension of the interim trust list additions to 31 December 2027.
 
 include::partial$common/license.adoc[]
 

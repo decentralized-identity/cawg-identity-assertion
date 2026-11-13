@@ -1,7 +1,7 @@
 ==== Trust model for X.509 certificates
- 
+
 A validator shall maintain the following information for evaluating CAWG X.509 signers, known as the *CAWG trust configuration*:
- 
+
 * A list of accepted Extended Key Usage (EKU) values. For each accepted EKU value,
 ** A list of accepted Certificate Policy (CP) values.
 ** A list of X.509 certificate trust anchors.
@@ -18,7 +18,7 @@ An implementation MAY share the implementation for these two trust lists between
 [IMPORTANT]
 .Time restrictions for this section
 ====
-The configuration options described in this section are valid only for *identity assertions* generated on or before 31 March 2027.
+The configuration options described in this section are valid only for *identity assertions* generated on or before 31 December 2027.
 ====
 
 An *identity assertion* generator MUST include a valid time stamp in the <<C2PA Manifest>> or the **identity assertion** as described in xref:_generating_the_cose_signature[xrefstyle=full] to ensure validity under this section.
@@ -27,7 +27,7 @@ An *identity assertion* validator MUST evaluate the following conditions, regard
 
 An *identity assertion* validator MUST be configured to accept an _X.509 certificate_ as trusted when *all* of the following requirements are met:
 
-1. The time of validation is on or before 31 March 2027 _or_ a trusted time stamp establishes that the *identity assertion* was issued on or before 31 March 2027.
+1. The time of validation is on or before 31 December 2027 _or_ a trusted time stamp establishes that the *identity assertion* was issued on or before 31 December 2027.
 2. The EKU `id-kp-emailProtection` (1.3.6.1.5.5.7.3.4) is used.
 3. One of the following certificate policy IDs is used:
 +
