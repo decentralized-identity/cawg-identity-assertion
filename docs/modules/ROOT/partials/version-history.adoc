@@ -3,6 +3,6 @@
 
 _This section is non-normative._
 
-*16 November 2026*
+*20 November 2026*
 
 * Extended the lifetime of the interim trust model for X.509 certificates to 31 December 2027.
