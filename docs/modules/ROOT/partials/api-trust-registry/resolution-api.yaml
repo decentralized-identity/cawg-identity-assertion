@@ -1,0 +1,602 @@
+openapi: 3.1.1
+info:
+  title: CAWG-TRQP Reference Verifier HTTP API
+  description: 'This is the OpenAPI specification of the HTTP API exposed by cawg-trqp-refimpl, the CAWG-TRQP
+    reference verifier (https://github.com/sankarshanmukhopadhyay/cawg-trqp-verifier-refimpl and its TypeScript
+    port). It is a request/response reference implementation for evaluating CAWG/C2PA manifest trust signals
+    against TRQP-style policy: authorization and issuer-recognition lookups against a configurable PolicyService
+    (an in-memory mock, or a real Redis/MongoDB/MySQL/Postgres-backed plugin), full manifest verification
+    combining asset integrity, authorization, recognition, and process-proof appraisal, and signed/replayable
+    audit bundle export.
+
+
+    This API is intentionally narrower than the CAWG Trust Registry Resolution API described elsewhere
+    in this specification: it is POST-with-body rather than resource-oriented REST, it has no entity enrollment
+    flow, no historical (atTime) authorization queries, no array-variant combined-permission check, and
+    no capability-discovery routes for listing an authority''s recognized actions/resources. It documents
+    an existing reference tool rather than prescribing the API a conformant Trust Registry must expose.'
+  version: 0.17.0
+  license:
+    name: MIT
+    url: https://opensource.org/license/mit
+servers:
+- url: http://127.0.0.1:5000
+  description: Default local address used by the bundled CLI/scripts/start_http_service.ts
+tags:
+- name: Service
+  description: Health and capability reporting
+- name: Authorization
+  description: Direct authorization and issuer-recognition lookups against the configured PolicyService
+- name: Gateway
+  description: Authorization/recognition lookups mediated through a TrustGateway
+- name: Verification
+  description: Full CAWG/C2PA manifest verification
+- name: Audit
+  description: Signed, replayable audit bundle export
+paths:
+  /health:
+    get:
+      tags:
+      - Service
+      summary: Reports service health and enabled capabilities
+      description: Returns the service's health status and the list of capabilities (authorization, recognition,
+        verify, audit_bundle, gateway) this deployment has enabled. Unauthenticated; intended for load
+        balancer / orchestrator health checks.
+      operationId: getHealth
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/cawgtrqp.healthResponse'
+  /trqp/authorization:
+    post:
+      tags:
+      - Authorization
+      summary: Checks whether an entity is authorized to perform an action on a resource
+      description: Given entity_id, authority_id, action, and resource, returns whether the entity is
+        currently authorized, drawn from the configured PolicyService. This reference API always evaluates
+        against the policy data as currently configured; it has no equivalent of a historical (atTime)
+        query.
+      operationId: checkAuthorization
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/cawgtrqp.authorizationRequest'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/cawgtrqp.authorizationResponse'
+        '400': &id001
+          description: Invalid request (missing/invalid fields, unknown profile or overlay name)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/cawgtrqp.errorResponse'
+        '413': &id002
+          description: Request body exceeds the service's configured size limit (64KB by default)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/cawgtrqp.errorResponse'
+        '415': &id003
+          description: Request Content-Type is not application/json
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/cawgtrqp.errorResponse'
+        '502': &id004
+          description: The configured PolicyService backend failed to complete the request (e.g. a network/database
+            error from a real backend plugin)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/cawgtrqp.errorResponse'
+  /trqp/recognition:
+    post:
+      tags:
+      - Authorization
+      summary: Checks whether one Governing Authority recognizes another as a trusted issuer
+      description: Given authority_id and recognized_authority_id, returns whether the first authority
+        recognizes the second as a trusted issuer of identity assertions, drawn from the configured PolicyService.
+      operationId: checkRecognition
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/cawgtrqp.recognitionRequest'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/cawgtrqp.recognitionResponse'
+        '400': *id001
+        '413': *id002
+        '415': *id003
+        '502': *id004
+  /trqp/gateway/authorization:
+    post:
+      tags:
+      - Authorization
+      - Gateway
+      summary: Checks authorization through a trust gateway, returning route mediation evidence
+      description: Equivalent to POST /trqp/authorization, but routes the query through a TrustGateway
+        that can mediate requests across multiple configured authority routes, returning route/feed-descriptor
+        evidence describing how the request was mediated alongside the authorization result.
+      operationId: checkAuthorizationViaGateway
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/cawgtrqp.authorizationRequest'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/cawgtrqp.gatewayAuthorizationResponse'
+        '400': *id001
+        '413': *id002
+        '415': *id003
+        '502': *id004
+  /trqp/verify:
+    post:
+      tags:
+      - Verification
+      summary: Verifies a CAWG/C2PA manifest's asset integrity, actor authorization, issuer recognition,
+        and process integrity
+      description: Performs a full verification pass combining asset integrity, actor authorization, issuer
+        recognition, and (if process_evidence is supplied) process-proof appraisal, returning a structured
+        trust_outcome (trusted, trusted_cached, rejected, or deferred) with explanations.
+      operationId: verify
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/cawgtrqp.verifyRequest'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/cawgtrqp.verificationResult'
+        '400': *id001
+        '413': *id002
+        '415': *id003
+        '502': *id004
+  /trqp/audit-bundle:
+    post:
+      tags:
+      - Verification
+      - Audit
+      summary: Verifies a manifest and exports a signed, replayable audit bundle of the decision
+      description: Runs the same verification pass as POST /trqp/verify, then packages the request, result,
+        and policy evidence into a canonical, hashable audit bundle suitable for replay and independent
+        re-verification later.
+      operationId: exportAuditBundle
+      parameters:
+      - name: X-TRQP-Scopes
+        in: header
+        required: false
+        description: Comma-separated list of scopes granted to the caller. Required to include the privacy_profile's
+          access_scope whenever privacy_profile retains the raw request (replay_bundle, regulated_evidence);
+          otherwise the request is rejected with 403. This reference implementation has no authentication
+          middleware - the header is trusted as presented.
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/cawgtrqp.auditBundleRequest'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/cawgtrqp.auditBundle'
+        '403':
+          description: privacy_profile requires a scope not present in X-TRQP-Scopes
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/cawgtrqp.errorResponse'
+        '400': *id001
+        '413': *id002
+        '415': *id003
+        '502': *id004
+components:
+  schemas:
+    cawgtrqp.errorResponse:
+      type: object
+      required:
+      - error
+      - message
+      properties:
+        error:
+          type: string
+          description: Machine-readable error code, e.g. invalid_request, forbidden, upstream_unavailable,
+            request_too_large
+        message:
+          type: string
+    cawgtrqp.healthResponse:
+      type: object
+      required:
+      - status
+      - capabilities
+      properties:
+        status:
+          const: healthy
+        capabilities:
+          type: array
+          items:
+            enum:
+            - authorization
+            - recognition
+            - verify
+            - audit_bundle
+            - gateway
+    cawgtrqp.authorizationRequest:
+      type: object
+      required:
+      - entity_id
+      - authority_id
+      - action
+      - resource
+      properties:
+        entity_id: &id006
+          type: string
+          minLength: 1
+          description: Identifier of the actor/entity claiming to have performed the action, matching
+            the entity identifier recorded in the manifest
+        authority_id: &id007
+          type: string
+          minLength: 1
+          description: Identifier of the Governing Authority whose policy governs this action/resource
+        action: &id008
+          type: string
+          minLength: 1
+          description: The action being authorized, e.g. publish
+        resource: &id009
+          type: string
+          minLength: 1
+          description: The resource category the action applies to, e.g. cawg:news-content
+        context: &id005
+          type: object
+          default: {}
+          description: Additional policy-matching context (e.g. jurisdiction, risk_tier). Policy rules
+            match when every key they declare is present with an equal value in this context; the request
+            may carry extra keys a rule doesn't mention
+    cawgtrqp.authorizationResponse:
+      type: object
+      required:
+      - authorized
+      description: Fields other than authorized are omitted from the actual JSON response whenever their
+        value is null (this schema lists them as optional, not nullable, to reflect that omission)
+      properties:
+        authorized:
+          type: boolean
+        expires:
+          type: string
+          format: date-time
+        policy_epoch:
+          type: string
+        evidence:
+          type: array
+          items:
+            type: string
+        reason:
+          type: string
+          description: e.g. no_matching_policy, entity_revoked
+        policy_requirements:
+          type: object
+    cawgtrqp.recognitionRequest:
+      type: object
+      required:
+      - authority_id
+      - recognized_authority_id
+      properties:
+        authority_id:
+          type: string
+          minLength: 1
+          description: The authority whose recognition policy is being queried
+        recognized_authority_id:
+          type: string
+          minLength: 1
+          description: The authority (typically an issuer) being checked for recognition
+        context: *id005
+    cawgtrqp.recognitionResponse:
+      type: object
+      required:
+      - recognized
+      description: Fields other than recognized are omitted from the actual JSON response whenever their
+        value is null
+      properties:
+        recognized:
+          type: boolean
+        expires:
+          type: string
+          format: date-time
+        policy_epoch:
+          type: string
+        evidence:
+          type: array
+          items:
+            type: string
+        reason:
+          type: string
+          description: e.g. not_recognized
+    cawgtrqp.gatewayAuthorizationResponse:
+      type: object
+      required:
+      - authorization
+      - gateway_mediation
+      properties:
+        authorization:
+          $ref: '#/components/schemas/cawgtrqp.authorizationResponse'
+        gateway_mediation:
+          type: object
+          required:
+          - gateway_id
+          - route_label
+          - target_authority_id
+          - decision_type
+          - route_attested
+          properties:
+            gateway_id:
+              type: string
+            route_label:
+              type: string
+            target_authority_id:
+              type: string
+            mode:
+              const: remote_policy_mediation
+            decision_type:
+              enum:
+              - authorization
+              - recognition
+            route_attested:
+              type: boolean
+            feed_descriptor:
+              type: object
+    cawgtrqp.verifyRequest:
+      type: object
+      required:
+      - asset_id
+      - integrity_ok
+      - entity_id
+      - authority_id
+      - action
+      - resource
+      properties:
+        asset_id: &id010
+          type: string
+          minLength: 1
+          description: Identifier of the asset (e.g. image, article) this manifest is about
+        integrity_ok: &id011
+          type: boolean
+          description: Whether the manifest's own cryptographic integrity (signature/hash chain) already
+            validated, prior to calling this service. If false, verification short-circuits to a rejected
+            asset_integrity result
+        entity_id: *id006
+        authority_id: *id007
+        issuer_id: &id012
+          type:
+          - string
+          - 'null'
+          description: Identifier of the certificate issuer vouching for entity_id, if any. When present,
+            issuer recognition is checked against authority_id's recognition policy
+        action: *id008
+        resource: *id009
+        context: *id005
+        process_evidence: &id013
+          type:
+          - object
+          - 'null'
+          description: Optional Proof-of-Process style evidence describing how the asset was produced,
+            appraised against the matched policy's process requirements (requires_process_proof, min_process_integrity,
+            allowed_process_types)
+          properties:
+            verified:
+              type: boolean
+            process_type:
+              type: string
+            confidence:
+              type: number
+              minimum: 0
+              maximum: 1
+            evidence_ref:
+              type: string
+            evidence_format:
+              type: string
+            appraisal:
+              type: string
+            reference:
+              type: string
+        profile: &id014
+          description: 'Selects a verification profile: either a built-in profile name (edge, standard,
+            high_assurance), or a fully inline profile payload matching the verification-profile schema
+            for a one-off custom profile. Defaults to "standard".'
+          oneOf:
+          - enum:
+            - edge
+            - standard
+            - high_assurance
+          - type: object
+            description: Inline verification profile. See verification-profile.schema.json in the cawg-trqp-refimpl
+              schemas/ directory for the full controls shape.
+            required:
+            - id
+            - base_profile
+            - controls
+            - overlays
+            - source
+        overlays: &id015
+          type: array
+          description: Built-in overlay names to layer onto the resolved profile's controls, applied in
+            order. Only built-in names are accepted at this API boundary (evidence_attested, freshness_strict)
+            - filesystem paths are rejected.
+          items:
+            enum:
+            - evidence_attested
+            - freshness_strict
+        use_gateway:
+          type: boolean
+          default: false
+          description: When true, routes the authorization/recognition lookups through the configured
+            TrustGateway instead of calling the PolicyService directly
+    cawgtrqp.verificationResult:
+      type: object
+      required:
+      - asset_integrity
+      - trust_outcome
+      - process_integrity
+      - policy_evidence
+      - gateway_mediation
+      properties:
+        asset_integrity:
+          type: string
+          description: e.g. verified, failed
+        assertion_binding:
+          type: string
+        issuer_recognition:
+          type: string
+          description: e.g. recognized, unknown
+        actor_authorization:
+          type: string
+          description: e.g. authorized, not_authorized, unknown
+        process_integrity:
+          type: string
+          description: e.g. not_required, verified, verified_high, insufficient, failed, missing_required_proof
+        policy_freshness:
+          type: string
+          description: e.g. fresh, stale_but_warned, revoked, service_unavailable, service_error, snapshot_verified
+        verification_mode:
+          type: string
+          description: e.g. cached_online, online_full, gateway_mediated, offline_snapshot, revocation_check,
+            transport_guardrail
+        trust_outcome:
+          type: string
+          description: trusted, trusted_cached, rejected, or deferred
+        process_appraisal:
+          type: object
+        policy_evidence:
+          type: object
+          description: Includes the resolved verification_profile, transport metadata, revocation_status,
+            and feed_descriptors evidence used to reach this result
+        gateway_mediation:
+          type: object
+          description: Populated only when use_gateway was true
+        explanations:
+          type: array
+          items:
+            type: string
+    cawgtrqp.auditBundleRequest:
+      type: object
+      required:
+      - asset_id
+      - integrity_ok
+      - entity_id
+      - authority_id
+      - action
+      - resource
+      properties:
+        asset_id: *id010
+        integrity_ok: *id011
+        entity_id: *id006
+        authority_id: *id007
+        issuer_id: *id012
+        action: *id008
+        resource: *id009
+        context: *id005
+        process_evidence: *id013
+        profile: *id014
+        overlays: *id015
+        use_gateway:
+          type: boolean
+          default: false
+        privacy_profile:
+          enum:
+          - minimal_receipt
+          - replay_bundle
+          - regulated_evidence
+          default: minimal_receipt
+          description: Controls how much of the raw request is retained in the exported bundle. minimal_receipt
+            pseudonymizes identifiers; replay_bundle and regulated_evidence retain the raw request and
+            require the caller to present the profile's access_scope in the X-TRQP-Scopes header, or the
+            request is rejected with 403
+    cawgtrqp.auditBundle:
+      type: object
+      required:
+      - bundle_type
+      - bundle_profile
+      - bundle_version
+      - exported_at
+      - bundle_id
+      - bundle_digest_sha256
+      - request_summary
+      - verification_result
+      - policy_evidence
+      - process_appraisal
+      - replay_inputs
+      properties:
+        bundle_type:
+          const: cawg-trqp-audit-bundle
+        bundle_profile:
+          type: string
+        bundle_version:
+          type: string
+          pattern: ^[0-9]+\.[0-9]+\.[0-9]+$
+        exported_at:
+          type: string
+          format: date-time
+        bundle_id:
+          type: string
+          description: urn:trqp:audit-bundle:sha256:<digest of the bundle's canonical content>
+        bundle_digest_sha256:
+          type: string
+          pattern: ^[a-f0-9]{64}$
+        request_summary:
+          type: object
+        verification_result:
+          $ref: '#/components/schemas/cawgtrqp.verificationResult'
+        policy_evidence:
+          type: object
+        process_appraisal:
+          type: object
+        gateway_mediation:
+          type: object
+        replay_inputs:
+          type: object
+          description: Pinned policy/revocation feed digests, transport metadata, and the resolved profile,
+            sufficient to independently replay this decision later
+        bundle_attestation:
+          type: object
+          description: Present only when the bundle was signed
+          required:
+          - algorithm
+          - key_id
+          - value
+          properties:
+            algorithm:
+              const: Ed25519
+            key_id:
+              type: string
+            value:
+              type: string
+              description: Base64-encoded Ed25519 signature over the bundle's canonical content
