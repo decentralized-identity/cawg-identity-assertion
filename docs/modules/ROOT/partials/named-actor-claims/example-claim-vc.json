@@ -1,0 +1,26 @@
+{
+  "@context": [
+    "https://www.w3.org/ns/credentials/v2",
+    {
+      "example": "https://example.org/vocab/",
+      "cawg": "https://www.cawg.io/vocab/"
+    }
+  ],
+  "id": "example:Credential123",
+  "type": [
+    "VerifiableCredential",
+    "cawg:NamedActorClaimCredential"
+  ],
+  "issuer": "did:webvh:{SCID}:example.org",
+  "validFrom": "2026-01-01T00:00:00Z",
+  "validUntil": "2027-01-01T00:00:00Z",
+  "credentialSubject": {
+    "id": "https://www.bbc.co.uk/",
+    "type": [
+      "example:VerifiedAcmeProducer"
+    ]
+  },
+  "cawg:credentialBinding": {
+    "cawg:x509SpkiSha256": "xyz123…"
+  }
+}
