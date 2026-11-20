@@ -37,16 +37,16 @@
     "issuer": {
       "oneOf": [
         {
-          "$ref": "#/definitions/nonEmptyUri"
+          "$ref": "#/$defs/nonEmptyUri"
         },
         {
           "type": "object",
           "properties": {
             "id": {
-              "$ref": "#/definitions/nonEmptyUri"
+              "$ref": "#/$defs/nonEmptyUri"
             },
             "name": {
-              "$ref": "#/definitions/nonEmptyString"
+              "$ref": "#/$defs/nonEmptyString"
             }
           },
           "required": ["id"]
@@ -65,7 +65,7 @@
       "type": "object",
       "properties": {
         "id": {
-          "$ref": "#/definitions/nonEmptyUri"
+          "$ref": "#/$defs/nonEmptyUri"
         },
         "verifiedIdentities": {
           "type": "array",
@@ -74,7 +74,7 @@
             "type": "object",
             "properties": {
               "type": {
-                "$ref": "#/definitions/nonEmptyString"
+                "$ref": "#/$defs/nonEmptyString"
               }
             },
             "required": ["type"],
@@ -88,26 +88,26 @@
             "then": {
               "properties": {
                 "username": {
-                  "$ref": "#/definitions/nonEmptyString"
+                  "$ref": "#/$defs/nonEmptyString"
                 },
                 "uri": {
-                  "$ref": "#/definitions/nonEmptyUri"
+                  "$ref": "#/$defs/nonEmptyUri"
                 },
                 "provider": {
-                  "$ref": "#/definitions/identifiableObject"
+                  "$ref": "#/$defs/identifiableObject"
                 },
                 "verifiedAt": {
-                  "$ref": "#/definitions/nonEmptyString",
+                  "$ref": "#/$defs/nonEmptyString",
                   "format": "date-time"
                 },
                 "name": {
-                  "$ref": "#/definitions/nonEmptyString"
+                  "$ref": "#/$defs/nonEmptyString"
                 },
                 "method": {
-                  "$ref": "#/definitions/nonEmptyString"
+                  "$ref": "#/$defs/nonEmptyString"
                 }
               },
-              "required": ["username", "uri", "provider", "verifiedAt"]
+              "required": ["username", "provider", "verifiedAt"]
             },
             "else": {
               "if": {
@@ -120,20 +120,20 @@
               "then": {
                 "properties": {
                   "address": {
-                    "$ref": "#/definitions/nonEmptyString"
+                    "$ref": "#/$defs/nonEmptyString"
                   },
                   "provider": {
-                    "$ref": "#/definitions/identifiableObject"
+                    "$ref": "#/$defs/identifiableObject"
                   },
                   "verifiedAt": {
-                    "$ref": "#/definitions/nonEmptyString",
+                    "$ref": "#/$defs/nonEmptyString",
                     "format": "date-time"
                   },
                   "name": {
-                    "$ref": "#/definitions/nonEmptyString"
+                    "$ref": "#/$defs/nonEmptyString"
                   },
                   "method": {
-                    "$ref": "#/definitions/nonEmptyString"
+                    "$ref": "#/$defs/nonEmptyString"
                   }
                 },
                 "required": ["address", "provider", "verifiedAt"]
@@ -149,17 +149,17 @@
                 "then": {
                   "properties": {
                     "name": {
-                      "$ref": "#/definitions/nonEmptyString"
+                      "$ref": "#/$defs/nonEmptyString"
                     },
                     "provider": {
-                      "$ref": "#/definitions/identifiableObject"
+                      "$ref": "#/$defs/identifiableObject"
                     },
                     "verifiedAt": {
-                      "$ref": "#/definitions/nonEmptyString",
+                      "$ref": "#/$defs/nonEmptyString",
                       "format": "date-time"
                     },
                     "method": {
-                      "$ref": "#/definitions/nonEmptyString"
+                      "$ref": "#/$defs/nonEmptyString"
                     }
                   },
                   "required": ["name", "provider", "verifiedAt"]
@@ -175,17 +175,17 @@
                   "then": {
                     "properties": {
                       "name": {
-                        "$ref": "#/definitions/nonEmptyString"
+                        "$ref": "#/$defs/nonEmptyString"
                       },
                       "provider": {
-                        "$ref": "#/definitions/identifiableObject"
+                        "$ref": "#/$defs/identifiableObject"
                       },
                       "verifiedAt": {
-                        "$ref": "#/definitions/nonEmptyString",
+                        "$ref": "#/$defs/nonEmptyString",
                         "format": "date-time"
                       },
                       "method": {
-                        "$ref": "#/definitions/nonEmptyString"
+                        "$ref": "#/$defs/nonEmptyString"
                       }
                     },
                     "required": ["provider", "verifiedAt"]
@@ -201,14 +201,14 @@
                     "then": {
                       "properties": {
                         "uri": {
-                          "$ref": "#/definitions/nonEmptyUri"
+                          "$ref": "#/$defs/nonEmptyUri"
                         },
                         "verifiedAt": {
-                          "$ref": "#/definitions/nonEmptyString",
+                          "$ref": "#/$defs/nonEmptyString",
                           "format": "date-time"
                         },
                         "method": {
-                          "$ref": "#/definitions/nonEmptyString"
+                          "$ref": "#/$defs/nonEmptyString"
                         }
                       },
                       "required": [
@@ -233,25 +233,28 @@
                 "type": "object",
                 "properties": {
                   "url": {
-                    "$ref": "#/definitions/nonEmptyString"
+                    "$ref": "#/$defs/nonEmptyString"
                   },
                   "hash": {
-                    "$ref": "#/definitions/nonEmptyString"
+                    "$ref": "#/$defs/nonEmptyString"
                   },
                   "alg": {
-                    "$ref": "#/definitions/nonEmptyString"
+                    "$ref": "#/$defs/nonEmptyString"
                   }
                 },
-                "required": ["hash"]
+                "required": ["url", "hash"]
               }
             },
             "sig_type": {
               "type": "string"
             },
             "role": {
-              "type": "string",
-              "enum": ["cawg.creator", "cawg.contributor", "cawg.editor", "cawg.producer",
-                "cawg.publisher", "cawg.sponsor", "cawg.translator"]
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "$ref": "#/$defs/nonEmptyString"
+              },
+              "description": "Recommended values: cawg.creator, cawg.contributor, cawg.editor, cawg.producer, cawg.publisher, cawg.sponsor, cawg.translator"
             }
           },
           "required": ["referenced_assertions", "sig_type"]
